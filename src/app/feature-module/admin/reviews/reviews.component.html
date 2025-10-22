@@ -1,0 +1,216 @@
+<div class="page-wrapper">
+	<div class="content container-fluid">
+				
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col-md-12 d-flex justify-content-end">
+					<div class="doc-badge me-3">Total Ratings <span class="ms-1">48</span></div>
+					<div class="SortBy">
+						<div class="selectBoxes order-by"  data-bs-toggle="dropdown">
+							<p class="mb-0"><img src="assets/admin/img/icon/sort.png" class="me-2" alt="icon"> Order by </p>
+							<span class="down-icon"><i class="feather-chevron-down"></i></span>
+						</div>						  
+						<div id="checkBox" class="dropdown-menu">
+							<form>
+								<p class="lab-title">Sort By</p>
+								<label class="custom_radio w-100">
+									<input type="radio" name="sort">
+									<span class="checkmark"></span> Ascending
+								</label>
+								<label class="custom_radio w-100 mb-4">
+									<input type="radio" name="sort">
+									<span class="checkmark"></span> Descending
+								</label>
+								<button type="submit" class="btn w-100 btn-primary">Apply</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		
+		<!-- Ratings -->
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-header border-bottom-0">
+						<div class="row align-items-center">
+							<div class="col">
+								<h5 class="card-title">Ratings</h5>
+							</div>
+							<div class="col-auto custom-list d-flex">
+								<div class="form-custom me-2">
+									<div id="tableSearch"  class="dataTables_wrapper"></div>
+								</div>
+								<div class="multipleSelection">
+									<div class="selectBox" data-bs-toggle="dropdown">
+										<p class="mb-0"><i class="feather-filter me-1"></i> Filter </p>
+										<span class="down-icon"><i class="feather-chevron-down"></i></span>
+									</div>						  
+									<div id="checkBoxes" class="dropdown-menu">
+										<form>
+											<p class="lab-title">Ratings</p>
+											<label class="custom_check w-100">
+												<input type="checkbox" name="year" checked>
+												<span class="checkmark"></span> 5
+											</label>
+											<label class="custom_check w-100">
+												<input type="checkbox" name="year">
+												<span class="checkmark"></span> 4
+											</label>
+											<label class="custom_check w-100">
+												<input type="checkbox" name="year">
+												<span class="checkmark"></span> 3
+											</label>
+											<label class="custom_check w-100">
+												<input type="checkbox" name="year">
+												<span class="checkmark"></span> 2
+											</label>
+											<label class="custom_check w-100">
+												<input type="checkbox" name="year">
+												<span class="checkmark"></span> 1
+											</label>
+											<button type="submit" class="btn w-100 btn-primary">Apply</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0">				
+						<div class="table-responsive">									
+							<table datatable [dtOptions]="dtOptions" class="datatable table table-borderless hover-table" id="data-table">
+								<thead class="thead-light">
+									<tr>
+									   <th>ID</th>
+									   <th>Patient</th>
+									   <th>Doctor</th>
+									   <th>Consultation Date</th>
+									   <th class="desc-info">Ratings</th>
+									   <th>Description</th>
+									   <th></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let review of reviews">
+										<td><a class="text-black" data-bs-toggle="modal" data-bs-target="#Ratings">#4546</a></td>
+										<td>
+											<h2 class="table-avatar">
+												<a [routerLink]="'/admin/profile'"><img class="avatar avatar-img" [src]="review.patient_pic" alt="User Image"></a>
+												<a [routerLink]="'/admin/profile'"><span class="user-name">{{review.patient_name}}</span></a>
+											</h2>
+										</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos" [routerLink]="'/admin/profile'"><img class="avatar avatar-img" [src]="review.doctor_pic" alt="User Image"></a>
+												<a [routerLink]="'/admin/profile'" class="user-name"><span class="text-muted">{{review.doctor_name}}</span> <span class="tab-subtext">{{review.speciality}}</span></a>
+											</h2>
+										</td>
+										<td><span class="user-name">{{review.date | date : "dd MMM yyyy "}} </span><span class="d-block">{{review.date | date : "mm/dd/yyyy"}}</span></td>
+										<td>
+											<div class="ratings">
+												<i class="far fa-star filled"></i>
+												<i class="far fa-star filled"></i>
+												<i class="far fa-star filled"></i>
+												<i class="far fa-star filled"></i>
+												<i class="far fa-star"></i>
+											</div>
+										</td>
+										<td class="desc-info">{{review.description}}</td>
+										<td class="text-end">
+											<div class="actions">
+												<a class="text-danger" data-bs-toggle="modal" href="#deleteModal">
+													<i class="feather-trash-2"></i> Delete
+												</a>															
+											</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				
+				<div id="tablepagination"  class="dataTables_wrapper"></div>
+			</div>
+		</div>
+		<!-- /Ratings -->
+	</div>
+</div>
+<!-- Modal -->
+<div class="modal fade contentmodal" id="Ratings" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content doctor-profile">
+			<div class="modal-header justify-content-center border-bottom-0">
+			<div>
+				<h4 class="modal-title">Rating Details</h4>
+				<button type="button" class="close-btn pos-top" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x-circle"></i></button>
+			</div>
+			</div>
+			<div class="modal-body">
+				<div class="rating-wrapper mb-2">
+					<h5>Consultation ID</h5>
+					<p>#454445</p>           
+					<h5>Reviews</h5>
+					<div class="ratings mb-3">
+						<i class="far fa-star filled"></i>
+						<i class="far fa-star filled"></i>
+						<i class="far fa-star filled"></i>
+						<i class="far fa-star filled"></i>
+						<i class="far fa-star"></i>
+					</div>        
+					<h5>Description</h5>
+					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>                 
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Modal -->
+
+<!-- Modal -->
+<div class="modal fade contentmodal" id="deleteModal" tabindex="-1" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered">
+		<div class="modal-content doctor-profile">
+			<div class="modal-header border-bottom-0 justify-content-end">
+				<button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x-circle"></i></button>
+			</div>
+			<div class="modal-body">
+				<form action="ratings.html">
+					<div class="delete-wrap text-center">
+						<div class="del-icon"><i class="feather-x-circle"></i></div>
+						<h2>Sure you Want to delete</h2>
+						<p>“Rating”</p>
+						<div class="submit-section">
+							<button type="submit" class="btn btn-success me-2">Yes</button>
+							<a href="javascript:void(0)" class="btn btn-danger" data-bs-dismiss="modal">No</a>
+						</div>								
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Modal -->
+<ng-template #delete>
+	<div class="modal-content doctor-profile">
+		<div class="modal-header border-bottom-0 justify-content-end">
+			<button type="button" class="close-btn" data-bs-dismiss="modal" aria-label="Close"><i class="feather-x-circle"></i></button>
+		</div>
+		<div class="modal-body">
+			<form>
+				<div class="delete-wrap text-center">
+					<div class="del-icon"><i class="feather-x-circle"></i></div>
+					<h2>Sure you Want to delete</h2>
+					<p>“Rating”</p>
+					<div class="submit-section">
+						<button type="submit" class="btn btn-success me-2" (click)="deleteReview()">Yes</button>
+						<a class="btn btn-danger" data-bs-dismiss="modal" (click)="decline()" >No</a>
+					</div>								
+				</div>
+			</form>
+		</div>
+	</div>
+</ng-template>
