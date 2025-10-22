@@ -1,0 +1,192 @@
+<header class="header">
+    <nav class="navbar  header-nav no-border">
+        <div class="navbar-header">
+            <!-- <a id="mobile_btn" href="javascript:void(0);">
+                <span class="bar-icon">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            </a> -->
+            <a class="navbar-brand logo">
+                <img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+            </a>
+        </div>
+        <div class="main-menu-wrapper">
+            <!-- <div class="menu-header">
+                <a class="menu-logo">
+                    <img src="assets/img/logo.png" class="img-fluid" alt="Logo">
+                </a>
+                <a id="menu_close" class="menu-close" href="javascript:void(0);">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div> -->
+          <!-- <ul class="main-nav">
+                <li [class.active]="base === 'home' || base === 'home-two' || base === 'home-three'  || base === 'home-one' || base === 'home-five' || base === 'home-four' || base === 'home-six' || base === 'home-seven' || base === 'home-eight' " class="has-submenu" style="cursor: pointer;">
+                    <a href="javascript:void(0);">Home <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu" id="home">
+                        <li [class.active]="base === 'home'" ><a [routerLink]="'/home'">Home</a></li>
+                        <li [class.active]="base === 'home-two'" ><a [routerLink]="'/home-two'">Home 2</a></li>
+                        <li [class.active]="base === 'home-three'" ><a [routerLink]="'/home-three'">Home 3</a></li>
+                        <li [class.active]="base === 'home-four'" ><a [routerLink]="'/home-four'">Home 4</a></li>
+                        <li [class.active]="base === 'home-five'" ><a [routerLink]="'/home-five'">Home 5</a></li>
+                        <li [class.active]="base === 'home-six'" ><a [routerLink]="'/home-six'">Home 6</a></li>
+                        <li [class.active]="base === 'home-seven'" ><a [routerLink]="'/home-seven'">Home 7</a></li>
+                        <li [class.active]="base === 'home-eight'" ><a [routerLink]="'/home-eight'">Home 8</a></li>
+                        <li [class.active]="base === 'home-nine'" ><a [routerLink]="'/home-nine'">Home 9</a></li>
+                        <li [class.active]="base === 'home-ten'" ><a [routerLink]="'/home-ten'">Home 10</a></li>
+                        <li [class.active]="base === 'home-eleven'" ><a [routerLink]="'/home-eleven'">Home 11</a></li>
+                        <li [class.active]="base === 'home-twelve'" ><a [routerLink]="'/home-twelve'">Home 12</a></li>
+                        <li [class.active]="base === 'home-thirteen'" ><a [routerLink]="'/home-thirteen'">Home 13</a></li>
+                        <li [class.active]="base === 'home-fourteen'" ><a [routerLink]="'/home-fourteen'">Home 14</a></li>
+                    </ul>
+                </li>
+                <li [class.active]="base === 'doctor' || (base === 'patients' && page === 'patients-profile')" class="has-submenu"  style="cursor: pointer;" >
+                    <a href="javascript:void(0)">Doctors <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu" id="doctor">
+                        <li [class.active]="base === 'doctor' && page === 'dashboard'"><a [routerLink]="'/doctors/dashboard'">Dashboard</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'appointment'"><a [routerLink]="'/doctors/appointments'">Appointments</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'scheduletiming'"><a [routerLink]="'/doctors/schedule-timing'">Schedule Timing</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'patients'"><a [routerLink]="'/doctors/patients-list'">Patients List</a></li>
+                        <li [class.active]="base === 'patients' && page === 'patients-profile'"><a [routerLink]="'/doctors/patients/patients-profile'">Patients Profile</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'message'"><a [routerLink]="'/doctors/message'">Chat</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'invoice'"><a [routerLink]="'/doctors/invoice'">Invoices</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'profile-settings'"><a [routerLink]="'/doctors/profile-settings'">Profile Settings</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'reviews'"><a [routerLink]="'/doctors/reviews'">Reviews</a></li>
+                        <li [class.active]="base === 'doctor' && page === 'Register'"><a [routerLink]="'/doctors/doctor-register'">Doctor Register</a></li>
+                        <li class="has-submenu" [class.active]="(page === 'doctor-add-blog') || (page === 'doctor-edit-blog') || (page === 'doctor-blog')">
+                            <a href="javascript:void(0)">Blog</a>
+                            <ul class="submenu">
+                                <li [class.active]="page === 'doctor-blog'"><a [routerLink]="'/doctors/doctor-blog/active'">Blog</a></li>
+                                <li [class.active]="base === 'blog'"><a [routerLink]="'/blog/blog-details'">Blog view</a></li>
+                                <li [class.active]="page === 'doctor-add-blog'"><a [routerLink]="'/doctors/doctor-blog/add'">Add Blog</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li  [class.active]="(base === 'map-grid') || (base === 'map-list') " class="has-submenu" routerLinkActive="active">
+                    <a href="javascript:void(0)">Patients <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu" id="patient">
+                        <li [class.active]="(base === 'map-grid') || (base === 'map-list')" class="has-submenu">
+                            <a href="javascript:void(0);">Doctors</a>
+                            <ul class="submenu">
+                                <li [class.active]="base === 'map-grid'"><a [routerLink]="'/patients/maps/map-grid'">Map Grid</a></li>
+                                <li [class.active]="base === 'map-list'"><a [routerLink]="'/patients/maps/map-list'">Map List</a></li>
+                            </ul>
+                        </li>
+                        <li [class.active]="base === 'patients' && page === 'search-doctor'" ><a [routerLink]="'/patients/search-doctor'">Search Doctor</a></li>
+                        <li [class.active]="base === 'patients' && page === 'doctor-profile'" ><a [routerLink]="'/patients/doctor-profile'">Doctor Profile</a></li>
+                        <li [class.active]="base === 'patients' && page === 'booking'" ><a [routerLink]="'/patients/booking'">Booking</a></li>
+                        <li [class.active]="base === 'patients' && page === 'checkout'" ><a [routerLink]="'/patients/checkout'">Checkout</a></li>
+                        <li [class.active]="base === 'patients' && page === 'success'" ><a [routerLink]="'/patients/success'">Booking Success</a></li>
+                        <li [class.active]="base === 'patients' && page === 'dashboard'" ><a [routerLink]="'/patients/dashboard'"> Patient Dashboard</a></li>
+                        <li [class.active]="base === 'patients' && page === 'favourites'" ><a [routerLink]="'/patients/favourites'">Favourites</a></li>
+                        <li [class.active]="base === 'patients' && page === 'patient-chat'" ><a [routerLink]="'/patients/patient-chat'">Chat</a></li>
+                        <li [class.active]="base === 'patients' && page === 'profile-settings'"  ><a [routerLink]="'/patients/profile-settings'">Profile Settings</a></li>
+                        <li [class.active]="base === 'patients' && page === 'change-password'" ><a [routerLink]="'/patients/change-password'">Change Password</a></li>
+                    </ul>
+                </li>
+                <li [class.active]="base === 'pharmacy'" class="has-submenu">
+                    <a href="javascript:void(0)">Pharmacy <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu" id="pharmacy">
+                        <li [class.active]="base === 'pharmacy' && page === 'home'"><a [routerLink]="'/pharmacy/home'">Pharmacy</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'pharmacy-details'"><a [routerLink]="'/pharmacy/pharmacy-details'">Pharmacy Details</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'pharmacy-search'"><a [routerLink]="'/pharmacy/pharmacy-search'">Pharmacy Search</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'products'"><a [routerLink]="'/pharmacy/products'">Products</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'product-desc'"><a [routerLink]="'/pharmacy/product-desc'">Product Description</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'cart'"><a [routerLink]="'/pharmacy/cart'">Cart</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'checkout'"><a [routerLink]="'/pharmacy/checkout'">Product Checkout</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'success'"><a [routerLink]="'/pharmacy/success'">Payment Success</a></li>
+                        <li [class.active]="base === 'pharmacy' && page === 'register'"><a [routerLink]="'/pharmacy/register'">Pharmacy Register</a></li>
+                    </ul>
+                </li> 
+
+                <li [class.active]="base === 'voice-call' || base === 'video-call' || base === 'calender' || base === 'blank' || base === 'login-page' 
+                || base === 'Register' || base === 'forgot-password' || (base === 'patients' && page === 'search-doctor') 
+                || (base === 'patients' && page === 'component') || (base === 'doctor' && page === 'invoice') || base === 'invoice-details'" class="has-submenu" pharmacy>
+                    <a href="javascript:void(0)">Pages <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu" id="pages">
+                        <li [class.active]="base === 'voice-call'"><a [routerLink]="'/pages/voice-call'">Voice Call</a></li>
+                        <li [class.active]="base === 'video-call'"><a [routerLink]="'/pages/video-call'">Video Call</a></li>
+                        <li [class.active]="base === 'patients' && page === 'search-doctor'"><a [routerLink]="'/patients/search-doctor'">Search Doctors</a></li>
+                        <li [class.active]="base === 'calender'"><a [routerLink]="'/pages/calendar'">Calendar</a></li>
+                        <li [class.active]="base === 'patients' && page === 'component'"><a [routerLink]="'/pages/components'">Components</a></li>
+                        <li [class.active]="(base === 'doctor' && page === 'invoice') || base === 'invoice-details'" class="has-submenu">
+                            <a href="javascript:void(0)">Invoices </a>
+                            <ul class="submenu" id="invoice">
+                                <li [class.active]="base === 'doctor' && page === 'invoice'"><a [routerLink]="'/pages/invoice/list'">Invoices</a></li>
+                                <li [class.active]="base === 'invoice-details'"><a [routerLink]="'/pages/invoice/view'">Invoice View</a></li>
+                            </ul>
+                        </li>
+                        <li [class.active]="base === 'blank'"><a [routerLink]="'/pages/blank'">Starter Page</a></li>
+                        <li [class.active]="base === 'about-us'"><a [routerLink]="'/pages/about-us'">About Us</a></li>
+                        <li [class.active]="base === 'contact-us'"><a [routerLink]="'/pages/contact-us'">Contact Us</a></li>
+                        <li [class.active]="base === 'login-page'"><a [routerLink]="'/login'">Login</a></li>
+                        <li [class.active]="base === 'Register'"><a [routerLink]="'/register'">Register</a></li>
+                        <li [class.active]="base === 'forgot-password'"><a [routerLink]="'/forgot-password'">Forgot Password</a></li>
+                    </ul>
+                </li> 
+                <li class="has-submenu" [class.active]="base === 'blog' || base === 'blog-grid' || base === 'blog-details'">
+                    <a href="javascript:void(0)">Blog <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu" id="blog">
+                        <li [class.active]="base === 'blog'"><a [routerLink]="'/blog/blog-list'">Blog List</a></li>
+                        <li [class.active]="base === 'blog-grid'"><a [routerLink]="'/blog/blog-grid'">Blog Grid</a></li> 
+                        <li [class.active]="base === 'blog-details'"><a [routerLink]="'/blog/blog-details'">Blog Details</a></li>
+                    </ul>
+                </li>
+                <li class="has-submenu" [class.active]="base === 'admin' || base === 'pharmacy-admin'">
+                    <a href="javascript:void(0)">Admin <i class="fas fa-chevron-down"></i></a>
+                    <ul class="submenu" id="admin">
+                        <li [class.active]="base === 'admin'"><a [routerLink]="'/admin'">Admin</a></li>
+                        <li [class.active]="base === 'pharmacy-admin'"><a [routerLink]="'/pharmacy-admin'">Pharmacy Admin</a></li> 
+                    </ul>
+                </li>
+                <li class="login-link">
+                    <a [routerLink]="'/login'">Login / Signup</a>
+                </li>
+            </ul>  -->
+        </div>
+        <ul class="nav header-navbar-rht">
+            <!-- <li class="nav-item contact-item">
+                <div class="header-contact-img">
+                    <i class="far fa-hospital"></i>
+                </div>
+                <div class="header-contact-detail">
+                    <p class="contact-header">Contact</p>
+                    <p class="contact-info-header"> +1 315 369 5943</p>
+                </div>
+            </li> -->
+            <li [class.active]="base === 'login-page'" class="nav-item" *ngIf="!authmenu">
+                <a class="nav-link header-login"  [routerLink]="'/login'">login / Signup </a>
+            </li>
+            <!-- User Menu -->
+            <li class="nav-item dropdown has-arrow logged-item" *ngIf="authmenu">
+                <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
+                    <span class="user-img">
+                        <img class="rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" width="31" alt="Darren Elder">
+                        <!-- <img *ngIf="isPatient" class="rounded-circle" src="assets/img/patients/patient.jpg" width="31" alt="Richard Wilson"> -->
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end" style="right:0;left:auto;">
+                    <div class="user-header">
+                        <div class="avatar avatar-sm">
+                            <img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image" class="avatar-img rounded-circle">
+                            <!-- <img *ngIf="isPatient" src="assets/img/patients/patient.jpg" alt="User Image" class="avatar-img rounded-circle"> -->
+                        </div>
+                        <div class="user-text">
+                            <h6>Darren Elder</h6>
+                            <p class="text-muted mb-0">Doctor</p>
+                            <!-- <p class="text-muted mb-0" *ngIf="isPatient">Patient</p> -->
+                        </div>
+                    </div>
+                    <a class="dropdown-item" [routerLink]="'/doctors/dashboard'"  style="cursor: pointer;">Dashboard</a>
+                    <a class="dropdown-item" [routerLink]="'/doctors/profile-settings'"  style="cursor: pointer;">Profile Settings</a>
+                    <!-- <a class="dropdown-item" *ngIf="isPatient"  [routerLink]="'/patients/dashboard'"  style="cursor: pointer;">Dashboard</a>
+                    <a class="dropdown-item" *ngIf="isPatient" [routerLink]="'/patients/profile-settings'"  style="cursor: pointer;">Profile Settings</a> -->
+                    <a class="dropdown-item" [routerLink]="'/login'" style="cursor: pointer;">Logout</a>
+                </div>
+            </li>
+        </ul>
+        
+    </nav>
+</header>

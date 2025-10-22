@@ -1,0 +1,303 @@
+<div class="page-wrapper">
+	<div class="content container-fluid">
+				
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row align-items-center">
+				<div class="col-md-12 d-flex justify-content-end">
+					<div class="doc-badge me-3">Doctors <span class="ms-1">48</span></div>
+					<div class="SortBy">
+						<div class="selectBoxes order-by" data-bs-toggle="dropdown">
+							<p class="mb-0"><img src="assets/admin/img/icon/sort.png" class="me-2" alt="icon"> Order by </p>
+							<span class="down-icon"><i class="feather-chevron-down"></i></span>
+						</div>						  
+						<div id="checkBox" class="dropdown-menu">
+							<form>
+								<p class="lab-title">Specialities</p>
+								<label class="custom_radio w-100">
+									<input type="radio" name="year">
+									<span class="checkmark"></span> Number of Appointment
+								</label>
+								<label class="custom_radio w-100">
+									<input type="radio" name="year">
+									<span class="checkmark"></span> Total Income
+								</label>
+								<label class="custom_radio w-100 mb-4">
+									<input type="radio" name="year">
+									<span class="checkmark"></span> Ratings
+								</label>
+								<p class="lab-title">Sort By</p>
+								<label class="custom_radio w-100">
+									<input type="radio" name="sort">
+									<span class="checkmark"></span> Ascending
+								</label>
+								<label class="custom_radio w-100 mb-4">
+									<input type="radio" name="sort">
+									<span class="checkmark"></span> Descending
+								</label>
+								<button type="submit" class="btn w-100 btn-primary">Apply</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /Page Header -->
+		
+		<!-- Doctor List -->
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="row align-items-center">
+							<div class="col">
+								<h5 class="card-title">Doctors</h5>
+							</div>
+							<div class="col-auto d-flex flex-wrap">
+								<div class="form-custom me-2">
+									<div id="tableSearch"  class="dataTables_wrapper"></div>
+								</div>
+								<div class="multipleSelection">
+									<div class="selectBox" data-bs-toggle="dropdown">
+										<p class="mb-0 me-2"><i class="feather-filter me-1"></i> Filter By Speciality </p>
+										<span class="down-icon"><i class="feather-chevron-down"></i></span>
+									</div>						  
+									<div id="checkBoxes" class="dropdown-menu">
+										<form>
+											<p class="lab-title">Specialities</p>
+											<div class="selectBox-cont">
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year" checked>
+													<span class="checkmark"></span> Urology
+												</label>
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year">
+													<span class="checkmark"></span> Neurology
+												</label>
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year">
+													<span class="checkmark"></span> Orthopedic
+												</label>
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year">
+													<span class="checkmark"></span> Cardiologist
+												</label>
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year">
+													<span class="checkmark"></span> Dentist
+												</label>
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year">
+													<span class="checkmark"></span> Gynacologist
+												</label>
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year">
+													<span class="checkmark"></span> Pediatrist
+												</label>
+												<label class="custom_check w-100">
+													<input type="checkbox" name="year">
+													<span class="checkmark"></span> Orthopedic
+												</label>
+											</div>
+											<button type="submit" class="btn w-100 btn-primary">Apply</button>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-body p-0">				
+						<div class="table-responsive">									
+							<table datatable [dtOptions]="dtOptions" class="datatable table table-borderless hover-table" id="data-table">
+								<thead class="thead-light">
+									<tr>
+									   <th>ID</th>
+									   <th>Doctor</th>
+									   <th>Specialities</th>
+									   <th>Member Since</th>
+									   <th>Number of Appointments</th>
+									   <th>Total Income</th>
+									   <th>Account Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>#4546</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos" data-bs-target="#doctorlist" data-bs-toggle="modal"><img class="avatar avatar-img" src="assets/admin/img/profiles/avatar-05.jpg" alt="User Image"></a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. Rayan</a>
+											</h2>
+										</td>
+										<td>Gyanoclogist</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>545</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status1">
+												<input type="checkbox" class="toggle-switch-input" id="status1">
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>#8774</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos"  data-bs-target="#doctorlist" data-bs-toggle="modal"><img class="avatar avatar-img" src="assets/admin/img/profiles/avatar-02.jpg" alt="User Image"></a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. Monroe</a>
+											</h2>
+										</td>
+										<td>Hair Specialities</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>654</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status2">
+												<input type="checkbox" class="toggle-switch-input" id="status2" checked>
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>#4546</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos" data-bs-target="#doctorlist" data-bs-toggle="modal"><img class="avatar avatar-img" src="assets/admin/img/profiles/avatar-07.jpg" alt="User Image"></a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. Lester</a>
+											</h2>
+										</td>
+										<td>Orthopaedics</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>787</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status3">
+												<input type="checkbox" class="toggle-switch-input" id="status3" checked>
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>#4546</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="empty-user" data-bs-target="#doctorlist" data-bs-toggle="modal"><i class="feather-user"></i> </a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. Clint</a>
+											</h2>
+										</td>
+										<td>Orthopaedics</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>454</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status4">
+												<input type="checkbox" class="toggle-switch-input" id="status4" checked>
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>#3456</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos" data-bs-target="#doctorlist" data-bs-toggle="modal"><img class="avatar avatar-img" src="assets/admin/img/profiles/avatar-12.jpg" alt="User Image"></a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. John</a>
+											</h2>
+										</td>
+										<td>Neurologist</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>545</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status5">
+												<input type="checkbox" class="toggle-switch-input" id="status5">
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>#4547</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos" data-bs-target="#doctorlist" data-bs-toggle="modal"><img class="avatar avatar-img" src="assets/admin/img/profiles/avatar-06.jpg" alt="User Image"></a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. Linda</a>
+											</h2>
+										</td>
+										<td>Gyanoclogist</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>545</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status6">
+												<input type="checkbox" class="toggle-switch-input" id="status6">
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>#8775</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos" data-bs-target="#doctorlist" data-bs-toggle="modal"><img class="avatar avatar-img" src="assets/admin/img/profiles/avatar-04.jpg" alt="User Image"></a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. Sofia Brient</a>
+											</h2>
+										</td>
+										<td>Hair Specialities</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>654</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status7">
+												<input type="checkbox" class="toggle-switch-input" id="status7" checked>
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+									<tr>
+										<td>#7364</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar-pos" data-bs-target="#doctorlist" data-bs-toggle="modal"><img class="avatar avatar-img" src="assets/admin/img/profiles/avatar-10.jpg" alt="User Image"></a>
+												<a data-bs-target="#doctorlist" data-bs-toggle="modal" class="user-name">Dr. Richard</a>
+											</h2>
+										</td>
+										<td>Cardiologist</td>
+										<td><span class="user-name">26 November 2022 </span><span class="d-block">12/20/2022</span></td>
+										<td>654</td>
+										<td>$300.00</td>
+										<td>
+											<label class="toggle-switch" for="status8">
+												<input type="checkbox" class="toggle-switch-input" id="status8" checked>
+												<span class="toggle-switch-label">
+													<span class="toggle-switch-indicator"></span>
+												</span>
+											</label>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				
+				<div id="tablepagination"  class="dataTables_wrapper"></div>
+			</div>
+		</div>
+		<!-- /Doctor List -->
+	</div>
+</div>

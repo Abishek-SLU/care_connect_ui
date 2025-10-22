@@ -1,0 +1,477 @@
+<div class="row">
+    <div class="col-lg-5 d-flex">
+        <div class="card flex-fill">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3 class="card-title">Account</h3>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="text-end">
+                            <a title="Edit Profile" class="btn btn-primary btn-sm" href="#patient_account_modal" data-bs-toggle="modal"><i class="fas fa-pencil"></i> Edit Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="profile-view-bottom">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="info-list">
+                                <div class="title">Bank Name</div>
+                                <div class="text" id="bank_name">Goldman Sachs</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="info-list">
+                                <div class="title">Branch Name</div>
+                                <div class="text" id="branch_name">Alpharetta</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="info-list">
+                                <div class="title">Account Number</div>
+                                <div class="text" id="account_no">4916 0606 4635 5064</div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="info-list">
+                                <div class="title">Account Name</div>
+                                <div class="text" id="account_name">Richard Wilson</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7 d-flex">
+        <div class="card flex-fill">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="account-card bg-success-light">
+                            <span>$90.48</span> Received
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="account-card bg-warning-light">
+                            <span>$0.00</span> Requested
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="account-card bg-purple-light">
+                            <span>$90.48</span> Balance
+                        </div>
+
+                    </div>
+                    
+                    <div class="col-md-12 text-center">
+                        <a href="#payment_request_modal" class="btn btn-primary request_btn" data-bs-toggle="modal">Refund Request</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-body pt-0">
+            
+                <!-- Tab Menu -->
+                <nav class="user-tabs mb-4">
+                    <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#pat_accounts" data-bs-toggle="tab">Accounts</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#pat_refundrequest" data-bs-toggle="tab">Doctor Request</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /Tab Menu -->
+                
+                <!-- Tab Content -->
+                <div class="tab-content pt-0">
+                    
+                    <!-- Accounts Tab -->
+                    <div id="pat_accounts" class="tab-pane fade show active">
+                        <div class="card card-table mb-0">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Doctor Name</th>
+                                                <th class="text-center">Amount</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>11 Nov 2019 <span class="d-block text-info">10.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Ruby Perrin <span>Dental</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$150</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3 Nov 2019 <span class="d-block text-info">11.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Darren Elder <span>Dental</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$200</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>1 Nov 2019 <span class="d-block text-info">1.00 PM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-03.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Deborah Angel <span>Cardiology</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$75</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>30 Oct 2019 <span class="d-block text-info">9.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-04.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Sofia Brient <span>Urology</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$100</td>
+                                                <td><span class="badge rounded-pill bg-warning-light">Pending</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>28 Oct 2019 <span class="d-block text-info">6.00 PM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-05.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Marvin Campbell <span>Ophthalmology</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$350</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>27 Oct 2019 <span class="d-block text-info">8.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-06.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Katharine Berthold <span>Orthopaedics</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$250</td>
+                                                <td><span class="badge rounded-pill bg-danger-light">Refunded</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Accounts Tab -->
+                    
+                    <!-- Refund Request Tab -->
+                    <div class="tab-pane fade" id="pat_refundrequest">
+                        <div class="card card-table mb-0">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover table-center mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Doctor Name</th>
+                                                <th class="text-center">Amount</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>11 Nov 2019 <span class="d-block text-info">10.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Ruby Perrin <span>Dental</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$150</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>3 Nov 2019 <span class="d-block text-info">11.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Darren Elder <span>Dental</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$200</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>1 Nov 2019 <span class="d-block text-info">1.00 PM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-03.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Deborah Angel <span>Cardiology</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$75</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>30 Oct 2019 <span class="d-block text-info">9.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-04.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Sofia Brient <span>Urology</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$100</td>
+                                                <td><span class="badge rounded-pill bg-warning-light">Pending</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>28 Oct 2019 <span class="d-block text-info">6.00 PM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-05.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Marvin Campbell <span>Ophthalmology</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$350</td>
+                                                <td><span class="badge rounded-pill bg-success-light">Paid</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>27 Oct 2019 <span class="d-block text-info">8.00 AM</span></td>
+                                                <td>
+                                                    <h2 class="table-avatar">
+                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
+                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-06.jpg" alt="User Image">
+                                                        </a>
+                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Katharine Berthold <span>Orthopaedics</span></a>
+                                                    </h2>
+                                                </td>
+                                                <td class="text-center">$250</td>
+                                                <td><span class="badge rounded-pill bg-danger-light">Refunded</span></td>
+                                                <td class="text-end">
+                                                    <div class="table-action">
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
+                                                            <i class="far fa-eye"></i> View
+                                                        </a>
+                                                        
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
+                                                            <i class="fas fa-check"></i> Accept
+                                                        </a>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
+                                                            <i class="fas fa-times"></i> Cancel
+                                                        </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /Refund Request Tab -->
+                        
+                </div>
+                <!-- Tab Content -->
+                
+            </div>
+        </div>
+    </div>
+</div>
