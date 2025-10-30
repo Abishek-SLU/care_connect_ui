@@ -1,0 +1,80 @@
+.req {
+    font-size: 12px;
+    color: red;
+}
+
+.content {
+    overflow-y: auto;
+}
+
+.form-focus .form-control {
+    height: 46px;
+    padding: 21px 12px 6px;
+}
+
+.input-box {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.submit-button {
+    position: absolute;
+    right: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.fa {
+    color: #757575;
+
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #fff;
+    opacity: 1;
+}
+
+.strong {
+    font-size: 9px;
+}
+
+label {
+    color: #717171;
+}
+
+.focus-label {
+    color: #717171;
+
+}
+
+.form-focus {
+    height: 50px;
+    position: relative;
+    color: #717171;
+
+}
+
+.form-floating>.form-control,
+.form-floating>.form-select {
+    height: calc(3.5rem + -5px);
+    line-height: 1.25;
+}
+
+.btn-primary {
+    font-size: 16px;
+}
