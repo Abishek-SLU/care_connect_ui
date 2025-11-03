@@ -1,0 +1,21 @@
+.dashboard-menu a {
+    text-decoration: none;
+    color: #757575;
+    transition: color 0.3s; 
+}
+
+.dashboard-menu a:hover,
+.dashboard-menu a.active {
+   color: #0dcaf0;
+}
+.div{
+    height:76vh!important;
+    overflow-y: auto;
+}
+.col-3 {
+    flex: 0 0 auto;
+    width: 20%;
+}
+h2{
+    font-size: 24px;
+}
