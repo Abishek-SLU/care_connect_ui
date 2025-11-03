@@ -1,0 +1,73 @@
+<div *ngIf="isDoctor">
+    <app-home-one-header></app-home-one-header>
+    <div class="breadcrumb-bar">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-12 col-12">
+                    <nav aria-label="breadcrumb" class="page-breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="home">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">{{base | titlecase}}</li>
+                        </ol>
+                    </nav>
+                    <h2 class="breadcrumb-title">{{page | titlecase}}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row mt-4">
+        <div class="col-3">
+            <div class="profile-sidebar">
+                <div class="widget-profile pro-widget-content">
+                    <div class="">
+                        <a href="javascript:void(0)" class="booking-doc-img">
+                        </a>
+                        <div class="profile-det-info">
+                            <h2>Master</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-widget">
+                    <nav class="dashboard-menu">
+                        <ul>
+                            <li [class.active]="name === 'country'">
+                                <a [routerLink]="'country'" routerLinkActive="active" (click)="navigate('country')">
+                                    <i class="fas fa-globe"></i>                                    <span>Country</span>
+                                </a>
+                            </li>
+                            <li [class.active]="name === 'state'">
+                                <a (click)="navigate('state')" [routerLink]="'state'"routerLinkActive="active">
+                                    <i class="fas fa-map"></i>
+                                    <span>State</span>
+                                </a>
+                            </li>
+                            <li [class.active]="name === 'district'">
+                                <a (click)="navigate('district')" [routerLink]="'district'"routerLinkActive="active">
+                                    <i class="fas fa-map-pin"></i>                                    <span>District</span>
+                                </a>
+                            </li>
+                            <li [class.active]="name === 'bloodGroup'">
+                                <a (click)="navigate('bloodGroup')" [routerLink]="'bloodGroup'"routerLinkActive="active">
+                                    <i class="fas fa-notes-medical"></i>
+                                                                                                            <span>BloodGroup</span>
+                                </a>
+                            </li>
+                          
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-9">
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div>
+<div *ngIf="isDoctor">
+<app-home-one-footer></app-home-one-footer>
+</div>

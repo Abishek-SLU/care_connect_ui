@@ -1,0 +1,40 @@
+.div{
+    height:76vh!important;
+    overflow-y: auto;
+}
+.scroll {
+    height: 600px;
+    position: inherit;
+    overflow-y: scroll;
+}
+
+.scroll::-webkit-scrollbar {
+    display: none;
+}
+.modal-header {
+    padding: 0.4rem 1rem;
+  }
+  .modal-footer {
+    border-top: none !important;
+    position: static;
+    padding: 0.2rem !important;
+  }
+  .modal-body{
+  padding: 1rem 1rem !important;
+  }
+  .modal-title {
+    font-size: 18px;
+  }
+  .custom-modal .modal-dialog {
+    max-width: 449px; 
+  }
+/* .form-control {
+    border: 1px solid #C4C4C4;
+    color: rgb(148, 149, 149);
+    font-size: 15px;
+    min-height: 46px;
+    padding: 6px 15px;
+} */
+.card-title{
+  font-size: 20px;
+}
