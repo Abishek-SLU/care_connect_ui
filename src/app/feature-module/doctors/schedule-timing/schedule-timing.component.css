@@ -1,0 +1,93 @@
+.active-date {
+    background: #ff4877;
+    border: 1px solid #ff4877 !important;
+    color: #fff;
+}
+
+.row {
+    justify-content: center;
+}
+
+.form-row {
+    align-items: baseline;
+}
+
+.add-more a {
+    margin-left: 10px;
+}
+
+.show {
+    display: block !important;
+    /* Use !important to override Bootstrap's default styles */
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+.edit-link:hover {
+    cursor: pointer;
+}
+
+.add-more {
+    margin-left: 13px;
+}
+
+.box {
+    width: 500px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.box>* {
+    flex: 0 0 33.3333%;
+}
+
+.am-pm-time {
+    font-size: 14px;
+    margin-top: 8px;
+    color: #555;
+    /* Customize the color as needed */
+}
+
+.date {
+    color: #272b41;
+    font-weight: 450;
+    font-size: 15px;
+    margin-bottom: 0;
+    line-height: 1.5;
+    font-family: "Poppins", sans-serif;
+    margin-left: 13px;
+}
+
+.btn.btn-danger.trash {
+    align-items: center;
+    height: 35px;
+    width: 35PX;
+}
+
+.cursorr {
+    cursor: pointer;
+}
+
+.trashicon {
+    font-size: 13px;
+}
+
+.submit-btn {
+    padding: 9px 15px;
+    font-weight: 500;
+}
+
+.btn-primary {
+    font-size: 14px;
+}
+
+label {
+    font-weight: 500;
+}
+
+.inactive-slot {
+    background-color: #ffcccc;
+    /* Set the desired background color for inactive slots */
+    /* Add any other styles as needed */
+    color: #ff4877;
+}
