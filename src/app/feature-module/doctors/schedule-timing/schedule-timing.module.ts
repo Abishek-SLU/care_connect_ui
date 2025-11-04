@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ScheduleTimingRoutingModule } from './schedule-timing-routing.module';
 import { ScheduleTimingComponent } from './schedule-timing.component';
 import { SharedModule } from 'src/app/shared/module/shared.module';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,9 @@ import { SharedModule } from 'src/app/shared/module/shared.module';
   imports: [
     CommonModule,
     ScheduleTimingRoutingModule,
-    SharedModule
+    SharedModule,
+    NgbModule,
+    // NgxSpinnerModule
   ]
 })
 export class ScheduleTimingModule { }
