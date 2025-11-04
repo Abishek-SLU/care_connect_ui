@@ -1,0 +1,14 @@
+
+.head{
+    align-items: center;
+    display: flex;
+}
+.view{
+    float: right;
+}
+.date{
+    float: left;
+}
+.textarea{
+    height: 25%;
+}
