@@ -109,6 +109,13 @@ const routes: Routes = [
             (m) => m.ChangePasswordModule
           ),
       },
+      {
+        path: 'common',
+        loadChildren: () =>
+          import('../master/common/common.module').then(
+            (m) => m.CommonModule
+          ),
+      },
     ],
   },
 ];
@@ -117,4 +124,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class DoctorsRoutingModule {}
+export class DoctorsRoutingModule { }

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from 'src/app/core/service/service.index';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { OtpRegistrationService } from 'src/app/core/service/otpregistration/otp-registration.service';
 import { PatientService } from 'src/app/core/service/patients/new-patient/patient.service';
 
 @Component({
@@ -46,7 +45,6 @@ export class RegisterComponent implements OnInit {
     private toastr: ToastrService,
     public commonService: CommonService,
     public router: Router,
-    private service: OtpRegistrationService,
     private patientService: PatientService
   ) { }
 
@@ -86,52 +84,9 @@ export class RegisterComponent implements OnInit {
   }
 
 
-  onMobileSubmit() {
-    // Assuming the mobile number is valid
-    if (this.patientRegisterForm.value.name == null || this.patientRegisterForm.value.name == "") {
-      this.toastr.error("Name is invalid");
-      return;
-    } else {
-      this.service.registerOtp(this.patientRegisterForm.value).subscribe(res => {
-        // console.log(res);
-        const otpMessage = res.data.message;
-        const otpNo = res.data.otpNo;
-        if (otpMessage) {
-          this.showOTPInput = true;
-          this.isReadOnly = true;
-          this.otpNumber = otpNo;
-          this.isMobileNumberVerified = true;
-        }
-        console.log(otpMessage);
-        this.toastr.success(res.data.message);
-        this.isMobileNumberVerified = true;
-      }, err => {
-        this.toastr.error(err.error.error.reason);
-      })
-      this.validation = (this.validation = true) ? (this.validation = false) : (this.validation = true);
-    }
-  }
+ 
 
-  verifyOTP() {
-    this.service.verifyOtp(this.patientRegisterForm.value).subscribe(res => {
-      res;
-      // console.log(res);
-      this.showChangePassword = true;
-      this.toastr.success(res.data);
-      this.submitRead = false;
-      this.otpSubmit = false
-      this.otpReadOnly = true;
-      this.isOTPVerified = true;
-      // this.toastr.error("sucess");
-
-    }, err => {
-      this.toastr.error(err.error.error.reason);
-      this.otpReadOnly = false;
-    })
-    this.validation = (this.validation = true) ? (this.validation = false) : (this.validation = true);
-
-  }
-
+ 
   onMobileNumberChange(event: any) {
     const input = event.target;
     const value = input.value.replace(/\D/g, '').substring(0, 10);

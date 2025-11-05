@@ -1,104 +1,239 @@
+<!-- <div>
+    <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"
+  >
+    <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
+  </ngx-spinner>
+</div> -->
 
-                
-    <!-- Profile Sidebar -->
-    <div class="profile-sidebar">
-        <div class="widget-profile pro-widget-content">
-            <div class="profile-info-widget">
-                <a href="javascript:void(0)" class="booking-doc-img">
-                    <img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                </a>
-                <div class="profile-det-info">
-                    <h3>Dr. Darren Elder</h3>
-                    
-                    <div class="patient-details">
-                        <h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
-                    </div>
-                </div>
-            </div>
+<!-- Profile Sidebar -->
+<div class="profile-sidebar side">
+  <div class="widget-profile pro-widget-content">
+    <div class="profile-info-widget">
+      <a>
+        <img
+          *ngIf="image?.patientData?.data"
+          [src]="image?.patientData?.data"
+          class="img-fluid rounded-circle"
+          alt="Image"
+        />
+        <img
+          *ngIf="!image?.patientData"
+          class="img-fluid rounded-circle"
+          src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+        />
+      </a>
+      <!-- <a>
+				<img *ngIf="image" class="img-fluid"
+					src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg">
+				<img *ngIf="image" [src]="image.patientData?.data"
+					class="img-fluid rounded-circle" alt="Doctor Image">
+			</a> -->
+      <div class="profile-det-info mt-2">
+        <h3>{{ values?.doctorName }}</h3>
+        <div class="patient-details text-muted">
+          <p
+            class="mb-0"
+            *ngIf="
+              values?.education &&
+              values?.education.length &&
+              values?.education[0] !== ''
+            "
+          >
+            <i class="fas fa-user-graduate"></i>
+            &nbsp;{{ values?.education }}
+          </p>
+
+          <p
+            *ngIf="
+              values?.specializationName &&
+              values?.specializationName.length &&
+              values?.specializationName[0] !== ''
+            "
+          >
+            <i class="fas fa-stethoscope"></i> &nbsp;{{
+              values?.specializationName
+            }}
+          </p>
         </div>
-        <div class="dashboard-widget">
-            <nav class="dashboard-menu">
-                <ul>
-                    <li [class.active]="name === 'Dashboard' || page === 'dashboard'"  (click)="navigate('Dashboard')">
-                        <a  [routerLink]="'dashboard'" >
-                            <i class="fas fa-columns"></i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li [class.active]="name === 'Appointments' || page === 'appointment'" (click)="navigate('Appointments')"  >
-                        <a [routerLink]="'appointments'">
-                            <i class="fas fa-calendar-check"></i>
-                            <span>Appointments</span>
-                        </a>
-                    </li>
-                    <li  [class.active]="name === 'My Patients' || page === 'patients'"  (click)="navigate('My Patients')" >
-                        <a [routerLink]="'patients-list'">
-                            <i class="fas fa-user-injured"></i>
-                            <span>My Patients</span>
-                        </a>
-                    </li>
-                    <li  [class.active]="name === 'Schedule Timings' || page === 'scheduletiming'" (click)="navigate('Schedule Timings')" >
-                        <a  [routerLink]="'schedule-timing'">
-                            <i class="fas fa-hourglass-start"></i>
-                            <span>Schedule Timings</span>
-                        </a>
-                    </li>
-                    <li [class.active]="name === 'Available Timings' || page === 'available-timings'" (click)="navigate('Available Timings')">
-                        <a [routerLink]="'available-timings'">
-                            <i class="fas fa-clock"></i>
-                            <span>Available Timings</span>
-                        </a>
-                    </li>
-                    <li  [class.active]="name === 'Invoices' || page === 'invoice'" (click)="navigate('Invoices')">
-                        <a   [routerLink]="'invoice'">
-                            <i class="fas fa-file-invoice"></i>
-                            <span>Invoices</span>
-                        </a>
-                    </li>
-                    <li  [class.active]="name === 'Accounts' || page === 'accounts'" (click)="navigate('Accounts')">
-                        <a   [routerLink]="'accounts'">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                            <span>Accounts</span>
-                        </a>
-                    </li>
-                    <li  [class.active]="name === 'Reviews'  || page === 'reviews'" (click)="navigate('Reviews')">
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-widget">
+    <nav class="dashboard-menu">
+      <ul>
+        <li [class.active]="name === 'Dashboard' || page === 'dashboard'">
+          <a
+            [routerLink]="'dashboard'"
+            (click)="navigate('Dashboard')"
+            routerLinkActive="active"
+          >
+            <i class="fas fa-columns"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'Appointments' || page === 'appointment'">
+          <a
+            [routerLink]="'appointments'"
+            (click)="navigate('Appointments')"
+            routerLinkActive="active"
+          >
+            <i class="fas fa-calendar-check"></i>
+            <span>Appointments</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'My Patients' || page === 'patientslist'">
+          <a
+            [routerLink]="'patientslist'"
+            (click)="navigate('My Patients')"
+            routerLinkActive="active"
+          >
+            <i class="fas fa-user-injured"></i>
+            <span>My Patients</span>
+          </a>
+        </li>
+        <li
+          [class.active]="
+            name === 'Schedule Timings' || page === 'scheduletiming'
+          "
+          (click)="navigate('Schedule Timings')"
+        >
+          <a [routerLink]="'scheduletiming'" routerLinkActive="active">
+            <i class="fas fa-hourglass-start"></i>
+            <span>Schedule Timings</span>
+          </a>
+        </li>
+        <li
+          [class.active]="
+            name === 'Manage Schedule' || page === 'manageschedule'
+          "
+          (click)="navigate('Manage Schedule')"
+        >
+          <a [routerLink]="'manageschedule'" routerLinkActive="active">
+            <i class="fas fa-clipboard-list"></i>
+            <span>Manage Schedule</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'Invoices' || page === 'invoice'">
+          <a
+            [routerLink]="'invoice'"
+            routerLinkActive="active"
+            (click)="navigate('Invoices')"
+          >
+            <i class="fas fa-file-invoice"></i>
+            <span>Invoices</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'Accounts' || page === 'accounts'">
+          <a
+            [routerLink]="'accounts'"
+            routerLinkActive="active"
+            (click)="navigate('Accounts')"
+          >
+            <i class="fas fa-file-invoice-dollar"></i>
+            <span>Accounts</span>
+          </a>
+        </li>
+        <!-- <li  [class.active]="name === 'Reviews'  || page === 'reviews'" (click)="navigate('Reviews')">
                         <a   [routerLink]="'reviews'">
                             <i class="fas fa-star"></i>
                             <span>Reviews</span>
                         </a>
-                    </li>
-                    <li  [class.active]="name === 'Message' || page === 'message'" (click)="navigate('Message')">
+                    </li> -->
+        <!-- <li  [class.active]="name === 'Message' || page === 'message'" (click)="navigate('Message')">
                         <a   [routerLink]="'message'">
                             <i class="fas fa-comments"></i>
                             <span>Message</span>
                             <small class="unread-msg">23</small>
                         </a>
-                    </li>
-                    <li  [class.active]="name === 'Profile Settings' || page === 'settings'" (click)="navigate('Profile Settings')" >
-                        <a  [routerLink]="'profile-settings'">
-                            <i class="fas fa-user-cog"></i>
-                            <span>Profile Settings</span>
-                        </a>
-                    </li>
-                    <li [class.active]="name === 'Social Media'" (click)="navigate('Social Media')">
+                    </li> -->
+        <li
+          [class.active]="
+            name === 'Profile Setting' || page === 'profilesetting'
+          "
+        >
+          <a
+            [routerLink]="'profilesetting'"
+            (click)="navigate('Profile Setting')"
+            routerLinkActive="active"
+          >
+            <i class="fas fa-user-cog"></i>
+            <span>Profile Settings</span>
+          </a>
+        </li>
+        <!-- <li [class.active]="name === 'Social Media'" (click)="navigate('Social Media')">
                         <a [routerLink]="'social-media'">
                             <i class="fas fa-share-alt"></i>
                             <span>Social Media</span>
                         </a>
-                    </li>
-                    <li [class.active]="name === 'Change Password'" (click)="navigate('Change Password')">
-                        <a [routerLink]="'change-password'">
-                            <i class="fas fa-lock"></i>
-                            <span>Change Password</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a (click)="logout()" style="cursor: pointer;">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                    </li> -->
+        <li [class.active]="name === 'Change Password'">
+          <a
+            [routerLink]="'changepassword'"
+            (click)="navigate('Change Password')"
+            routerLinkActive="active"
+          >
+            <i class="fas fa-lock"></i>
+            <span>Change Password</span>
+          </a>
+        </li>
+        <li [class.active]="name === 'Master'">
+          <a
+            (click)="navigate('Master')"
+            [routerLink]="'/common/country'"
+            routerLinkActive="active"
+          >
+            <i class="fas fa-comments"></i>
+            <span>Master</span>
+          </a>
+        </li>
+        <li>
+          <a
+            (click)="logout(modal)"
+            style="cursor: pointer"
+            routerLinkActive="active"
+          >
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+<ng-template #modal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Logout</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    Are you sure to Logout?
+    <div style="margin-top: 25px" class="text-end">
+      <button
+        type="button"
+        class="btn btn-success btn-sm mx-2"
+        id="btn-yes"
+        (click)="clear()"
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm mx-2"
+        id="btn-no"
+        (click)="modal.dismiss()"
+      >
+        No
+      </button>
     </div>
+  </div>
+</ng-template>

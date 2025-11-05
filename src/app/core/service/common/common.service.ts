@@ -62,6 +62,7 @@ export class CommonService {
   messages:any = '';
   SERVER_URL: string = 'http://localhost:8080/api/';
   public message: BehaviorSubject<String> = new BehaviorSubject<String>('');
+  functionsToCall$: any;
   constructor(public http: HttpClient,private router :Router) {
     this.message = new BehaviorSubject(this.messages);
   }

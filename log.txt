@@ -1,0 +1,14 @@
+2413d18 | poojabhusare-slu | 2025-11-04 | Merge pull request #7 from SLUTeam/feature/pooja
+5852e14 | poojabhusare-slu | 2025-11-04 | Adding Schedule timing assign page for Doctor
+6f6c2d4 | Takudzwa13 | 2025-11-04 | Merge pull request #6 from SLUTeam/features/Takudzwa
+b45300a | Takudzwa13 | 2025-11-04 | Doctors schedule management page UI
+36f2953 | Abishek A | 2025-11-03 | Merge pull request #5 from SLUTeam/features/Darshil
+fa880d0 | Darshil Prajapati | 2025-11-03 | Creation of master pages and service layers
+206f3b5 | Darshil Prajapati | 2025-11-03 | Merge pull request #4 from SLUTeam/features/development
+42b2215 | Abishek A | 2025-10-30 | Merge pull request #3 from SLUTeam/feature/pooja
+aae4a3e | poojabhusare-slu | 2025-10-30 | Register page API integrations and patients service creation
+72e2574 | Abishek A | 2025-10-30 | Merge pull request #2 from SLUTeam/features/Takudzwa
+1d87fb1 | Takudzwa13 | 2025-10-30 | Doctor dashboard work
+6ef244b | Abishek A | 2025-10-21 | Merge pull request #1 from SLUTeam/features/Abi
+da9dafb | abishek3358 | 2025-10-21 | New repo created and Angluar setup pushed
+78fe5cb | Abishek A | 2025-10-21 | Initial commit

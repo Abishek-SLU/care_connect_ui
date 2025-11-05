@@ -27,6 +27,7 @@ import { TagInputModule } from 'ngx-chips';
     NgxDropzoneModule,
     DataTablesModule,
     TagInputModule,
+    HttpClientModule,
     ToastrModule.forRoot(),
     HttpClientInMemoryWebApiModule.forRoot(DataService)
   ],
@@ -45,4 +46,4 @@ import { TagInputModule } from 'ngx-chips';
   ],
   providers: [],
 })
-export class SharedModule {}
+export class SharedModule { }

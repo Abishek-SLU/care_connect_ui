@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
     <ngx-spinner
     bdColor="rgba(51,51,51,0.8)"
     size="medium"
@@ -7,304 +7,419 @@
   >
     <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
   </ngx-spinner>
-</div>
+</div> -->
 <div class="row">
-    <div class="col-md-12">
-        <div class="card dash-card">
-            <div class="card-body">
-
-                <div class="row">
-                    <div class="col-md-12 col-lg-4">
-                        <div class="dash-widget dct-border-rht">
-                            <div class="circle-bar circle-bar1">
-                                <div class="circle-graph1"
-                                    [attr.data-percent]="calculatePercentage(counts?.totalPatients)">
-                                    <img src="assets/img/icon-01.png" class="img-fluid" alt="patient">
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-                                <h6>Total Patient</h6>
-                                <h3>{{counts?.totalPatients}}</h3>
-                                <p class="text-muted">Till Today</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 col-lg-4">
-                        <div class="dash-widget dct-border-rht">
-                            <div class="circle-bar circle-bar2">
-                                <div class="circle-graph2"
-                                    [attr.data-percent]="calculatePercentage2(counts?.todayPatients)">
-                                    <img src="assets/img/icon-02.png" class="img-fluid" alt="Patient">
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-                                <h6>Today Patient</h6>
-                                <h3>{{counts?.todayPatients}}</h3>
-                                <p class="text-muted">{{currentDate | date:'dd/MM/yyyy'}}</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 col-lg-4">
-                        <div class="dash-widget">
-                            <div class="circle-bar circle-bar3">
-                                <div class="circle-graph3"
-                                    [attr.data-percent]="calculatePercentage3(counts?.todayAppointments)">
-                                    <img src="assets/img/icon-03.png" class="img-fluid" alt="Patient">
-                                </div>
-                            </div>
-                            <div class="dash-widget-info">
-                                <h6> Today Appoinments</h6>
-                                <h3>{{counts?.todayAppointments}}</h3>
-                                <p class="text-muted">{{currentDate | date:'dd/MM/yyyy'}}</p>
-                            </div>
-                        </div>
-                    </div>
+  <div class="col-md-12">
+    <div class="card dash-card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 col-lg-4">
+            <div class="dash-widget dct-border-rht">
+              <div class="circle-bar circle-bar1">
+                <div
+                  class="circle-graph1"
+                  [attr.data-percent]="
+                    calculatePercentage(counts?.totalPatients)
+                  "
+                >
+                  <img
+                    src="assets/img/icon-01.png"
+                    class="img-fluid"
+                    alt="patient"
+                  />
                 </div>
-
+              </div>
+              <div class="dash-widget-info">
+                <h6>Total Patient</h6>
+                <h3>{{ counts?.totalPatients }}</h3>
+                <p class="text-muted">Till Today</p>
+              </div>
             </div>
+          </div>
+
+          <div class="col-md-12 col-lg-4">
+            <div class="dash-widget dct-border-rht">
+              <div class="circle-bar circle-bar2">
+                <div
+                  class="circle-graph2"
+                  [attr.data-percent]="
+                    calculatePercentage2(counts?.todayPatients)
+                  "
+                >
+                  <img
+                    src="assets/img/icon-02.png"
+                    class="img-fluid"
+                    alt="Patient"
+                  />
+                </div>
+              </div>
+              <div class="dash-widget-info">
+                <h6>Today Patient</h6>
+                <h3>{{ counts?.todayPatients }}</h3>
+                <p class="text-muted">
+                  {{ currentDate | date : "dd/MM/yyyy" }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12 col-lg-4">
+            <div class="dash-widget">
+              <div class="circle-bar circle-bar3">
+                <div
+                  class="circle-graph3"
+                  [attr.data-percent]="
+                    calculatePercentage3(counts?.todayAppointments)
+                  "
+                >
+                  <img
+                    src="assets/img/icon-03.png"
+                    class="img-fluid"
+                    alt="Patient"
+                  />
+                </div>
+              </div>
+              <div class="dash-widget-info">
+                <h6>Today Appoinments</h6>
+                <h3>{{ counts?.todayAppointments }}</h3>
+                <p class="text-muted">
+                  {{ currentDate | date : "dd/MM/yyyy" }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="row">
-    <div class="col-md-12">
-        <h4 class="mb-4">Patient Appointments</h4>
-        <div class="appointment-tab">
+  <div class="col-md-12">
+    <h4 class="mb-4">Patient Appointments</h4>
+    <div class="appointment-tab">
+      <!-- Appointment Tab -->
+      <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+        <li class="nav-item">
+          <a
+            class="nav-link show active"
+            href="#today"
+            [ngClass]="{ active: activeTab === 'today' }"
+            (click)="result('today')"
+            data-bs-toggle="tab"
+            >Today</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#upcoming"
+            [ngClass]="{ active: activeTab === 'upcomming' }"
+            (click)="search('upcoming')"
+            data-bs-toggle="tab"
+            >Upcoming</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#cancel"
+            [ngClass]="{ active: activeTab === 'cancel' }"
+            (click)="Cancelled('cancel')"
+            data-bs-toggle="tab"
+            >Cancelled</a
+          >
+        </li>
+      </ul>
+      <!-- /Appointment Tab -->
 
-            <!-- Appointment Tab -->
-            <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
-                <li class="nav-item">
-                    <a class="nav-link show active" href="#today" [ngClass]="{ 'active':activeTab==='today'}"
-                        (click)="result('today')" data-bs-toggle="tab">Today</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#upcoming" [ngClass]="{ 'active':activeTab==='upcomming'}"
-                        (click)="search('upcoming')" data-bs-toggle="tab">Upcoming</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#cancel" [ngClass]="{ 'active':activeTab==='cancel'}"
-                        (click)="Cancelled('cancel')" data-bs-toggle="tab">Cancelled</a>
-                </li>
-
-            </ul>
-            <!-- /Appointment Tab -->
-
-            <div class="tab-content">
-
-                <!-- Upcoming Appointment Tab -->
-                <div class="tab-pane" id="upcoming" [ngClass]="{ 'active':activeTab==='upcomming'}">
-                    <div class="card card-table mb-0">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Patient Name</th>
-                                            <th>Appointment Date</th>
-                                            <th>Purpose</th>
-                                            <th>Type</th>
-                                            <th class="text-center">Paid Amount</th>
-                                            <th class="text-center"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let value of Appointment;let i=index">
-                                            <td>
-                                                <h2 class="table-avatar d-flex">
-                                                    <!-- <a>
+      <div class="tab-content">
+        <!-- Upcoming Appointment Tab -->
+        <div
+          class="tab-pane"
+          id="upcoming"
+          [ngClass]="{ active: activeTab === 'upcomming' }"
+        >
+          <div class="card card-table mb-0">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-center mb-0">
+                  <thead>
+                    <tr>
+                      <th>Patient Name</th>
+                      <th>Appointment Date</th>
+                      <th>Purpose</th>
+                      <th>Type</th>
+                      <th class="text-center">Paid Amount</th>
+                      <th class="text-center"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let value of Appointment; let i = index">
+                      <td>
+                        <h2 class="table-avatar d-flex">
+                          <!-- <a>
                                                         <img [src]="value?.patientImage" class="img-fluid" alt="Darren">
                                                     </a> -->
-                                                    <a>
-                                                        <img *ngIf="value.doctorData" [src]="value.doctorData?.patientImage"
-                                                        class="img-fluid rounded-circle" alt="Image">
-                                                        <img *ngIf="!value.doctorData" class="img-fluid" src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg">
-                                                    </a>
-                                                
-                                                    <p class="patient  mx-2 mt-3"
-                                                       >{{value?.patientName}}<span>{{value?.key}}</span></p>
-                                                </h2>
-                                            </td>
-                                            <td>{{value?.appointmentDate}}<span
-                                                    class="d-block text-info">{{value?.appointmentTime}}</span></td>
-                                            <td>{{value?.purpose}}</td>
-                                            <td>{{value?.type}}</td>
-                                            <td class="text-center">{{value?.paidAmount}}</td>
-                              
-                                            <!-- Accept Button -->
-                                            <td class="text-end">
-                                                <div class="table-action">
-                                                    <!-- <a *ngIf="value.status == 'PENDING'"
+                          <a>
+                            <img
+                              *ngIf="value.doctorData"
+                              [src]="value.doctorData?.patientImage"
+                              class="img-fluid rounded-circle"
+                              alt="Image"
+                            />
+                            <img
+                              *ngIf="!value.doctorData"
+                              class="img-fluid"
+                              src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                            />
+                          </a>
+
+                          <p class="patient mx-2 mt-3">
+                            {{ value?.patientName
+                            }}<span>{{ value?.key }}</span>
+                          </p>
+                        </h2>
+                      </td>
+                      <td>
+                        {{ value?.appointmentDate
+                        }}<span class="d-block text-info">{{
+                          value?.appointmentTime
+                        }}</span>
+                      </td>
+                      <td>{{ value?.purpose }}</td>
+                      <td>{{ value?.type }}</td>
+                      <td class="text-center">{{ value?.paidAmount }}</td>
+
+                      <!-- Accept Button -->
+                      <td class="text-end">
+                        <div class="table-action">
+                          <!-- <a *ngIf="value.status == 'PENDING'"
                                                         class="btn btn-sm bg-success-light"
                                                         (click)="accept(value.appointmentId)">
                                                         <i class="fas fa-check"></i>Accept</a>
                                                     <a *ngIf="value.status == 'ACCEPT'"
                                                         class="btn btn-sm accepted bg-success-light">
                                                         <i class="fas fa-check"></i>Accepted</a> -->
-                                                    <a *ngIf="value.status == 'ACCEPT'"
-                                                        class="btn btn-sm bg-danger-light"
-                                                        (click)="modal(delete,value.appointmentId)">
-                                                        <i class="fas fa-times"></i>Cancel
-                                                    </a>
+                          <a
+                            *ngIf="value.status == 'ACCEPT'"
+                            class="btn btn-sm bg-danger-light"
+                            (click)="modal(delete, value.appointmentId)"
+                          >
+                            <i class="fas fa-times"></i>Cancel
+                          </a>
+                        </div>
+                      </td>
 
-                                                </div>
-                                            </td>
-
-                                            <!-- </div>
+                      <!-- </div>
                                             </td> -->
 
-                                            <!-- </tr> -->
+                      <!-- </tr> -->
+                    </tr>
 
-                                        <tr *ngIf="!Appointment?.length">
-                                            <td class="text-center" colspan="7">
-                                                <i class='fas fa-search' style='font-size:36px; opacity: 70%;'></i>
-                                                <h5 class="mt-4">No data found</h5>
-                                            </td>
+                    <tr *ngIf="!Appointment?.length">
+                      <td class="text-center" colspan="7">
+                        <i
+                          class="fas fa-search"
+                          style="font-size: 36px; opacity: 70%"
+                        ></i>
+                        <h5 class="mt-4">No data found</h5>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /Upcoming Appointment Tab -->
 
-                                        </tr>
+        <!-- Today Appointment Tab -->
+        <div
+          class="tab-pane"
+          id="today"
+          [ngClass]="{ active: activeTab === 'today' }"
+        >
+          <div class="card card-table mb-0">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-center mb-0">
+                  <thead>
+                    <tr>
+                      <th>Patient Name</th>
+                      <th>Appointment Date</th>
+                      <th>Purpose</th>
+                      <th>Type</th>
+                      <th class="text-center">Paid Amount</th>
+                      <th class="text-center"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let data of todayApp; let i = index">
+                      <td>
+                        <h2 class="table-avatar d-flex">
+                          <a>
+                            <img
+                              *ngIf="data.doctorData"
+                              [src]="data.doctorData?.patientImage"
+                              class="img-fluid rounded-circle"
+                              alt="Image"
+                            />
+                            <img
+                              *ngIf="!data.doctorData"
+                              class="img-fluid"
+                              src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                            />
+                          </a>
 
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /Upcoming Appointment Tab -->
-
-                <!-- Today Appointment Tab -->
-                <div class="tab-pane" id="today" [ngClass]="{ 'active':activeTab==='today'}">
-                    <div class="card card-table mb-0">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Patient Name</th>
-                                            <th>Appointment Date</th>
-                                            <th>Purpose</th>
-                                            <th>Type</th>
-                                            <th class="text-center">Paid Amount</th>
-                                            <th class="text-center"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let data of todayApp;let i = index">
-                                            <td>
-                                                <h2 class="table-avatar d-flex">
-                                                    <a>
-                                                        <img *ngIf="data.doctorData" [src]="data.doctorData?.patientImage"
-                                                        class="img-fluid rounded-circle" alt="Image">
-                                                        <img *ngIf="!data.doctorData" class="img-fluid" src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg">
-                                                    </a>
-                                                  
-                                                    <p class="patient mx-2 mt-3" >
-                                                        {{data?.patientName}}<span>{{data?.key}}</span></p>
-                                                </h2>
-                                            </td>
-                                            <td>{{data?.appointmentDate}}<span
-                                                class="d-block text-info">{{data?.appointmentTime}}</span></td>
-                                            <td>{{data?.purpose}}</td>
-                                            <td>{{data?.type}}</td>
-                                            <td class="text-center">{{data?.paidAmount}}</td>
-                                            <td class="text-end">
-                                                <div class="table-action">
-                                                    <!-- <a *ngIf="data.status == 'PENDING'"
+                          <p class="patient mx-2 mt-3">
+                            {{ data?.patientName }}<span>{{ data?.key }}</span>
+                          </p>
+                        </h2>
+                      </td>
+                      <td>
+                        {{ data?.appointmentDate
+                        }}<span class="d-block text-info">{{
+                          data?.appointmentTime
+                        }}</span>
+                      </td>
+                      <td>{{ data?.purpose }}</td>
+                      <td>{{ data?.type }}</td>
+                      <td class="text-center">{{ data?.paidAmount }}</td>
+                      <td class="text-end">
+                        <div class="table-action">
+                          <!-- <a *ngIf="data.status == 'PENDING'"
                                                         class="btn btn-sm bg-success-light"
                                                         (click)="accept(data.appointmentId)">
                                                         <i class="fas fa-check"></i>Accept</a>
                                                     <a *ngIf="data.status == 'ACCEPT'"
                                                         class="btn btn-sm accepted bg-success-light">
                                                         <i class="fas fa-check"></i>Accepted</a> -->
-                                                    <a *ngIf="data.status == 'ACCEPT'"
-                                                        class="btn btn-sm bg-danger-light"
-                                                        (click)="modal(delete,data.appointmentId)">
-                                                        <i class="fas fa-times"></i>Cancel
-                                                    </a>
-
-                                                </div>
-                                            </td>
-
-                                        </tr>
-                                        <tr *ngIf="!todayApp?.length">
-                                            <td class="text-center" colspan="7">
-                                                <i class='fas fa-search' style='font-size:36px; opacity: 70%;'></i>
-                                                <h5 class="mt-4">No data found</h5>
-                                            </td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                          <a
+                            *ngIf="data.status == 'ACCEPT'"
+                            class="btn btn-sm bg-danger-light"
+                            (click)="modal(delete, data.appointmentId)"
+                          >
+                            <i class="fas fa-times"></i>Cancel
+                          </a>
                         </div>
-                    </div>
-                </div>
-                <!-- /cancel Appointment Tab -->
-                <div class="tab-pane" id="cancel" [ngClass]="{ 'active':activeTab==='cancel'}">
-                    <div class="card card-table mb-0">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-center mb-0">
-                                    <thead>
-                                        <tr>
-                                            <th>Patient Name</th>
-                                            <th>Appointment Date</th>
-                                            <th>Purpose</th>
-                                            <th>Type</th>
-                                            <th class="text-center">Paid Amount</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr *ngFor="let value of cancelApp;let i = index" >
-                                            <td>
-                                                <h2 class="d-flex">                                                   
-                                                    <a>
-                                                        <img *ngIf="value.doctorData" [src]="value.doctorData?.patientImage"
-                                                            class="img-fluid rounded-circle" alt="Image">
-                                                            <img *ngIf="!value.doctorData" class="img-fluid rounded-circle" src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg">
-                                                    </a>
-                                                    <p class=" mx-2 mt-3">
-                                                        {{value.patientName}}<span>{{value.key}}</span></p>
-                                                </h2>
-                                            </td>
-                                            <td>{{value?.appointmentDate}}<span
-                                                class="d-block text-info">{{value?.appointmentTime}}</span></td>
-                                            <td>{{value.purpose}}</td>
-                                            <td>{{value.type}}</td>
-                                            <td class="text-center">{{value.paidAmount}}</td>
-
-                                        </tr>
-                                        <tr *ngIf="cancelApp?.length===0">
-                                            <td class="text-center" colspan="7">
-                                                <i class='fas fa-search' style='font-size:36px; opacity: 70%;'></i>
-                                                <h5 class="mt-4">No data found</h5>
-                                            </td>
-
-                                        </tr>
-                                    
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                      </td>
+                    </tr>
+                    <tr *ngIf="!todayApp?.length">
+                      <td class="text-center" colspan="7">
+                        <i
+                          class="fas fa-search"
+                          style="font-size: 36px; opacity: 70%"
+                        ></i>
+                        <h5 class="mt-4">No data found</h5>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+          </div>
         </div>
+        <!-- /cancel Appointment Tab -->
+        <div
+          class="tab-pane"
+          id="cancel"
+          [ngClass]="{ active: activeTab === 'cancel' }"
+        >
+          <div class="card card-table mb-0">
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-hover table-center mb-0">
+                  <thead>
+                    <tr>
+                      <th>Patient Name</th>
+                      <th>Appointment Date</th>
+                      <th>Purpose</th>
+                      <th>Type</th>
+                      <th class="text-center">Paid Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let value of cancelApp; let i = index">
+                      <td>
+                        <h2 class="d-flex">
+                          <a>
+                            <img
+                              *ngIf="value.doctorData"
+                              [src]="value.doctorData?.patientImage"
+                              class="img-fluid rounded-circle"
+                              alt="Image"
+                            />
+                            <img
+                              *ngIf="!value.doctorData"
+                              class="img-fluid rounded-circle"
+                              src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                            />
+                          </a>
+                          <p class="mx-2 mt-3">
+                            {{ value.patientName }}<span>{{ value.key }}</span>
+                          </p>
+                        </h2>
+                      </td>
+                      <td>
+                        {{ value?.appointmentDate
+                        }}<span class="d-block text-info">{{
+                          value?.appointmentTime
+                        }}</span>
+                      </td>
+                      <td>{{ value.purpose }}</td>
+                      <td>{{ value.type }}</td>
+                      <td class="text-center">{{ value.paidAmount }}</td>
+                    </tr>
+                    <tr *ngIf="cancelApp?.length === 0">
+                      <td class="text-center" colspan="7">
+                        <i
+                          class="fas fa-search"
+                          style="font-size: 36px; opacity: 70%"
+                        ></i>
+                        <h5 class="mt-4">No data found</h5>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 
-
 <ng-template #delete let-modal>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Cancel</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        </button>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Cancel</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    Are you sure to cancel?
+    <div style="margin-top: 25px" class="text-end">
+      <button
+        type="button"
+        class="btn btn-success btn-sm mx-2"
+        id="btn-yes"
+        (click)="cancel(modal)"
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm mx-2"
+        id="btn-no"
+        (click)="modal.dismiss()"
+      >
+        No
+      </button>
     </div>
-    <div class="modal-body ">
-        Are you sure to cancel?
-        <div style="margin-top:25px " class="text-end">
-            <button type="button" class="btn btn-success btn-sm mx-2" id="btn-yes" (click)="cancel(modal)">Yes</button>
-            <button type="button" class="btn btn-danger btn-sm mx-2" id="btn-no" (click)="modal.dismiss()">No</button>
-        </div>
-    </div>
+  </div>
 </ng-template>

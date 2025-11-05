@@ -1,0 +1,30 @@
+/* .table-avatar{
+    cursor: pointer;
+} */
+strong {
+    display: flex;
+    align-items: center;
+    /* justify-content: center;  */
+    height: 100vh;
+    font-size: 20px;
+  }
+  .doctor-img {
+    position: relative;
+}
+.del{
+  border: white;
+}
+.img-fluid{
+  width: 50px;
+}
+/* .patient:hover{ */
+  /* color: #20c0f3; */
+/* } */
+.accepted{
+  cursor: default;
+}
+.rounded-circle{
+  height: 50px;
+  width: 50px;
+  
+}

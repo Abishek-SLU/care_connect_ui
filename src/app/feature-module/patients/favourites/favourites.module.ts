@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { FavouritesRoutingModule } from './favourites-routing.module';
 import { FavouritesComponent } from './favourites.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { FavouritesComponent } from './favourites.component';
   ],
   imports: [
     CommonModule,
-    FavouritesRoutingModule
+    FavouritesRoutingModule,
+    HttpClientModule
   ]
 })
 export class FavouritesModule { }

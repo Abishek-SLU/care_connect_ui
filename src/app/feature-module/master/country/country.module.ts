@@ -4,6 +4,7 @@ import { CountryRoutingModule } from './country-routing.module';
 import { CountryComponent } from './country.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -15,7 +16,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     FormsModule,
     ReactiveFormsModule,
     CountryRoutingModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,HttpClientModule
    
   ]
 })

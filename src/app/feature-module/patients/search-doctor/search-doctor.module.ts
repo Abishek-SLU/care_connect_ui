@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { SearchDoctorRoutingModule } from './search-doctor-routing.module';
 import { SearchDoctorComponent } from './search-doctor.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -12,7 +13,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     CommonModule,
     SearchDoctorRoutingModule,
-    NgbModule
+    NgbModule,
+    HttpClientModule
   ]
 })
 export class SearchDoctorModule { }
