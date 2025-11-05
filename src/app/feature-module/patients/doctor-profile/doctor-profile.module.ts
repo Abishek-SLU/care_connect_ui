@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DoctorProfileRoutingModule } from './doctor-profile-routing.module';
 import { DoctorProfileComponent } from './doctor-profile.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { DoctorProfileComponent } from './doctor-profile.component';
   ],
   imports: [
     CommonModule,
-    DoctorProfileRoutingModule
+    DoctorProfileRoutingModule,
+    HttpClientModule
   ]
 })
 export class DoctorProfileModule { }

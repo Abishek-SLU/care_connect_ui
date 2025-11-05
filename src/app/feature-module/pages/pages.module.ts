@@ -5,6 +5,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { PagesComponent } from './pages.component';
 import { HomeOneModule } from '../home/home-one/home-one.module';
 import { SharedModule } from 'src/app/shared/module/shared.module';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -15,7 +16,8 @@ import { SharedModule } from 'src/app/shared/module/shared.module';
     CommonModule,
     PagesRoutingModule,
     HomeOneModule,
-    SharedModule
+    SharedModule,
+    HttpClientModule
   ]
 })
 export class PagesModule { }

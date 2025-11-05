@@ -26,17 +26,14 @@ const routes: Routes = [
       },
       {
         path: 'patients',
-        canActivate: [AuthenticateGuard],
         loadChildren: () =>
           import('./patients/patients.module').then((m) => m.PatientsModule),
       },
       {
         path: 'doctors',
-        canActivate: [AuthenticateGuard],
         loadChildren: () =>
           import('./doctors/doctors.module').then((m) => m.DoctorsModule),
       },
-   
       {
         path: 'login',
         loadChildren: () =>
@@ -47,6 +44,7 @@ const routes: Routes = [
         loadChildren: () =>
           import('./register/register.module').then((m) => m.RegisterModule),
       },
+
       {
         path: 'pages',
         loadChildren: () =>
@@ -60,10 +58,20 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'common',
+        canActivate: [AdminGuard],
+        loadChildren: () =>
+          import('./master/common/common.module').then(
+            (m) => m.CommonModule
+          )
+      },
+
+      {
         path: 'blog',
         loadChildren: () =>
           import('./blog/blog.module').then((m) => m.BlogModule),
       },
+
     ],
   },
 ];
@@ -72,4 +80,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class FeatureModuleRoutingModule {}
+export class FeatureModuleRoutingModule { }

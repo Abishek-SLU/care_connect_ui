@@ -93,12 +93,12 @@
                                 <button class="btn btn-primary w-100 btn-lg"
                                     *ngIf="!isMobileNumberVerified && !showOTPInput && !isMobileNumberValid"
                                     (click)="signup()">Signup</button>
-                                <button class="btn btn-primary w-100 btn-lg"
+                                <!-- <button class="btn btn-primary w-100 btn-lg"
                                     *ngIf="isMobileNumberValid && !isMobileNumberVerified && !showOTPInput"
-                                    (click)="onMobileSubmit()">Verify</button>
-                                <button class="btn btn-primary w-100 btn-lg"
+                                    (click)="onMobileSubmit()">Verify</button> -->
+                                <!-- <button class="btn btn-primary w-100 btn-lg"
                                     *ngIf="isMobileNumberVerified && showOTPInput && !isOTPVerified"
-                                    (click)="verifyOTP()">Verify OTP</button>
+                                    (click)="verifyOTP()">Verify OTP</button> -->
                                 <button class="btn btn-primary signUpButton w-100 btn-lg mt-2" *ngIf="isOTPVerified"
                                     (click)="signup()">Sign
                                     Up</button>

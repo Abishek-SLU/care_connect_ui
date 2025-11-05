@@ -1,14 +1,3 @@
-<!-- <!-- <div>
-    <ngx-spinner
-    bdColor="rgba(51,51,51,0.8)"
-    size="medium"
-    color="#fff"
-    type="ball-scale-multiple"
-  >
-    <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
-  </ngx-spinner>
-</div> -->
--->
 <div class="card">
   <div class="text m-3">
     <div class="row">
@@ -17,38 +6,37 @@
       </div>
     </div>
   </div>
+
   <div class="div scroll">
     <div id="pat_appointments" class="tab-pane fade show active">
       <div class="card-body">
-        <div class="filter-widget d-flex" [formGroup]="datefilter">
-          <div class="w-30 d-flex">
-            <h4 class="mt-3">Date</h4>
+        <form
+          class="filter-widget d-flex"
+          [formGroup]="datefilter"
+          (ngSubmit)="getManageschedule()"
+        >
+          <div class="w-30 d-flex align-items-center">
+            <h4 class="mt-3 me-2">Date</h4>
             <input
               type="date"
-              class="form-control mx-2"
-              name="dp"
-              [(ngModel)]="dateValue"
-              placeholder="Select Date"
+              class="form-control"
               formControlName="date"
+              placeholder="Select Date"
             />
           </div>
-          <div style="margin-left: 55%">
-            <button
-              type="submit"
-              class="btn bg-primary-light submit-btn"
-              (click)="getManageschedule()"
-            >
+          <div class="ms-auto">
+            <button type="submit" class="btn bg-primary-light submit-btn">
               View Schedule
             </button>
           </div>
-        </div>
+        </form>
+
         <div class="card card-table mt-5">
           <div class="card-body">
             <div class="table-responsive">
               <table class="table table-hover table-center mb-0">
                 <thead class="tablehead">
                   <tr>
-                    <!-- <th>S.no</th> -->
                     <th>Schedule</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Maximum Patient</th>
@@ -59,35 +47,35 @@
                 <tbody>
                   <tr *ngFor="let data of value; let i = index">
                     <td>
-                      {{ convertTo12HourFormat(data.startTime) }}-{{
-                        convertTo12HourFormat(data.endTime)
-                      }}
+                      {{ convertTo12HourFormat(data.startTime) }} -
+                      {{ convertTo12HourFormat(data.endTime) }}
                     </td>
-                    <!-- <td class="text-center">{{data.status}}</td>   -->
                     <td class="text-center">
                       <span
-                        *ngIf="data?.status == 'INACTIVE'"
+                        *ngIf="data?.status === 'INACTIVE'"
                         class="badge rounded-pill bg-danger-light"
-                        >Inactive</span
                       >
+                        Inactive
+                      </span>
                       <span
-                        *ngIf="data?.status == 'ACTIVE'"
+                        *ngIf="data?.status === 'ACTIVE'"
                         class="badge rounded-pill bg-success-light"
-                        >Active</span
                       >
+                        Active
+                      </span>
                     </td>
                     <td class="text-center">{{ data.maxPatients }}</td>
                     <td class="text-center">{{ data.scheduleIdCount }}</td>
                     <td class="text-center">
                       <button
-                        *ngIf="data.status == 'INACTIVE'"
+                        *ngIf="data.status === 'INACTIVE'"
                         class="btn btn-sm bg-success-light"
                         (click)="ActiveSchTime(data)"
                       >
                         <i class="fas fa-check mx-1"></i>Active
                       </button>
                       <button
-                        *ngIf="data.status == 'ACTIVE'"
+                        *ngIf="data.status === 'ACTIVE'"
                         class="btn btn-sm bg-danger-light"
                         (click)="Reasonmodal(cancel, data)"
                       >
@@ -100,69 +88,37 @@
             </div>
           </div>
         </div>
+
+        <ng-template #cancel let-modal>
+          <div class="modal-header">
+            <h4 class="modal-title pull-left">Cancel</h4>
+            <button
+              type="button"
+              class="btn-close"
+              aria-label="Close"
+              (click)="modal.dismiss('Cross click')"
+            ></button>
+          </div>
+          <form [formGroup]="reasonForm">
+            <div class="modal-body">
+              <label><h4>Reason</h4></label>
+              <textarea
+                class="form-control"
+                formControlName="reason"
+              ></textarea>
+              <div class="text-end">
+                <button
+                  type="button"
+                  class="btn btn-success mt-2"
+                  (click)="deleteSchTime(modal)"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </form>
+        </ng-template>
       </div>
     </div>
   </div>
 </div>
-<!-- <ng-template #cancel>
-    <div class="modal-header">
-        <h4 class="modal-title pull-left">Cancel</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="cancel.dismiss('Cross click')"></button>
-
-    </div>
-    <div class="modal-body d-flex ">
-        <form [formGroup]="reason">
-        <label class="mt-3"><h4>Reason</h4></label>
-        <textarea class="w-50 mt-2 mx-5"></textarea>
-    </form>
-    </div>
-    <div class="modal-footer">
-<button  (click)="deleteSchTime(cancel)">Submit</button>
-
-    </div>
-</ng-template> -->
-<!-- <ng-template #canncel let-modal>
-    <div class="modal-header">
-     <h4 class="modal-title">Cancel</h4>
-     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>  
-    </div>
-    <form action="" [formGroup]="reasonForm">
-    <div class="modal-body d-flex">
-     
-<label><h4>Reason</h4></label>
-<textarea class="form-control mx-2"  formControlName="reason"></textarea>
-    </div>
-    <div class="modal-footer">
-        <button type="btn" (click)="deleteSchTime(modal)" class="btn btn-success">Submit</button>
-    </div>
-</form>
-</ng-template> -->
-<ng-template #cancel let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title pull-left">Cancel</h4>
-    <button
-      type="button"
-      class="btn-close"
-      aria-label="Close"
-      (click)="modal.dismiss('Cross click')"
-    ></button>
-  </div>
-  <form action="" [formGroup]="reasonForm">
-    <div class="modal-body">
-      <label><h4>Reason</h4></label>
-      <textarea
-        class="textarea form-control"
-        formControlName="reason"
-      ></textarea>
-      <div class="text-end">
-        <button
-          type="btn"
-          (click)="deleteSchTime(modal)"
-          class="btn btn-success text-end mt-2"
-        >
-          Submit
-        </button>
-      </div>
-    </div>
-  </form>
-</ng-template>

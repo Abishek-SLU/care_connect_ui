@@ -15,11 +15,6 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'maps',
-        loadChildren: () =>
-          import('./maps/maps.module').then((m) => m.MapsModule),
-      },
-      {
         path: 'doctor-profile',
         loadChildren: () =>
           import('./doctor-profile/doctor-profile.module').then(

@@ -6,6 +6,7 @@ import { StateComponent } from './state.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   ],
   imports: [
     CommonModule,
-    StateRoutingModule,FormsModule,ReactiveFormsModule,NgSelectModule,NgxSpinnerModule
+    StateRoutingModule,FormsModule,ReactiveFormsModule,NgSelectModule,NgxSpinnerModule,HttpClientModule
   ]
 })
 export class StateModule { }

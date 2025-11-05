@@ -5,6 +5,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { ManageScheduleService } from 'src/app/core/service/doctors/manage-schedule.service';
 import { PharmaciesComponent } from '../../admin/pharmacies/pharmacies.component';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-manage-schedule',
@@ -14,10 +16,10 @@ import { PharmaciesComponent } from '../../admin/pharmacies/pharmacies.component
 export class ManageScheduleComponent implements OnInit {
   datefilter!: FormGroup;
   day: any;
-  reasonForm!:FormGroup;
-  appointmentDay:any;
-  message:any;
-  mobileNo:any;
+  reasonForm!: FormGroup;
+  appointmentDay: any;
+  message: any;
+  mobileNo: any;
   value: any;
   date: any;
   dateCurrent: any;
@@ -25,9 +27,9 @@ export class ManageScheduleComponent implements OnInit {
   dayGet: any;
   formatDate: any;
   dateArr: any = [];
-  getDate:any;
-  modal:any;
-  submitted=false
+  getDate: any;
+  modal: any;
+  submitted = false
   constructor(
     private fb: FormBuilder,
     private Service: ManageScheduleService,
@@ -40,56 +42,56 @@ export class ManageScheduleComponent implements OnInit {
 
     let date = new Date().toLocaleDateString('en-us');
     console.log(date);
-    
+
     let getDate = date.split('/');
 
-    this.dateValue = getDate[2] + '-' + (Number(getDate[0])<10?'0'+getDate[0]:getDate[0]) + '-' + (Number(getDate[1])<10?0+getDate[1]:getDate[1]);
+    this.dateValue = getDate[2] + '-' + (Number(getDate[0]) < 10 ? '0' + getDate[0] : getDate[0]) + '-' + (Number(getDate[1]) < 10 ? 0 + getDate[1] : getDate[1]);
 
     console.log(this.dateValue);
-    
+
     this.dateCurrent = getDate[2] + '/' + getDate[0] + '/' + getDate[1];
     console.log(this.dateCurrent);
     this.datefilter = this.fb.group({
       date: this.dateCurrent,
     })
     this.getManageschedule();
- this.reasonForm=this.fb.group({
-  reason:[null,Validators.required]
- })
+    this.reasonForm = this.fb.group({
+      reason: [null, Validators.required]
+    })
 
   }
 
   dateFormat(data: any) {
     let getDate;
     let dateValue;
-    if(data.includes('/')){
-       getDate = data.split('/');
-       dateValue = (getDate[2]<10?0+getDate[2]:getDate[2])+ '/' + (getDate[1]<10?0+getDate[1]:getDate[1]) + '/' + (getDate[0]<10?0+getDate[0]:getDate[0]);
-    }else if(data.includes('-')){
+    if (data.includes('/')) {
+      getDate = data.split('/');
+      dateValue = (getDate[2] < 10 ? 0 + getDate[2] : getDate[2]) + '/' + (getDate[1] < 10 ? 0 + getDate[1] : getDate[1]) + '/' + (getDate[0] < 10 ? 0 + getDate[0] : getDate[0]);
+    } else if (data.includes('-')) {
       getDate = data.split('-');
       dateValue = getDate[2] + '/' + getDate[1] + '/' + getDate[0];
     }
-return dateValue;
+    return dateValue;
   }
   getManageschedule() {
-  
-   console.log(this.datefilter.value.date,typeof this.datefilter.value.date);
 
-    let date = {date:this.dateFormat(this.datefilter.value.date)}
+    console.log(this.datefilter.value.date, typeof this.datefilter.value.date);
+
+    let date = { date: this.dateFormat(this.datefilter.value.date) }
     this.spinner.show();
     this.Service.getSchedule(date).subscribe(res => {
       this.value = res.data;
-  this.spinner.hide()
-      
+      this.spinner.hide()
+
     })
   }
-  scheduleId:any;
-  Reasonmodal(modal:any,id:any){
-    console.log(id);    
-    this.modalservice.open(modal,{size:"md"})
-    this.scheduleId= id.scheduleId;
-  
-    
+  scheduleId: any;
+  Reasonmodal(modal: any, id: any) {
+    console.log(id);
+    this.modalservice.open(modal, { size: "md" })
+    this.scheduleId = id.scheduleId;
+
+
   }
   deleteSchTime(modal: any) {
     let obj = {
@@ -101,47 +103,47 @@ return dateValue;
     obj.scheduleId = this.scheduleId;
     obj.status = 'INACTIVE';
 
-   let objj={
-    scheduleId: '',
-    message:'',
-    // date:''
-   }
-   
-   objj.message=this.reasonForm.value.reason;
-   objj.scheduleId=this.scheduleId;
-  //  objj.date=this.dateValue;
+    let objj = {
+      scheduleId: '',
+      message: '',
+      // date:''
+    }
+
+    objj.message = this.reasonForm.value.reason;
+    objj.scheduleId = this.scheduleId;
+    //  objj.date=this.dateValue;
 
     // obj.message=this.reason.value.reason;
     // obj.date=this.dateValue;
-    this.submitted=true;
-    let date = {date:(this.dateValue)}
-    if(this.reasonForm.invalid){
+    this.submitted = true;
+    let date = { date: (this.dateValue) }
+    if (this.reasonForm.invalid) {
       this.toastr.error('Error');
       return;
     }
-    else{
-      this.Service.createSms(objj,date).subscribe(res=>{
+    else {
+      this.Service.createSms(objj, date).subscribe(res => {
         // this.toastr.success('', 'Submit successfully!');
-          modal.dismiss('Cross click');
+        modal.dismiss('Cross click');
 
-          this.reasonForm.reset({});
+        this.reasonForm.reset({});
+        this.getManageschedule();
+        this.submitted = false;
+        this.Service.getInactive(obj).subscribe((res: any) => {
+          this.toastr.success('Schedule Cancelled Successfully');
           this.getManageschedule();
-          this.submitted = false;
-          this.Service.getInactive(obj).subscribe((res: any) => {
-            this.toastr.success('Schedule Cancelled Successfully');
-            this.getManageschedule();
-            modal.dismiss('cross click')
-          }, (err: any) => {
-            this.toastr.error(err.error.error.reason)
-          }
-          )
-        },
-       
+          modal.dismiss('cross click')
+        }, (err: any) => {
+          this.toastr.error(err.error.error.reason)
+        }
+        )
+      },
+
       )
     }
-    
-   console.log(obj.scheduleId, obj);
-   
+
+    console.log(obj.scheduleId, obj);
+
   }
   ActiveSchTime(data: any) {
     let obj = {
@@ -153,12 +155,12 @@ return dateValue;
     this.Service.getInactive(obj).subscribe((res: any) => {
       this.toastr.success('Schedule Active Successfully');
       this.getManageschedule();
-      
+
     }, (err: any) => {
       this.toastr.error(err.error.error.reason)
     })
-   console.log(obj.scheduleId, obj);
-   
+    console.log(obj.scheduleId, obj);
+
   }
 
 
@@ -171,7 +173,7 @@ return dateValue;
     }
     return `${convertedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
   }
-  
+
   public getTime(event: any): void {
     const inputTime = event.target.value;
     const [hours, minutes, seconds, modifier] = inputTime.split(':').map(Number);

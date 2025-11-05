@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DependentRoutingModule } from './dependent-routing.module';
 import { DependentComponent } from './dependent.component';
 import { ReactiveFormsModule,FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ReactiveFormsModule,FormsModule } from '@angular/forms';
     CommonModule,
     DependentRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ]
 })
 export class DependentModule { }

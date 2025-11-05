@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SuccessRoutingModule } from './success-routing.module';
 import { SuccessComponent } from './success.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -11,7 +12,8 @@ import { SuccessComponent } from './success.component';
   ],
   imports: [
     CommonModule,
-    SuccessRoutingModule
+    SuccessRoutingModule,
+    HttpClientModule
   ]
 })
 export class SuccessModule { }
