@@ -55,18 +55,14 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    // this.router.navigate(["/doctors/dashboard"]);
-    // this.submitted = true;
+    this.submitted = true;
     if (this.Login.invalid) {
       this.toastr.error('', 'Login failed!');
       return;
     } else {
-      console.log(this.Login.value);
-
       this.service.login_Url(this.Login.value).subscribe(res => {
         let token = res.data.jwt;
         localStorage.setItem("token", token);
-        this.router.navigate(["/patients/dashboard"]);
         let userId = res.data.roleName;
         localStorage.setItem("roleName", userId)
         if (userId === "DOCTOR") {
@@ -91,15 +87,15 @@ export class LoginComponent implements OnInit {
     return null;
   }
   onInput(event: any) {
-    // Get the input value and remove any non-numeric characters
-    const inputValue = event.target.value;
-    const numericValue = inputValue.replace(/[^0-9]/g, '');
+    // // Get the input value and remove any non-numeric characters
+    // const inputValue = event.target.value;
+    // const numericValue = inputValue.replace(/[^0-9]/g, '');
 
-    // Update the input field with the numeric value
-    event.target.value = numericValue;
+    // // Update the input field with the numeric value
+    // event.target.value = numericValue;
 
-    // Update the form control value
-    this.Login.controls['userName'].setValue(numericValue);
+    // // Update the form control value
+    // this.Login.controls['userName'].setValue(numericValue);
   }
 
 }

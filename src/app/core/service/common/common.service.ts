@@ -11,6 +11,9 @@ import { Router } from '@angular/router';
 export class CommonService {
   private baseUrl = environment.Api_url;
   private loginUrl = this.baseUrl + "auth/login";
+  private generateOTPUrl = this.baseUrl + "api/register/generate-otp";
+  private verifyOTPUrl = this.baseUrl + "api/register/verify-otp";
+  private userUpdateURL = this.baseUrl + "api/register/update";
 
 
   public patients: any = [
@@ -59,33 +62,53 @@ export class CommonService {
     },
   ];
 
-  messages:any = '';
+  messages: any = '';
   SERVER_URL: string = 'http://localhost:8080/api/';
   public message: BehaviorSubject<String> = new BehaviorSubject<String>('');
   functionsToCall$: any;
-  constructor(public http: HttpClient,private router :Router) {
+  constructor(public http: HttpClient, private router: Router) {
     this.message = new BehaviorSubject(this.messages);
   }
 
   login_Url(data: any) {
     return this.http.post<any>(this.loginUrl, data);
   }
-  gettoken(){
+
+    userRegisterUpdate(data: any) {
+    return this.http.put<any>(this.userUpdateURL, data);
+  }
+
+  verifyOtp(data: any) {
+    return this.http.post<any>(this.verifyOTPUrl, data);
+  }
+
+  generateOTP(data: any) {
+    return this.http.post<any>(this.generateOTPUrl, data);
+  }
+  gettoken() {
     return localStorage.getItem('token');
   }
-  userRoleId(){
+  userRoleId() {
     return localStorage.getItem('userRoleId');
   }
-  roleName(){
+  roleName() {
     return localStorage.getItem("roleName");
   }
 
-  logout(){
+  logout() {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
+  registerOtp(payload: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/send`, payload);
+  }
 
-  nextmessage(data:any) {
+  /**
+   * Verify the entered OTP
+   * @param payload - { mobileNo: string, otp: string }
+   */
+
+  nextmessage(data: any) {
     this.message.next(data);
   }
 
@@ -94,8 +117,8 @@ export class CommonService {
     return this.patients;
   }
 
-  update(id:any, status:any, list:any) {
-    let filter = list.filter((a:any) => a.patient_id === id);
+  update(id: any, status: any, list: any) {
+    let filter = list.filter((a: any) => a.patient_id === id);
     if (filter.length != 0) {
       filter['status'] = status;
     }
@@ -105,15 +128,15 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'specialityList');
   }
 
-  createSpeciality(data:any) {
+  createSpeciality(data: any) {
     return this.http.post(`${this.SERVER_URL + 'specialityList'}`, data);
   }
 
-  updateSpeciality(data:any, id:any) {
+  updateSpeciality(data: any, id: any) {
     return this.http.put(`${this.SERVER_URL + 'specialityList'}/${id}`, data);
   }
 
-  deleteSpeciality(id:any) {
+  deleteSpeciality(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'specialityList'}/${id}`);
   }
 
@@ -124,7 +147,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'searchDoctor');
   }
 
-  getDoctorDetails(id:any) {
+  getDoctorDetails(id: any) {
     return this.http.get(`${this.SERVER_URL + 'doctors'}/${id}`);
   }
 
@@ -132,7 +155,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'appointments');
   }
 
-  updateAppointment(data:any, id:any) {
+  updateAppointment(data: any, id: any) {
     return this.http.put(`${this.SERVER_URL + 'appointments'}/${id}`, data);
   }
 
@@ -140,7 +163,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'patients');
   }
 
-  createBlogs(data:any) {
+  createBlogs(data: any) {
     return this.http.post(`${this.SERVER_URL + 'blogs'}`, data);
   }
 
@@ -148,31 +171,31 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'blogs');
   }
 
-  getBlogsDetails(id:any) {
+  getBlogsDetails(id: any) {
     return this.http.get(`${this.SERVER_URL + 'blogs'}/${id}`);
   }
 
-  updateBlog(data:any, id:any) {
+  updateBlog(data: any, id: any) {
     return this.http.put(`${this.SERVER_URL + 'blogs'}/${id}`, data);
   }
 
-  deleteBlog(id:any) {
+  deleteBlog(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'blogs'}/${id}`);
   }
 
-  createDoctor(data:any) {
+  createDoctor(data: any) {
     return this.http.post(`${this.SERVER_URL + 'doctors'}`, data);
   }
 
-  createPatient(data:any) {
+  createPatient(data: any) {
     return this.http.post(`${this.SERVER_URL + 'patients'}`, data);
   }
 
-  getPatientDetails(id:any) {
+  getPatientDetails(id: any) {
     return this.http.get(`${this.SERVER_URL + 'patients'}/${id}`);
   }
 
-  createAppointment(params:any) {
+  createAppointment(params: any) {
     return this.http.post(`${this.SERVER_URL + 'appointments'}`, params);
   }
 
@@ -180,7 +203,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'favourites');
   }
 
-  createFav(params:any) {
+  createFav(params: any) {
     return this.http.post(this.SERVER_URL + 'favourites', params);
   }
 
@@ -188,11 +211,11 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'comments');
   }
 
-  createComment(params:any) {
+  createComment(params: any) {
     return this.http.post(this.SERVER_URL + 'comments', params);
   }
 
-  deleteFav(id:any) {
+  deleteFav(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'favourites'}/${id}`);
   }
 
@@ -200,7 +223,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'transactions');
   }
 
-  deleteTransaction(id:any) {
+  deleteTransaction(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'transactions'}/${id}`);
   }
 
@@ -208,7 +231,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'reviews');
   }
 
-  deleteReview(id:any) {
+  deleteReview(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'reviews'}/${id}`);
   }
 
@@ -216,7 +239,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'products');
   }
 
-  deleteProduct(id:any) {
+  deleteProduct(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'products'}/${id}`);
   }
 
@@ -224,7 +247,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'categories');
   }
 
-  deleteCategory(id:any) {
+  deleteCategory(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'categories'}/${id}`);
   }
 
@@ -232,7 +255,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'orders');
   }
 
-  deleteOrder(id:any) {
+  deleteOrder(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'orders'}/${id}`);
   }
 
@@ -240,7 +263,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'pharmacy_reports');
   }
 
-  deletePharmacyReports(id:any) {
+  deletePharmacyReports(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'pharmacy_reports'}/${id}`);
   }
 
@@ -248,7 +271,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'purchase');
   }
 
-  deletePurchase(id:any) {
+  deletePurchase(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'purchase'}/${id}`);
   }
 
@@ -256,14 +279,14 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'sales');
   }
 
-  deleteSale(id:any) {
+  deleteSale(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'sale'}/${id}`);
   }
   getPharmacyTransactions() {
     return this.http.get(this.SERVER_URL + 'pharmacy_transactions');
   }
 
-  deletePharmacyTransactions(id:any) {
+  deletePharmacyTransactions(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'pharmacy_transactions'}/${id}`);
   }
 
@@ -271,7 +294,7 @@ export class CommonService {
     return this.http.get(this.SERVER_URL + 'pharmacy');
   }
 
-  deletePharmacy(id:any) {
+  deletePharmacy(id: any) {
     return this.http.delete(`${this.SERVER_URL + 'pharmacy'}/${id}`);
   }
 }
