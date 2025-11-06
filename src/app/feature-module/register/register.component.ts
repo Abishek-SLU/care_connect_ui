@@ -1,146 +1,132 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { CommonService } from 'src/app/core/service/service.index';
-import { Validators, FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PatientService } from 'src/app/core/service/patients/new-patient/patient.service';
+import { CommonService } from 'src/app/core/service/service.index';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css']
 })
-
 export class RegisterComponent implements OnInit {
-  showPassword: boolean = false;
+  closeOtpPopup() {
+    this.showOtpPopup = false;
+  }
 
-  isMobileNumberVerified: boolean = false;
-  isOTPVerified: boolean = false;
-  MobileNumber!: string;
-  showOTPInput: boolean = false;
-  showChangePassword: boolean = false;
-  otp!: string;
-  patientRegisterForm !: FormGroup;
+  showPassword = false;
+  showOtpPopup = false;
+  otpNumber = '';
+  isOtpNumberValid = false;
   validation = false;
-  Name = '';
-  mobile = '';
-  password = '';
-  name: string = '';
-  mobileNumber: string = '';
-  otpNumber: string = '';
-  isMobileNumberValid: boolean = false;
-  isOtpNumberValid: boolean = false;
-  isPatient: boolean = true;
-  doctors: any = [];
-  patients: any = [];
-  reg_type = 'Patient Register';
-  doc_patient = 'Are you a Doctor?';
-  value: any;
-  isReadOnly = false;
-  submitRead = true;
-  otpReadOnly = false;
-  otpSubmit = true;
+  showChangePassword = false;
+  patientRegisterForm!: FormGroup;
+  linkName = 'Are you a Doctor?';
+
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
-    public commonService: CommonService,
-    public router: Router,
+    private router: Router,
+    public service: CommonService,
     private patientService: PatientService
   ) { }
 
   ngOnInit(): void {
     this.patientRegisterForm = this.fb.group({
       name: [null, Validators.required],
-      mobileNo: [null, [Validators.required, Validators.pattern('^[0-9]{10}$')]],
-      otp: [null, [Validators.required, Validators.pattern('^[0-9]{6}$')]],
-      userName: [null, Validators.required],
-      password: [null, [Validators.required, this.passwordStrengthValidator]],
-      roleId: "e51be7af-0f1a-4c45-a9f0-83288b183119"
-
-    })
-    // this.getpatients();
-    // this.getDoctors();
-    if ($('.floating').length > 0) {
-      $('.floating').on('focus blur', (e: { type: string; }) => {
-        $(this).parents('.form-focus').toggleClass('focused', (e.type === 'focus' || this.value > 0));
-      }).trigger('blur');
-    }
+      email: [null, [Validators.required, Validators.email]],
+      userName: [null],
+      password: [null],
+      fullName: [null],
+      userRoleId: '8a75f7bf-09e2-4e6f-bd1f-731cc6c4f120'
+    });
   }
 
   get f() {
     return this.patientRegisterForm.controls;
   }
 
-  changeRegType() {
-    if (this.reg_type === 'Doctor Register') {
-      this.reg_type = 'Patient Register';
-      this.doc_patient = 'Are you a Doctor?';
-      this.isPatient = true;
-    } else {
-      this.reg_type = 'Doctor Register';
-      this.doc_patient = 'Not a Doctor?';
-      this.isPatient = false;
+  onSignupClick() {
+    this.validation = true;
+    if (!this.patientRegisterForm.value.name || !this.patientRegisterForm.value.email) {
+      this.toastr.error('Please enter Name and Email');
+      return;
     }
+
+    this.service.generateOTP(this.patientRegisterForm.value).subscribe(
+      () => {
+        this.toastr.success('OTP sent successfully to your email');
+        this.showOtpPopup = true;
+      },
+      (err) => {
+        this.toastr.error(err.error?.error?.reason || 'Failed to send OTP');
+      }
+    );
   }
 
+  verifyOTP() {
+    if (!this.isOtpNumberValid) {
+      this.toastr.error('Please enter a valid 4-digit OTP');
+      return;
+    }
 
- 
+    this.service.verifyOtp({
+      email: this.patientRegisterForm.value.email,
+      otp: this.otpNumber
+    }).subscribe(
+      () => {
+        this.toastr.success('OTP verified successfully!');
+        this.showOtpPopup = false;
+        this.showChangePassword = true;
+      },
+      (err) => {
+        this.toastr.error(err.error?.error?.reason || 'Invalid OTP');
+      }
+    );
+  }
 
- 
-  onMobileNumberChange(event: any) {
-    const input = event.target;
-    const value = input.value.replace(/\D/g, '').substring(0, 10);
-    this.isMobileNumberValid = /^\d{10}$/.test(value);
-    this.patientRegisterForm.patchValue({ mobileNo: value });
+  userRegisterUpdate() {
+    this.validation = true;
+    if (!this.patientRegisterForm.value.userName || !this.patientRegisterForm.value.password) {
+      this.toastr.error('Please enter Username and Password');
+      return;
+    }
+
+    this.patientRegisterForm.value.fullName = this.patientRegisterForm.value.name;
+
+
+    this.service.userRegisterUpdate(this.patientRegisterForm.value).subscribe(
+      (res: any) => {
+        this.toastr.success('Account created successfully!');
+        if (this.linkName === 'Are you a Doctor?') {
+          this.router.navigate(["/doctors/dashboard"]);
+          return;
+        }   
+        this.router.navigate(["/patients/dashboard"]);
+      },
+      (err) => {
+        this.toastr.error(err.error?.error?.reason || 'Registration update failed');
+      }
+    );
   }
 
   onOTPInput(event: any) {
-    const input = event.target;
-    const value = input.value.replace(/\D/g, '').substring(0, 6); // Restrict to 6 digits
-    this.isOtpNumberValid = /^\d{6}$/.test(value);
-    this.patientRegisterForm.patchValue({ otp: value });
-    this.otp = value; // Update the value in your component
+    const value = event.target.value.replace(/\D/g, '').substring(0, 4);
+    this.otpNumber = value;
+    this.isOtpNumberValid = /^\d{4}$/.test(value);
   }
 
-
-  passwordStrengthValidator(control: any) {
-    const value = control.value;
-    if (!value) {
-      return null;
-    }
-    // Define your strong password criteria here
-    const hasUpperCase = /[A-Z]/.test(value);
-    const hasLowerCase = /[a-z]/.test(value);
-    const hasDigit = /\d/.test(value);
-    const hasSpecialChar = /[!@#$%^&*()\-=_+[\]{}|;':",.<>?/\\]/.test(value);
-    const isLengthValid = value.length >= 8;
-
-    const isValid = hasUpperCase && hasLowerCase && hasDigit && hasSpecialChar && isLengthValid;
-    return isValid ? null : { passwordStrength: true };
-  }
-  signup() {
-    this.validation = true;
-    if (this.patientRegisterForm.invalid) {
-      // Show Toastr message indicating validation error
-      this.toastr.error('Please fill in all required fields.', 'Validation Error');
-      return;
-    } else {
-      this.patientService.patientCreate(this.patientRegisterForm.value).subscribe(res => {
-        console.log(res);
-        let token = localStorage.setItem('token', res.jwt);
-        this.toastr.success('', 'Register successfully!');
-        setTimeout(() => {
-          this.router.navigate(['/patients/profilesetting']);
-
-        })
-      }, err => {
-        this.toastr.error(err.error.error.reason);
-
-      })
-    }
-
-  }
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
+  }
+
+  doctorRegister() {
+    this.patientRegisterForm.patchValue({
+      userRoleId: this.linkName === 'Are you a Doctor?'
+        ? 'bab17134-9327-43b5-afbf-20efa5e0647d'
+        : '8a75f7bf-09e2-4e6f-bd1f-731cc6c4f120'
+    });
+    this.linkName = this.linkName === 'Are you a Doctor?' ? 'Are you a Patient?' : 'Are you a Doctor?';
   }
 }

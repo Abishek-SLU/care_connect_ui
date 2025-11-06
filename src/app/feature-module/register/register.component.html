@@ -1,135 +1,183 @@
 <app-home-one-header></app-home-one-header>
-<div class="content" style="height: 76%;">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <!-- Register Content -->
-                <div class="account-content">
-                    <div class="row align-items-center justify-content-center">
-                        <div class="col-md-7 col-lg-6 login-left">
-                            <img src="assets/img/login-banner.png" class="img-fluid" alt="Doccure Register">
-                        </div>
-                        <div class="col-md-12 col-lg-6 login-right ">
-                            <div class="login-header">
-                                <h3>Patient Register<a href="javascript:void(0)"
-                                        [routerLink]="'/doctors/doctorregister'">Are you a Doctor?</a></h3>
-                            </div>
-                            <!-- Register Form -->
-                            <form [formGroup]="patientRegisterForm">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" formControlName="name"
-                                        [readonly]="isReadOnly" placeholder="Name"
-                                        [ngClass]="{ 'is-invalid': validation && f['name'].errors || f['name'].invalid && (f['name'].dirty || f['name'].touched)}">
-                                    <label>Name</label>
-                                    <div *ngIf="validation && f['name'].errors || f['name'].invalid && (f['name'].dirty || f['name'].touched)"
-                                        class="invalid-feedback req">
-                                        *Requried
-                                    </div>
-                                </div>
 
-                                <div class="form-floating mb-3">
-                                    <input type="number" class=" form-control" formControlName="mobileNo"
-                                        placeholder="Mobile Number"
-                                        [ngClass]="{ 'is-invalid': validation && f['mobileNo'].errors || f['mobileNo'].invalid && (f['mobileNo'].dirty || f['mobileNo'].touched)}"
-                                        [readonly]="isReadOnly" [(ngModel)]="mobileNumber"
-                                        (input)="onMobileNumberChange($event)" required maxlength="10">
-                                    <div *ngIf="mobileNumber.length === 10 && !isMobileNumberValid"
-                                        class="error-message">
-                                    </div>
-                                    <label>Mobile Number</label>
-
-                                    <div *ngIf="validation && f['mobileNo'].errors || f['mobileNo'].invalid && (f['mobileNo'].dirty || f['mobileNo'].touched)"
-                                        class="invalid-feedback req">
-                                        *Requried
-                                    </div>
-                                </div>
-                                <div class="form-floating mb-3" *ngIf="showOTPInput">
-                                    <input type="number" class="form-control" formControlName="otp"
-                                        readonly="otpReadOnly" placeholder="Enter OTP"
-                                        [ngClass]="{ 'is-invalid': validation && f['otp'].errors || f['otp'].invalid && (f['otp'].dirty || f['otp'].touched)}"
-                                        [(ngModel)]="otpNumber" (input)="onOTPInput($event)" required maxlength="6">
-                                    <div *ngIf="otpNumber.length === 6 && !isOtpNumberValid" class="error-message">
-                                    </div>
-                                    <label>Enter OTP</label>
-
-                                    <div *ngIf="validation && f['otp'].errors || f['otp'].invalid && (f['otp'].dirty || f['otp'].touched)"
-                                        class="invalid-feedback req">
-                                        *Required
-                                    </div>
-                                </div>
-                                <div class="form-floating mb-3" *ngIf="showChangePassword">
-                                    <input type="text" class="form-control" formControlName="userName"
-                                        placeholder="User Name"
-                                        [ngClass]="{ 'is-invalid': validation && f['userName'].errors || f['userName'].invalid && (f['userName'].dirty || f['userName'].touched)}">
-                                    <label>User Name</label>
-                                    <div *ngIf="validation && f['userName'].errors || f['userName'].invalid && (f['userName'].dirty || f['userName'].touched)"
-                                        class="invalid-feedback req">
-                                        *Requried
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group form-focus mb-3" *ngIf="showChangePassword">
-                                    <input type="text" class="form-control floating" formControlName="password"
-                                        [type]="showPassword ? 'text' : 'password'" placeholder="Create Password"
-                                        [ngClass]="{ 'is-invalid': validation && f['password'].errors || f['password'].invalid && (f['password'].dirty || f['password'].touched)}">
-                                    <label class="focus-label">Create Password</label>
-                                    <a class="submit-button" (click)="togglePasswordVisibility()">
-                                        <i class="fa" [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"></i>
-                                        <!-- Change the eye icon based on showPassword -->
-                                    </a>
-                                    <div *ngIf="f['password'].hasError('passwordStrength')"
-                                        class="invalid-feedback req strong">
-                                        Must use Strong password. Try a mix of letters, numbers, and symbols.
-
-                                    </div>
-                                    <div *ngIf="f['password'].hasError('required') && ((f['password'].dirty || f['password'].touched) || validation)"
-                                        class="invalid-feedback req">
-                                        *Required
-                                    </div>
-                                </div>
-
-
-                                <button class="btn btn-primary w-100 btn-lg"
-                                    *ngIf="!isMobileNumberVerified && !showOTPInput && !isMobileNumberValid"
-                                    (click)="signup()">Signup</button>
-                                <!-- <button class="btn btn-primary w-100 btn-lg"
-                                    *ngIf="isMobileNumberValid && !isMobileNumberVerified && !showOTPInput"
-                                    (click)="onMobileSubmit()">Verify</button> -->
-                                <!-- <button class="btn btn-primary w-100 btn-lg"
-                                    *ngIf="isMobileNumberVerified && showOTPInput && !isOTPVerified"
-                                    (click)="verifyOTP()">Verify OTP</button> -->
-                                <button class="btn btn-primary signUpButton w-100 btn-lg mt-2" *ngIf="isOTPVerified"
-                                    (click)="signup()">Sign
-                                    Up</button>
-                                <div class="login-or">
-                                    <span class="or-line"></span>
-                                    <span class="span-or">or</span>
-                                </div>
-                                <div class="text-center dont-have">Already have an account?
-                                    <a class="forgot-link" [routerLink]="'/login'">Login</a>
-                                </div>
-
-                                <!-- <div class="login-or">
-                                    <span class="or-line"></span>
-                                    <span class="span-or">or</span>
-                                </div>
-                                <div class="row form-row social-login">
-                                    <div class="col-6">
-                                        <a href="javascript:void(0)" class="btn btn-facebook w-100"><i class="fab fa-facebook-f me-1"></i> Login</a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="javascript:void(0)" class="btn btn-google w-100"><i class="fab fa-google me-1"></i> Login</a>
-                                    </div>
-                                </div> -->
-                            </form>
-                            <!-- /Register Form -->
-                        </div>
-                    </div>
-                </div>
-                <!-- /Register Content -->
+<div class="content" style="height: 76%">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div class="account-content">
+          <div class="row align-items-center justify-content-center">
+            <div class="col-md-7 col-lg-6 login-left">
+              <img
+                src="assets/img/login-banner.png"
+                class="img-fluid"
+                alt="Doccure Register"
+              />
             </div>
+
+            <div class="col-md-12 col-lg-6 login-right">
+              <div class="login-header">
+                <h3>
+                  Patient Register
+                  <a
+                    (click)="doctorRegister()"
+                    style="cursor: pointer; color: blue"
+                    >{{ linkName }}</a
+                  >
+                </h3>
+              </div>
+
+              <form [formGroup]="patientRegisterForm">
+                <div class="form-floating mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="name"
+                    placeholder="Name"
+                    [ngClass]="{ 'is-invalid': validation && f['name'].errors }"
+                  />
+                  <label>Name</label>
+                  <div
+                    *ngIf="validation && f['name'].errors"
+                    class="invalid-feedback req"
+                  >
+                    *Required
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3">
+                  <input
+                    type="email"
+                    class="form-control"
+                    formControlName="email"
+                    placeholder="Email"
+                    [ngClass]="{
+                      'is-invalid': validation && f['email'].errors
+                    }"
+                  />
+                  <label>Email</label>
+                  <div
+                    *ngIf="validation && f['email'].errors"
+                    class="invalid-feedback req"
+                  >
+                    *Valid Email Required
+                  </div>
+                </div>
+
+                <div class="form-floating mb-3" *ngIf="showChangePassword">
+                  <input
+                    type="text"
+                    class="form-control"
+                    formControlName="userName"
+                    placeholder="User Name"
+                    [ngClass]="{
+                      'is-invalid': validation && f['userName'].errors
+                    }"
+                  />
+                  <label>User Name</label>
+                  <div
+                    *ngIf="validation && f['userName'].errors"
+                    class="invalid-feedback req"
+                  >
+                    *Required
+                  </div>
+                </div>
+
+                <div
+                  class="form-group form-focus mb-3"
+                  *ngIf="showChangePassword"
+                >
+                  <input
+                    [type]="showPassword ? 'text' : 'password'"
+                    class="form-control floating"
+                    formControlName="password"
+                    placeholder="Create Password"
+                    [ngClass]="{
+                      'is-invalid': validation && f['password'].errors
+                    }"
+                  />
+                  <label class="focus-label">Create Password</label>
+                  <a class="submit-button" (click)="togglePasswordVisibility()">
+                    <i
+                      class="fa"
+                      [ngClass]="showPassword ? 'fa-eye' : 'fa-eye-slash'"
+                    ></i>
+                  </a>
+                  <div
+                    *ngIf="f['password'].hasError('passwordStrength')"
+                    class="invalid-feedback req strong"
+                  >
+                    Must use a strong password (letters, numbers, symbols).
+                  </div>
+                  <div
+                    *ngIf="f['password'].hasError('required')"
+                    class="invalid-feedback req"
+                  >
+                    *Required
+                  </div>
+                </div>
+
+                <button
+                  class="btn btn-primary w-100 btn-lg mt-3"
+                  *ngIf="showChangePassword"
+                  (click)="userRegisterUpdate()"
+                >
+                  Signup
+                </button>
+
+                <button
+                  class="btn btn-primary w-100 btn-lg mt-3"
+                  (click)="onSignupClick()"
+                  *ngIf="!showChangePassword"
+                >
+                  Signup
+                </button>
+
+                <div class="login-or">
+                  <span class="or-line"></span>
+                  <span class="span-or">or</span>
+                </div>
+
+                <div class="text-center dont-have">
+                  Already have an account? <a [routerLink]="'/login'">Login</a>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+
+        <!-- OTP Popup -->
+        <div class="modal fade show d-block" tabindex="-1" *ngIf="showOtpPopup">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content p-3">
+              <div class="modal-header">
+                <h5 class="modal-title">Enter 4-Digit OTP</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  (click)="closeOtpPopup()"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <input
+                  type="text"
+                  maxlength="4"
+                  class="form-control text-center"
+                  [(ngModel)]="otpNumber"
+                  placeholder="Enter 4-digit OTP"
+                  (input)="onOTPInput($event)"
+                />
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-primary w-100" (click)="verifyOTP()">
+                  Verify OTP
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
+
 <app-home-one-footer></app-home-one-footer>
