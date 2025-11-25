@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { DistrictService } from 'src/app/core/service/district/district.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-district',
@@ -14,145 +12,155 @@ import { DistrictService } from 'src/app/core/service/district/district.service'
 export class DistrictComponent implements OnInit {
   districtForm!: FormGroup;
   submitted = false;
-  distArr: any;
-  stateArr: any=[];
-  jobsArr: any;
-  countryId: any;
+  distArr: any[] = [];
+  stateArr: any[] = [];
+  jobsArr: any[] = [];
   id: any;
-  cdr: any;
-  stateObj:any
+
   constructor(
     private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private modalservice: NgbModal,
-    private service: DistrictService,
+    private modalService: NgbModal,
     private toastr: ToastrService,
-    private spinner:NgxSpinnerService
+    private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
     this.districtForm = this.formBuilder.group({
       id: [null],
-      countryId:[null,[Validators.required]],
-      stateId:[null,[Validators.required]],
+      countryId: [null, [Validators.required]],
+      stateId: [null, [Validators.required]],
       districtName: [null, [Validators.required]],
       shortName: [null, [Validators.required]]
     });
-    this.distPatch();
-    this.countryPatch();
+    this.loadCountries();
+    this.loadStates();
+    this.loadDistricts();
   }
+
   get b() {
     return this.districtForm.controls;
   }
+
+  loadCountries() {
+    this.spinner.show();
+    const storedData = localStorage.getItem('countries');
+    this.jobsArr = storedData ? JSON.parse(storedData) : [];
+    this.spinner.hide();
+  }
+
+  loadStates() {
+    this.spinner.show();
+    const storedData = localStorage.getItem('states');
+    this.stateArr = storedData ? JSON.parse(storedData) : [];
+    this.spinner.hide();
+  }
+
+  loadDistricts() {
+    this.spinner.show();
+    const storedData = localStorage.getItem('districts');
+    this.distArr = storedData ? JSON.parse(storedData) : [];
+    this.spinner.hide();
+  }
+
   newDistrict(modal: any) {
-    this.modalservice.open(modal, {   windowClass: "custom-modal" });
+    this.modalService.open(modal, { windowClass: 'custom-modal' });
     this.submitted = false;
     this.districtForm.reset({});
   }
+
   onSubmit(modal: any) {
     this.submitted = true;
-    if (this.districtForm.invalid) {
-      return;
-    } else {
-      this.service.distCreate(this.districtForm.value).subscribe((res) => {
-        modal.dismiss('cross click');
-        this.distPatch();
-        this.toastr.success(res.data);
-        this.districtForm.reset({});
-      },(err) => {
-        this.toastr.error(err.error.error.reason);
-      })
-    }
-  }
-  distPatch() {
-    this.spinner.show();
-    this.service.distGet().subscribe((res) => {
-      this.distArr = res.data;
-      this.spinner.hide();
-    })
-  }
-  
-  stateGet(event: any) {
-    const selectedCountryId = event.target.value;
-    this.service.stateGetAll(selectedCountryId).subscribe(
-      (res) => {
-        this.stateArr = res.data;
-      },
-     
-    );
+    if (this.districtForm.invalid) return;
+
+    const data = this.districtForm.value;
+    const selectedCountry = this.jobsArr.find((x: any) => x.id == data.countryId);
+    const selectedState = this.stateArr.find((x: any) => x.id == data.stateId);
+
+    data.id = new Date().getTime();
+    data.countryName = selectedCountry ? selectedCountry.countryName : '';
+    data.stateName = selectedState ? selectedState.stateName : '';
+
+    let storedData = localStorage.getItem('districts');
+    let districts = storedData ? JSON.parse(storedData) : [];
+
+    districts.push(data);
+    localStorage.setItem('districts', JSON.stringify(districts));
+
+    this.toastr.success('District Created Successfully');
+    this.loadDistricts();
+    modal.dismiss('Cross click');
+    this.districtForm.reset({});
   }
 
   onEdit(modal: any, id: any) {
-    this.spinner.show()
-    this.service.distEdit(id).subscribe((res) => {
-      let Obj = res.data
-      this.stateGet({ target: { value: Obj.countryId } });
-  this.stateObj=Obj.stateId
-      this.districtForm.patchValue({
-        id: Obj.id,
-        districtName:Obj.districtName,
-        shortName:Obj.shortName,
-        countryId:Obj.countryId,
-        stateId:Obj.stateId
-      });
-      setTimeout(() => {
-        this.modalservice.open(modal, { windowClass: 'custom-modal' });
-      }, 800)
-      this.spinner.hide()
-      
-    
-    });
-  }
-  
+    const storedData = localStorage.getItem('districts');
+    const districts = storedData ? JSON.parse(storedData) : [];
+    const record = districts.find((item: any) => item.id === id);
 
-  countryPatch() {
-    this.spinner.show();
-    this.service.countryGet().subscribe((res) => {
-      this.jobsArr = res.data;
-      this.spinner.hide();
-      console.log()
-    },  (err)=>{
-      this.toastr.error(err.error.error.reason);
-      this.spinner.hide();
+    if (record) {
+      const selectedCountryId = record.countryId;
+      this.stateArr = this.getStatesByCountry(selectedCountryId);
+
+      this.districtForm.patchValue({
+        id: record.id,
+        countryId: record.countryId,
+        stateId: record.stateId,
+        districtName: record.districtName,
+        shortName: record.shortName
+      });
+      this.modalService.open(modal, { windowClass: 'custom-modal' });
     }
-    )
   }
+
+  getStatesByCountry(countryId: any) {
+    const storedStates = localStorage.getItem('states');
+    const allStates = storedStates ? JSON.parse(storedStates) : [];
+    return allStates.filter((s: any) => s.countryId == countryId);
+  }
+
+  stateGet(event: any) {
+    const selectedCountryId = event.target.value;
+    this.stateArr = this.getStatesByCountry(selectedCountryId);
+  }
+
   onUpdate(modal: any) {
     this.submitted = true;
-    if (this.districtForm.invalid) {
-      return;
-    } else {
-      this.service.distUpdate(this.districtForm.value).subscribe(
-        (res) => {
-          this.toastr.success(res.data);
-          modal.dismiss('cross click');
-          this.distPatch();
-        },
-        (err) => {
-          console.error('Update Error:', err);
-          this.toastr.error(err.error.error.reason);
-        }
-      );
+    if (this.districtForm.invalid) return;
+
+    const updatedData = this.districtForm.value;
+    const selectedCountry = this.jobsArr.find((x: any) => x.id == updatedData.countryId);
+    const selectedState = this.stateArr.find((x: any) => x.id == updatedData.stateId);
+
+    updatedData.countryName = selectedCountry ? selectedCountry.countryName : '';
+    updatedData.stateName = selectedState ? selectedState.stateName : '';
+
+    let storedData = localStorage.getItem('districts');
+    let districts = storedData ? JSON.parse(storedData) : [];
+
+    const index = districts.findIndex((item: any) => item.id === updatedData.id);
+    if (index !== -1) {
+      districts[index] = updatedData;
+      localStorage.setItem('districts', JSON.stringify(districts));
+      this.toastr.success('District Updated Successfully');
+      this.loadDistricts();
+      modal.dismiss('cross click');
     }
   }
-  
-  
-  
+
   deleteModal(modal: any, id: any) {
-    this.modalservice.open(modal, {   windowClass: "custom-modal"});
+    this.modalService.open(modal, { windowClass: 'custom-modal' });
     this.id = id;
   }
+
   onDelete(modal: any) {
-    this.service.distDelete(this.id).subscribe((res) => {
-      this.toastr.success(res.data);
-      modal.dismiss('cross click');
-      this.distPatch();
-    },  (err)=>{
-      this.toastr.error(err.error.error.reason)
-    })
+    let storedData = localStorage.getItem('districts');
+    let districts = storedData ? JSON.parse(storedData) : [];
+
+    districts = districts.filter((item: any) => item.id !== this.id);
+    localStorage.setItem('districts', JSON.stringify(districts));
+
+    this.toastr.success('District Deleted Successfully');
+    this.loadDistricts();
+    modal.dismiss('Cross click');
   }
-  
-
 }
-

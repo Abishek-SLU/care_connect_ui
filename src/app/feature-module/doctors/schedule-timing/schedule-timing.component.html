@@ -4,335 +4,491 @@
     </ngx-spinner>
 </div> -->
 <div class="row">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Schedule Timings</h4>
-                <div class="profile-box">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="card schedule-widget mb-0">
-                                <!-- Schedule Header -->
-                                <div class="schedule-header">
-                                    <!-- Schedule Nav -->
-                                    <div class="schedule-nav">
-                                        <ul class="nav nav-tabs nav-justified">
-                                            <li class="nav-item" *ngFor="let date of dateArr;let i=index;">
-                                                <a class="nav-link" data-bs-toggle="tab" [href]="'#slot_'+date.weekday"
-                                                    [ngClass]="{'active': date.weekday === weekDay}"
-                                                    (click)="dateGet(date.date,date.weekday)">{{date.weekday}}</a>
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                    <!-- /Schedule Nav -->
-                                </div>
-                                <!-- /Schedule Header -->
-
-                                <!-- Schedule Content -->
-
-                                <div class="tab-content schedule-cont">
-
-                                    <!-- Sunday Slot -->
-                                    <div id="slot_SUNDAY" class="tab-pane fade"
-                                        [ngClass]="{'show active': 'SUNDAY' === weekDay}">
-                                        <h4 class="card-title d-flex justify-content-between">
-                                            <span>Sunday Time Slots</span>
-                                            <a class="edit-link" (click)="openModal(modal)" data-bs-toggle="modal"
-                                                *ngIf="!sundaySchedule.length"><i class="fa fa-plus-circle"></i> Add
-                                                Slot</a>
-                                            <a data-bs-toggle="modal"
-                                                (click)="openEditModal(sundaySchedule[0].dayId,modal)" class="edit-link"
-                                                *ngIf="sundaySchedule.length>0"><i class="fa fa-edit me-1"></i>Edit</a>
-                                        </h4>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="doc-times" *ngFor="let shedule of sundaySchedule[0]?.chidObj;">
-                                                <div class="doc-slot-list"> {{convertTo12HourFormat(shedule.startTime)}}
-                                                    - {{convertTo12HourFormat(shedule.endTime)}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-muted mb-0" *ngIf="!sundaySchedule.length">Not Available</p>
-                                    </div>
-
-                                    <!-- /Sunday Slot -->
-
-                                    <!-- Monday Slot -->
-
-                                    <div id="slot_MONDAY" class="tab-pane fade show"
-                                        [ngClass]="{'show active': 'MONDAY' === weekDay}">
-                                        <h4 class="card-title d-flex justify-content-between">
-                                            <span>Monday Time Slots</span>
-                                            <a class="edit-link" (click)="openModal(modal)" data-bs-toggle="modal"
-                                                *ngIf="!mondaySchedule.length"><i class="fa fa-plus-circle"></i> Add
-                                                Slot</a>
-                                            <a data-bs-toggle="modal"
-                                                (click)="openEditModal(mondaySchedule[0].dayId,modal)" class="edit-link"
-                                                *ngIf="mondaySchedule.length"><i class="fa fa-edit me-1"></i>Edit</a>
-                                        </h4>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="doc-times" *ngFor="let shedule of mondaySchedule[0]?.chidObj;">
-                                                <div class="doc-slot-list"> {{convertTo12HourFormat(shedule.startTime)}}
-                                                    - {{convertTo12HourFormat(shedule.endTime)}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-muted mb-0" *ngIf="!mondaySchedule.length">Not Available</p>
-
-                                    </div>
-                                    <!-- /Monday Slot -->
-
-                                    <!-- Tuesday Slot -->
-                                    <div id="slot_TUESDAY" class="tab-pane fade"
-                                        [ngClass]="{'show active': 'TUESDAY' === weekDay}">
-                                        <h4 class="card-title d-flex justify-content-between">
-                                            <span>Tuesday Time Slots</span>
-                                            <a class="edit-link" (click)="openModal(modal)" data-bs-toggle="modal"
-                                                *ngIf="!tuesdaySchedule.length"><i class="fa fa-plus-circle"></i> Add
-                                                Slot</a>
-                                            <a data-bs-toggle="modal"
-                                                (click)="openEditModal(tuesdaySchedule[0].dayId,modal)"
-                                                class="edit-link" *ngIf="tuesdaySchedule.length"><i
-                                                    class="fa fa-edit me-1"></i>Edit</a>
-                                        </h4>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="doc-times" *ngFor="let shedule of tuesdaySchedule[0]?.chidObj;">
-                                                <div class="doc-slot-list"> {{convertTo12HourFormat(shedule.startTime)}}
-                                                    - {{convertTo12HourFormat(shedule.endTime)}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-muted mb-0" *ngIf="!tuesdaySchedule.length">Not Available</p>
-                                    </div>
-                                    <!-- /Tuesday Slot -->
-
-                                    <!-- Wednesday Slot -->
-                                    <div id="slot_WEDNESDAY" class="tab-pane fade"
-                                        [ngClass]="{'show active': 'WEDNESDAY' === weekDay}">
-                                        <h4 class="card-title d-flex justify-content-between">
-                                            <span>Wednesday Time Slots</span>
-                                            <a class="edit-link" (click)="openModal(modal)" data-bs-toggle="modal"
-                                                *ngIf="!wednesdaySchedule.length"><i class="fa fa-plus-circle"></i> Add
-                                                Slot</a>
-                                            <a data-bs-toggle="modal"
-                                                (click)="openEditModal(wednesdaySchedule[0].dayId,modal)"
-                                                class="edit-link" *ngIf="wednesdaySchedule.length"><i
-                                                    class="fa fa-edit me-1"></i>Edit</a>
-                                        </h4>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="doc-times"
-                                                *ngFor="let shedule of wednesdaySchedule[0]?.chidObj;">
-                                                <div class="doc-slot-list"> {{convertTo12HourFormat(shedule.startTime)}}
-                                                    - {{convertTo12HourFormat(shedule.endTime)}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-muted mb-0" *ngIf="!wednesdaySchedule.length">Not Available</p>
-                                    </div>
-                                    <!-- /Wednesday Slot -->
-
-                                    <!-- Thursday Slot -->
-                                    <div id="slot_THURSDAY" class="tab-pane fade"
-                                        [ngClass]="{'show active': 'THURSDAY'=== weekDay}">
-                                        <h4 class="card-title d-flex justify-content-between">
-                                            <span>Thursday Time Slots</span>
-                                            <a class="edit-link" (click)="openModal(modal)" data-bs-toggle="modal"
-                                                *ngIf="!thursdaySchedule.length"><i class="fa fa-plus-circle"></i> Add
-                                                Slot</a>
-                                            <a data-bs-toggle="modal"
-                                                (click)="openEditModal(thursdaySchedule[0].dayId,modal)"
-                                                class="edit-link" *ngIf="thursdaySchedule.length"><i
-                                                    class="fa fa-edit me-1"></i>Edit</a>
-                                        </h4>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="doc-times"
-                                                *ngFor="let shedule of thursdaySchedule[0]?.chidObj;">
-                                                <div class="doc-slot-list"> {{convertTo12HourFormat(shedule.startTime)}}
-                                                    - {{convertTo12HourFormat(shedule.endTime)}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-muted mb-0" *ngIf="!thursdaySchedule.length">Not Available</p>
-                                    </div>
-                                    <!-- /Thursday Slot -->
-
-                                    <!-- Friday Slot -->
-                                    <div id="slot_FRIDAY" class="tab-pane fade"
-                                        [ngClass]="{'show active': 'FRIDAY' === weekDay}">
-                                        <h4 class="card-title d-flex justify-content-between">
-                                            <span>Friday Time Slots</span>
-                                            <a class="edit-link" (click)="openModal(modal)" data-bs-toggle="modal"
-                                                *ngIf="!fridaySchedule.length"><i class="fa fa-plus-circle"></i> Add
-                                                Slot</a>
-                                            <a data-bs-toggle="modal"
-                                                (click)="openEditModal(fridaySchedule[0].dayId,modal)" class="edit-link"
-                                                *ngIf="fridaySchedule.length"><i class="fa fa-edit me-1"></i>Edit</a>
-                                        </h4>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="doc-times" *ngFor="let shedule of fridaySchedule[0]?.chidObj;">
-
-                                                <div class="doc-slot-list">
-                                                    {{ convertTo12HourFormat(shedule.startTime) }} - {{
-                                                    convertTo12HourFormat(shedule.endTime) }}
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-muted mb-0" *ngIf="!fridaySchedule.length">Not Available</p>
-                                    </div>
-                                    <!-- /Friday Slot -->
-
-                                    <!-- Saturday Slot -->
-                                    <div id="slot_SATURDAY" class="tab-pane fade"
-                                        [ngClass]="{'show active': 'SATURDAY' === weekDay}">
-                                        <h4 class="card-title d-flex justify-content-between">
-                                            <span>Saturday Time Slots</span>
-                                            <a class="edit-link" (click)="openModal(modal)" data-bs-toggle="modal"
-                                                *ngIf="!saturdaySchedule.length"><i class="fa fa-plus-circle"></i> Add
-                                                Slot</a>
-                                            <a data-bs-toggle="modal"
-                                                (click)="openEditModal(saturdaySchedule[0].dayId,modal)"
-                                                class="edit-link" *ngIf="saturdaySchedule.length"><i
-                                                    class="fa fa-edit me-1"></i>Edit</a>
-                                        </h4>
-                                        <div class="d-flex flex-wrap">
-                                            <div class="doc-times"
-                                                *ngFor="let shedule of saturdaySchedule[0]?.chidObj;">
-                                                <div class="doc-slot-list"> {{convertTo12HourFormat(shedule.startTime)}}
-                                                    - {{convertTo12HourFormat(shedule.endTime)}}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p class="text-muted mb-0" *ngIf="!saturdaySchedule.length">Not Available</p>
-                                    </div>
-                                    <!-- /Saturday Slot -->
-
-                                </div>
-                                <!-- /Schedule Content -->
-
-                            </div>
-                        </div>
-                    </div>
+  <div class="col-sm-12">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Schedule Timings</h4>
+        <div class="profile-box">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card schedule-widget mb-0">
+                <!-- Schedule Header -->
+                <div class="schedule-header">
+                  <!-- Schedule Nav -->
+                  <div class="schedule-nav">
+                    <ul class="nav nav-tabs nav-justified">
+                      <li
+                        class="nav-item"
+                        *ngFor="let date of dateArr; let i = index"
+                      >
+                        <a
+                          class="nav-link"
+                          data-bs-toggle="tab"
+                          [href]="'#slot_' + date.weekday"
+                          [ngClass]="{ active: date.weekday === weekDay }"
+                          (click)="dateGet(date.date, date.weekday)"
+                          >{{ date.weekday }}</a
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- /Schedule Nav -->
                 </div>
+                <!-- /Schedule Header -->
+
+                <!-- Schedule Content -->
+                <div class="tab-content schedule-cont">
+                  <!-- Reusable day block -->
+                  <!-- Sunday -->
+                  <div
+                    id="slot_SUNDAY"
+                    class="tab-pane fade"
+                    [ngClass]="{ 'show active': 'SUNDAY' === weekDay }"
+                  >
+                    <h4 class="card-title d-flex justify-content-between">
+                      <span>Sunday Time Slots</span>
+                      <a
+                        class="edit-link"
+                        (click)="openModal(modal)"
+                        *ngIf="!sundaySchedule.length"
+                        ><i class="fa fa-plus-circle"></i> Add Slot</a
+                      >
+                      <a
+                        (click)="openEditModal(sundaySchedule[0].dayId, modal)"
+                        class="edit-link"
+                        *ngIf="sundaySchedule.length > 0"
+                        ><i class="fa fa-edit me-1"></i>Edit</a
+                      >
+                    </h4>
+                    <div class="d-flex flex-wrap">
+                      <div
+                        class="doc-times"
+                        *ngFor="let shedule of sundaySchedule[0]?.chidObj"
+                      >
+                        <div class="doc-slot-list">
+                          {{ convertTo12HourFormat(shedule.startTime) }} -
+                          {{ convertTo12HourFormat(shedule.endTime) }}
+                          <span class="ms-1"
+                            >(Max {{ shedule.maxPatients }})</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-muted mb-0" *ngIf="!sundaySchedule.length">
+                      Not Available
+                    </p>
+                  </div>
+
+                  <!-- Monday -->
+                  <div
+                    id="slot_MONDAY"
+                    class="tab-pane fade show"
+                    [ngClass]="{ 'show active': 'MONDAY' === weekDay }"
+                  >
+                    <h4 class="card-title d-flex justify-content-between">
+                      <span>Monday Time Slots</span>
+                      <a
+                        class="edit-link"
+                        (click)="openModal(modal)"
+                        *ngIf="!mondaySchedule.length"
+                        ><i class="fa fa-plus-circle"></i> Add Slot</a
+                      >
+                      <a
+                        (click)="openEditModal(mondaySchedule[0].dayId, modal)"
+                        class="edit-link"
+                        *ngIf="mondaySchedule.length"
+                        ><i class="fa fa-edit me-1"></i>Edit</a
+                      >
+                    </h4>
+                    <div class="d-flex flex-wrap">
+                      <div
+                        class="doc-times"
+                        *ngFor="let shedule of mondaySchedule[0]?.chidObj"
+                      >
+                        <div class="doc-slot-list">
+                          {{ convertTo12HourFormat(shedule.startTime) }} -
+                          {{ convertTo12HourFormat(shedule.endTime) }}
+                          <span class="ms-1"
+                            >(Max {{ shedule.maxPatients }})</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-muted mb-0" *ngIf="!mondaySchedule.length">
+                      Not Available
+                    </p>
+                  </div>
+
+                  <!-- Tuesday -->
+                  <div
+                    id="slot_TUESDAY"
+                    class="tab-pane fade"
+                    [ngClass]="{ 'show active': 'TUESDAY' === weekDay }"
+                  >
+                    <h4 class="card-title d-flex justify-content-between">
+                      <span>Tuesday Time Slots</span>
+                      <a
+                        class="edit-link"
+                        (click)="openModal(modal)"
+                        *ngIf="!tuesdaySchedule.length"
+                        ><i class="fa fa-plus-circle"></i> Add Slot</a
+                      >
+                      <a
+                        (click)="openEditModal(tuesdaySchedule[0].dayId, modal)"
+                        class="edit-link"
+                        *ngIf="tuesdaySchedule.length"
+                        ><i class="fa fa-edit me-1"></i>Edit</a
+                      >
+                    </h4>
+                    <div class="d-flex flex-wrap">
+                      <div
+                        class="doc-times"
+                        *ngFor="let shedule of tuesdaySchedule[0]?.chidObj"
+                      >
+                        <div class="doc-slot-list">
+                          {{ convertTo12HourFormat(shedule.startTime) }} -
+                          {{ convertTo12HourFormat(shedule.endTime) }}
+                          <span class="ms-1"
+                            >(Max {{ shedule.maxPatients }})</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-muted mb-0" *ngIf="!tuesdaySchedule.length">
+                      Not Available
+                    </p>
+                  </div>
+
+                  <!-- Wednesday -->
+                  <div
+                    id="slot_WEDNESDAY"
+                    class="tab-pane fade"
+                    [ngClass]="{ 'show active': 'WEDNESDAY' === weekDay }"
+                  >
+                    <h4 class="card-title d-flex justify-content-between">
+                      <span>Wednesday Time Slots</span>
+                      <a
+                        class="edit-link"
+                        (click)="openModal(modal)"
+                        *ngIf="!wednesdaySchedule.length"
+                        ><i class="fa fa-plus-circle"></i> Add Slot</a
+                      >
+                      <a
+                        (click)="
+                          openEditModal(wednesdaySchedule[0].dayId, modal)
+                        "
+                        class="edit-link"
+                        *ngIf="wednesdaySchedule.length"
+                        ><i class="fa fa-edit me-1"></i>Edit</a
+                      >
+                    </h4>
+                    <div class="d-flex flex-wrap">
+                      <div
+                        class="doc-times"
+                        *ngFor="let shedule of wednesdaySchedule[0]?.chidObj"
+                      >
+                        <div class="doc-slot-list">
+                          {{ convertTo12HourFormat(shedule.startTime) }} -
+                          {{ convertTo12HourFormat(shedule.endTime) }}
+                          <span class="ms-1"
+                            >(Max {{ shedule.maxPatients }})</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <p
+                      class="text-muted mb-0"
+                      *ngIf="!wednesdaySchedule.length"
+                    >
+                      Not Available
+                    </p>
+                  </div>
+
+                  <!-- Thursday -->
+                  <div
+                    id="slot_THURSDAY"
+                    class="tab-pane fade"
+                    [ngClass]="{ 'show active': 'THURSDAY' === weekDay }"
+                  >
+                    <h4 class="card-title d-flex justify-content-between">
+                      <span>Thursday Time Slots</span>
+                      <a
+                        class="edit-link"
+                        (click)="openModal(modal)"
+                        *ngIf="!thursdaySchedule.length"
+                        ><i class="fa fa-plus-circle"></i> Add Slot</a
+                      >
+                      <a
+                        (click)="
+                          openEditModal(thursdaySchedule[0].dayId, modal)
+                        "
+                        class="edit-link"
+                        *ngIf="thursdaySchedule.length"
+                        ><i class="fa fa-edit me-1"></i>Edit</a
+                      >
+                    </h4>
+                    <div class="d-flex flex-wrap">
+                      <div
+                        class="doc-times"
+                        *ngFor="let shedule of thursdaySchedule[0]?.chidObj"
+                      >
+                        <div class="doc-slot-list">
+                          {{ convertTo12HourFormat(shedule.startTime) }} -
+                          {{ convertTo12HourFormat(shedule.endTime) }}
+                          <span class="ms-1"
+                            >(Max {{ shedule.maxPatients }})</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-muted mb-0" *ngIf="!thursdaySchedule.length">
+                      Not Available
+                    </p>
+                  </div>
+
+                  <!-- Friday -->
+                  <div
+                    id="slot_FRIDAY"
+                    class="tab-pane fade"
+                    [ngClass]="{ 'show active': 'FRIDAY' === weekDay }"
+                  >
+                    <h4 class="card-title d-flex justify-content-between">
+                      <span>Friday Time Slots</span>
+                      <a
+                        class="edit-link"
+                        (click)="openModal(modal)"
+                        *ngIf="!fridaySchedule.length"
+                        ><i class="fa fa-plus-circle"></i> Add Slot</a
+                      >
+                      <a
+                        (click)="openEditModal(fridaySchedule[0].dayId, modal)"
+                        class="edit-link"
+                        *ngIf="fridaySchedule.length"
+                        ><i class="fa fa-edit me-1"></i>Edit</a
+                      >
+                    </h4>
+                    <div class="d-flex flex-wrap">
+                      <div
+                        class="doc-times"
+                        *ngFor="let shedule of fridaySchedule[0]?.chidObj"
+                      >
+                        <div class="doc-slot-list">
+                          {{ convertTo12HourFormat(shedule.startTime) }} -
+                          {{ convertTo12HourFormat(shedule.endTime) }}
+                          <span class="ms-1"
+                            >(Max {{ shedule.maxPatients }})</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-muted mb-0" *ngIf="!fridaySchedule.length">
+                      Not Available
+                    </p>
+                  </div>
+
+                  <!-- Saturday -->
+                  <div
+                    id="slot_SATURDAY"
+                    class="tab-pane fade"
+                    [ngClass]="{ 'show active': 'SATURDAY' === weekDay }"
+                  >
+                    <h4 class="card-title d-flex justify-content-between">
+                      <span>Saturday Time Slots</span>
+                      <a
+                        class="edit-link"
+                        (click)="openModal(modal)"
+                        *ngIf="!saturdaySchedule.length"
+                        ><i class="fa fa-plus-circle"></i> Add Slot</a
+                      >
+                      <a
+                        (click)="
+                          openEditModal(saturdaySchedule[0].dayId, modal)
+                        "
+                        class="edit-link"
+                        *ngIf="saturdaySchedule.length"
+                        ><i class="fa fa-edit me-1"></i>Edit</a
+                      >
+                    </h4>
+                    <div class="d-flex flex-wrap">
+                      <div
+                        class="doc-times"
+                        *ngFor="let shedule of saturdaySchedule[0]?.chidObj"
+                      >
+                        <div class="doc-slot-list">
+                          {{ convertTo12HourFormat(shedule.startTime) }} -
+                          {{ convertTo12HourFormat(shedule.endTime) }}
+                          <span class="ms-1"
+                            >(Max {{ shedule.maxPatients }})</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-muted mb-0" *ngIf="!saturdaySchedule.length">
+                      Not Available
+                    </p>
+                  </div>
+                </div>
+                <!-- /Schedule Content -->
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
-<!-- /Add Time Slot Modal -->
-
+<!-- /Add/Edit Time Slot Modal -->
 <ng-template #modal let-modal>
-    <div class="modal-header  ">
-        <h4 class="modal-title">Add Time Slots</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        </button>
-    </div>
-    <div class="modal-content ml-1">
-        <!-- <div class="date  my-4">
-            <span>
-                Date :{{getCurrentDate(date)}}</span>
-        </div> -->
+  <div class="modal-header">
+    <h4 class="modal-title">{{ dayId ? "Edit" : "Add" }} Time Slots</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
 
-        <form [formGroup]="addTimeSlotForm">
-            <div>
-                <div class="hours-info" formArrayName="drScheduleObj">
-                    <div class="row form-row hours-cont"
-                        *ngFor="let addTimeSlot of addTimeSlotInfo.controls; let i = index" [formGroupName]="i">
-                        <div class="col-12 py-2 px-4">
-                            <div class="row form-row">
-                                <div class="col-12 col-md-6 col-lg-3">
-                                    <div class="form-group">
-                                        <label>Clinic Name</label>
-                                        <select class="form-control form-select" formControlName="clinicId"
-                                            [ngClass]="{ 'is-invalid': validation && addTimeSlot.get('clinicId')?.errors || addTimeSlot.get('clinicId')?.invalid && (addTimeSlot.get('clinicId')?.dirty ||addTimeSlot.get('clinicId')?.touched)}">
-                                            <option *ngFor="let clinic of clinicGet" value="{{clinic.clinicId}}">
-                                                {{clinic.clinicName}}</option>
-                                        </select>
-                                        <div *ngIf="validation && addTimeSlot.get('clinicId')?.errors || addTimeSlot.get('clinicId')?.invalid && (addTimeSlot.get('clinicId')?.touched)"
-                                            class="invalid-feedback req">
-                                            *Required
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-6 col-lg-2">
-                                    <div class="form-group">
-                                        <label>Max Patients</label>
-                                        <select class="form-control form-select" formControlName="maxPatients"
-                                            [ngClass]="{ 'is-invalid': validation && addTimeSlot.get('maxPatients')?.errors || addTimeSlot.get('maxPatients')?.invalid && (addTimeSlot.get('maxPatients')?.dirty ||addTimeSlot.get('maxPatients')?.touched)}">
-                                            <option value="">-:-</option>
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                            <option>6</option>
-                                            <option>7</option>
-                                            <option>8</option>
-                                            <option>9</option>
-                                            <option>10</option>
-                                            <option>11</option>
-                                            <option>12</option>
-                                            <option>13</option>
-                                            <option>14</option>
-                                            <option>15</option>
-                                            <option>16</option>
-                                            <option>17</option>
-                                            <option>18</option>
-                                            <option>19</option>
-                                            <option>20</option>
-                                        </select>
-                                        <div *ngIf="validation && addTimeSlot.get('maxPatients')?.errors || addTimeSlot.get('maxPatients')?.invalid && (addTimeSlot.get('maxPatients')?.touched)"
-                                            class="invalid-feedback req">
-                                            *Required
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-5 col-lg-3">
-                                    <div class="form-group">
-                                        <label>Start Time</label>
-                                        <input type="time" class="form-control" formControlName="startTime"
-                                            [ngClass]="{ 'is-invalid': (validation || showRequiredMessage) && addTimeSlot.get('startTime')?.errors || addTimeSlot.get('startTime')?.invalid && (addTimeSlot.get('startTime')?.dirty ||addTimeSlot.get('startTime')?.touched)}">
-                                        <div *ngIf="(validation || showRequiredMessage) && addTimeSlot.get('startTime')?.errors || addTimeSlot.get('startTime')?.invalid && (addTimeSlot.get('startTime')?.touched)"
-                                            class="invalid-feedback req">
-                                            *Required
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-5 col-lg-3">
-                                    <div class="form-group">
-                                        <label>End Time</label>
-                                        <input type="time" class="form-control" formControlName="endTime"
-                                            [ngClass]="{ 'is-invalid': validation && addTimeSlot.get('endTime')?.errors || addTimeSlot.get('endTime')?.invalid && (addTimeSlot.get('endTime')?.dirty ||addTimeSlot.get('endTime')?.touched)}">
-                                        <div *ngIf="validation && addTimeSlot.get('endTime')?.errors || addTimeSlot.get('endTime')?.invalid && (addTimeSlot.get('endTime')?.touched)"
-                                            class="invalid-feedback req">
-                                            *Required
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-12 col-md-2 col-lg-1">
-                                    <label class="d-md-block d-sm-none d-none">&nbsp;</label>
-                                    <a href="javascript:void(0);" (click)="deleteAddClinic(modal,addTimeSlot,i)"
-                                        class="btn bg-danger-light trash"><i class="far fa-trash-alt trashicon"></i></a>
-                                </div>
-                            </div>
-                        </div>
+  <div class="modal-content ml-1">
+    <form [formGroup]="addTimeSlotForm">
+      <div>
+        <div class="hours-info" formArrayName="drScheduleObj">
+          <div
+            class="row form-row hours-cont"
+            *ngFor="let addTimeSlot of addTimeSlotInfo.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <div class="col-12 py-2 px-4">
+              <div class="row form-row">
+                <div class="col-12 col-md-4">
+                  <div class="form-group">
+                    <label>Start Time</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      formControlName="startTime"
+                      (change)="passTime($event, i)"
+                      [ngClass]="{
+                        'is-invalid':
+                          ((validation || showRequiredMessage) &&
+                            addTimeSlot.get('startTime')?.errors) ||
+                          (addTimeSlot.get('startTime')?.invalid &&
+                            (addTimeSlot.get('startTime')?.dirty ||
+                              addTimeSlot.get('startTime')?.touched))
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        ((validation || showRequiredMessage) &&
+                          addTimeSlot.get('startTime')?.errors) ||
+                        (addTimeSlot.get('startTime')?.invalid &&
+                          addTimeSlot.get('startTime')?.touched)
+                      "
+                      class="invalid-feedback req"
+                    >
+                      *Required
                     </div>
-                    <div class="add-more m-0">
-                        <a href="javascript:void(0);" (click)="addClinicButton()"><i class="fa fa-plus-circle"></i>
-                            Add
-                            More</a>
+                  </div>
+                </div>
+
+                <div class="col-12 col-md-4">
+                  <div class="form-group">
+                    <label>End Time</label>
+                    <input
+                      type="time"
+                      class="form-control"
+                      formControlName="endTime"
+                      (change)="passEndTime($event, i)"
+                      [ngClass]="{
+                        'is-invalid':
+                          (validation && addTimeSlot.get('endTime')?.errors) ||
+                          (addTimeSlot.get('endTime')?.invalid &&
+                            (addTimeSlot.get('endTime')?.dirty ||
+                              addTimeSlot.get('endTime')?.touched))
+                      }"
+                    />
+                    <div
+                      *ngIf="
+                        (validation && addTimeSlot.get('endTime')?.errors) ||
+                        (addTimeSlot.get('endTime')?.invalid &&
+                          addTimeSlot.get('endTime')?.touched)
+                      "
+                      class="invalid-feedback req"
+                    >
+                      *Required
                     </div>
+                  </div>
                 </div>
-                <div class="submit-section text-end me-3 mb-3">
-                    <button type="submit" class="btn btn-primary submit-btn" (click)="saveChanges(modal)">Save
-                        Changes</button>
+
+                <div class="col-12 col-md-3">
+                  <div class="form-group">
+                    <label>Max Patients</label>
+                    <select
+                      class="form-control form-select"
+                      formControlName="maxPatients"
+                      [ngClass]="{
+                        'is-invalid':
+                          (validation &&
+                            addTimeSlot.get('maxPatients')?.errors) ||
+                          (addTimeSlot.get('maxPatients')?.invalid &&
+                            (addTimeSlot.get('maxPatients')?.dirty ||
+                              addTimeSlot.get('maxPatients')?.touched))
+                      }"
+                    >
+                      <option value="">-:-</option>
+                      <option
+                        *ngFor="
+                          let n of [
+                            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+                            16, 17, 18, 19, 20
+                          ]
+                        "
+                        [value]="n"
+                      >
+                        {{ n }}
+                      </option>
+                    </select>
+                    <div
+                      *ngIf="
+                        (validation &&
+                          addTimeSlot.get('maxPatients')?.errors) ||
+                        (addTimeSlot.get('maxPatients')?.invalid &&
+                          addTimeSlot.get('maxPatients')?.touched)
+                      "
+                      class="invalid-feedback req"
+                    >
+                      *Required
+                    </div>
+                  </div>
                 </div>
+
+                <div class="col-12 col-md-1 d-flex align-items-end">
+                  <!-- <a href="javascript:void(0);" (click)="deleteAddClinic(modal, addTimeSlot, i)" class="btn bg-danger-light trash"
+                    ><i class="far fa-trash-alt trashicon"></i
+                  ></a> -->
+                </div>
+              </div>
             </div>
-        </form>
-    </div>
+          </div>
+
+          <div class="add-more m-0">
+            <a href="javascript:void(0);" (click)="addClinicButton()"
+              ><i class="fa fa-plus-circle"></i> Add More</a
+            >
+          </div>
+        </div>
+
+        <div class="submit-section text-end me-3 mb-3">
+          <button
+            type="submit"
+            class="btn btn-primary submit-btn"
+            (click)="saveChanges(modal)"
+          >
+            Save Changes
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
 </ng-template>
-<!-- /Add Time Slot Modal -->

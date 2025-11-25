@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MedicalDetailsRoutingModule } from './medical-details-routing.module';
 import { MedicalDetailsComponent } from './medical-details.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     MedicalDetailsRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ]
 })
 export class MedicalDetailsModule { }
