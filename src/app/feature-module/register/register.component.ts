@@ -23,6 +23,7 @@ export class RegisterComponent implements OnInit {
   showChangePassword = false;
   patientRegisterForm!: FormGroup;
   linkName = 'Are you a Doctor?';
+  headName = 'Patient Register';
 
   constructor(
     private fb: FormBuilder,
@@ -99,11 +100,8 @@ export class RegisterComponent implements OnInit {
     this.service.userRegisterUpdate(this.patientRegisterForm.value).subscribe(
       (res: any) => {
         this.toastr.success('Account created successfully!');
-        if (this.linkName === 'Are you a Doctor?') {
-          this.router.navigate(["/doctors/dashboard"]);
-          return;
-        }   
-        this.router.navigate(["/patients/dashboard"]);
+
+        this.router.navigate(["/login"]);
       },
       (err) => {
         this.toastr.error(err.error?.error?.reason || 'Registration update failed');
@@ -128,5 +126,7 @@ export class RegisterComponent implements OnInit {
         : '8a75f7bf-09e2-4e6f-bd1f-731cc6c4f120'
     });
     this.linkName = this.linkName === 'Are you a Doctor?' ? 'Are you a Patient?' : 'Are you a Doctor?';
+    this.headName = this.headName === 'Doctor Register' ? 'Patient Register' : 'Doctor Register';
+
   }
 }

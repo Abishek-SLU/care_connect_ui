@@ -88,7 +88,7 @@
         </li>
         <li [class.active]="name === 'My Patients' || page === 'patientslist'">
           <a
-            [routerLink]="'patientslist'"
+            [routerLink]="'patients-list'"
             (click)="navigate('My Patients')"
             routerLinkActive="active"
           >
@@ -102,7 +102,7 @@
           "
           (click)="navigate('Schedule Timings')"
         >
-          <a [routerLink]="'scheduletiming'" routerLinkActive="active">
+          <a [routerLink]="'schedule-timing'" routerLinkActive="active">
             <i class="fas fa-hourglass-start"></i>
             <span>Schedule Timings</span>
           </a>
@@ -113,12 +113,12 @@
           "
           (click)="navigate('Manage Schedule')"
         >
-          <a [routerLink]="'manageschedule'" routerLinkActive="active">
+          <a [routerLink]="'manage-schedule'" routerLinkActive="active">
             <i class="fas fa-clipboard-list"></i>
             <span>Manage Schedule</span>
           </a>
         </li>
-        <li [class.active]="name === 'Invoices' || page === 'invoice'">
+        <!-- <li [class.active]="name === 'Invoices' || page === 'invoice'">
           <a
             [routerLink]="'invoice'"
             routerLinkActive="active"
@@ -127,7 +127,7 @@
             <i class="fas fa-file-invoice"></i>
             <span>Invoices</span>
           </a>
-        </li>
+        </li> -->
         <li [class.active]="name === 'Accounts' || page === 'accounts'">
           <a
             [routerLink]="'accounts'"

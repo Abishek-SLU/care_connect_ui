@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from 'src/app/core/service/service.index';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-appointments',
@@ -7,71 +7,92 @@ import { CommonService } from 'src/app/core/service/service.index';
   styleUrls: ['./appointments.component.css']
 })
 export class AppointmentsComponent implements OnInit {
-list : any = []
-  patientId:any;
-  appointments : any = [];
-  patients :  any = [];
-  appointmentId:any;
-  constructor(public commonService:CommonService) { }
+  patients: any[] = [];
+  appointments: any[] = [];
+  filteredAppointments: any[] = [];
+
+  constructor(private toastr: ToastrService) { }
 
   ngOnInit(): void {
-      
-      this.getPatients();
-      this.getAppointments();
-		  this.list = this.commonService.getJSON();
-		  this.list = this.list.filter((a:any)=>a.status === 0);
+    this.loadData();
   }
 
-  confirm(value:any) {
-    delete this.appointmentId['patients']
-    let data = {
-      ...this.appointmentId
+  // Load data from localStorage (if empty, create dummy data)
+  loadData() {
+    const savedPatients = localStorage.getItem('patientsData');
+    const savedAppointments = localStorage.getItem('appointmentsData');
+
+    if (savedPatients) {
+      this.patients = JSON.parse(savedPatients);
+    } else {
+      this.patients = [
+        {
+          id: 1,
+          name: 'Richard Wilson',
+          img: 'assets/img/patients/patient.jpg',
+          email: 'richard@example.com',
+          phone: '+1 202-555-0125',
+          address: '806 Twin Willow Lane',
+        },
+        {
+          id: 2,
+          name: 'Champagne',
+          img: 'assets/img/patients/patient2.jpg',
+          email: 'champagne@example.com',
+          phone: '+1 202-555-0177',
+          address: '21 Broadway, NY',
+        }
+      ];
+      localStorage.setItem('patientsData', JSON.stringify(this.patients));
     }
-    data['status'] = 'accept';
-    this.commonService.updateAppointment(data,data.id)
-      .subscribe(res=>{
-        // this.modalRef.hide();
-        this.appointments = this.appointments.filter((a:any)=>a.id != data.id);
-        this.getPatients();
-        this.getAppointments();
-      });
-   
-  }
 
-  
-  decline() {
-    delete this.appointmentId['patients']
-    let data = {
-      ...this.appointmentId
+    if (savedAppointments) {
+      this.appointments = JSON.parse(savedAppointments);
+    } else {
+      this.appointments = [
+        { id: 1, patientId: 1, date: '14 Nov 2019', time: '10:00 AM', status: 'active' },
+        { id: 2, patientId: 2, date: '15 Nov 2019', time: '11:30 AM', status: 'active' }
+      ];
+      localStorage.setItem('appointmentsData', JSON.stringify(this.appointments));
     }
-    data['status'] = 'decline';
-    this.commonService.updateAppointment(data,data.id)
-      .subscribe(res=>{
-        this.appointments = this.appointments.filter((a:any)=>a.id != data.id);
-        this.getPatients();
-        this.getAppointments();
-      })
+
+    this.syncPatients();
   }
 
-  getAppointments() {
-    this.commonService.getAppointments()
-      .subscribe(res=>{
-        this.appointments = res;
-        let scope = this;
-        this.appointments.forEach((index:any)=>{
-          let filter = scope.patients.filter((a:any)=>a.key === index.patient_key);
-          if(filter.length != 0) {
-            index['patients'] = filter[0];
-          }
-        })
-        this.appointments = this.appointments.filter((a:any)=>a.status === 'active');
-      })
+  // Merge patient info into appointment for display
+  syncPatients() {
+    this.filteredAppointments = this.appointments
+      .filter(a => a.status === 'active')
+      .map(a => ({
+        ...a,
+        patient: this.patients.find(p => p.id === a.patientId)
+      }));
   }
 
-  getPatients() {
-    this.commonService.getpatients()
-    .subscribe(res=>{
-      this.patients = res;
-    })
+  // Accept Appointment
+  accept(appointment: any) {
+    const index = this.appointments.findIndex(a => a.id === appointment.id);
+    if (index !== -1) {
+      this.appointments[index].status = 'accepted';
+      this.saveAppointments();
+      this.toastr.success(`Appointment with ${appointment.patient.name} accepted`);
+    }
+    this.syncPatients();
+  }
+
+  // Decline Appointment
+  decline(appointment: any) {
+    const index = this.appointments.findIndex(a => a.id === appointment.id);
+    if (index !== -1) {
+      this.appointments[index].status = 'declined';
+      this.saveAppointments();
+      this.toastr.error(`Appointment with ${appointment.patient.name} declined`);
+    }
+    this.syncPatients();
+  }
+
+  // Save appointments to localStorage
+  saveAppointments() {
+    localStorage.setItem('appointmentsData', JSON.stringify(this.appointments));
   }
 }

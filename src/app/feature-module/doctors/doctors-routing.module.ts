@@ -26,6 +26,13 @@ const routes: Routes = [
             (m) => m.ScheduleTimingModule
           ),
       },
+      // {
+      //   path: 'manage-schedule',
+      //   loadChildren: () =>
+      //     import('./manage-schedule/manage-schedule.module').then(
+      //       (m) => m.ManageScheduleModule
+      //     ),
+      // },
       {
         path: 'patients-list',
         loadChildren: () =>

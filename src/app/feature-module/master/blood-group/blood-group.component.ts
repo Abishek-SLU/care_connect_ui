@@ -1,12 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
-import { BloodgroupService } from 'src/app/core/service/bloodgroup/bloodgroup.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-blood-group',
@@ -14,110 +10,107 @@ import { BloodgroupService } from 'src/app/core/service/bloodgroup/bloodgroup.se
   styleUrls: ['./blood-group.component.css']
 })
 export class BloodGroupComponent implements OnInit {
-  jobsArr: any;
+  jobsArr: any[] = [];
   bloodGroupform!: FormGroup;
   submitted = false;
   id: any;
+
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router,
-    private route: ActivatedRoute,
-    private service: BloodgroupService,
     private modalService: NgbModal,
     private toastr: ToastrService,
     private spinner: NgxSpinnerService
-
   ) { }
 
   ngOnInit(): void {
     this.bloodGroupform = this.formBuilder.group({
       id: [null],
-      name: [null, [Validators.required]],
-      // status:'ACTIVE'
-      // status: [null, [Validators.required]]
-    })
-    this.bloodgroupPatch();
-
-
+      name: [null, [Validators.required]]
+    });
+    this.loadBloodGroups();
   }
+
   get b() {
     return this.bloodGroupform.controls;
   }
+
+  loadBloodGroups() {
+    this.spinner.show();
+    const storedData = localStorage.getItem('bloodGroups');
+    this.jobsArr = storedData ? JSON.parse(storedData) : [];
+    this.spinner.hide();
+  }
+
   newBloodGroup(modal: any) {
-    this.modalService.open(modal,{   windowClass: "custom-modal" });
+    this.modalService.open(modal, { windowClass: "custom-modal" });
     this.submitted = false;
     this.bloodGroupform.reset({});
   }
+
   onSubmit(modal: any) {
     this.submitted = true;
-    if (this.bloodGroupform.invalid) {
-      return;
-    } else {
-      this.service.bloodgroupCreate(this.bloodGroupform.value).subscribe(res => {
-        modal.dismiss('Cross click');
-        this.bloodgroupPatch();
-        this.toastr.success(res.data);
-        this.bloodGroupform.reset({});
-      },
-        (err) => {
-          this.toastr.error(err.error.error.reason);
-        }
-      )
+    if (this.bloodGroupform.invalid) return;
 
-    }
+    const data = this.bloodGroupform.value;
+    let storedData = localStorage.getItem('bloodGroups');
+    let bloodGroups = storedData ? JSON.parse(storedData) : [];
+
+    data.id = new Date().getTime();
+    bloodGroups.push(data);
+    localStorage.setItem('bloodGroups', JSON.stringify(bloodGroups));
+
+    this.toastr.success('Blood Group Created Successfully');
+    this.loadBloodGroups();
+    modal.dismiss('Cross click');
+    this.bloodGroupform.reset({});
   }
-  bloodgroupPatch() {
-    this.spinner.show();
-    this.service.bloodgroupGet().subscribe((res) => {
-      this.jobsArr = res.data;
-      this.spinner.hide();
-      console.log(this.jobsArr)
-    }, (err) => {
-      this.toastr.error(err.error.error.reason);
-      this.spinner.hide();
-    }
-    )
-  }
+
   onEdit(modal: any, id: any) {
-    this.service.bloodgroupEdit(id).subscribe((res) => {
+    const storedData = localStorage.getItem('bloodGroups');
+    const bloodGroups = storedData ? JSON.parse(storedData) : [];
+    const record = bloodGroups.find((item: any) => item.id === id);
+
+    if (record) {
       this.bloodGroupform.patchValue({
-        id: res.data.id,
-        name: res.data.name,
-       
-      })
-      this.modalService.open(modal, { windowClass: "custom-modal"});
-    })
+        id: record.id,
+        name: record.name
+      });
+      this.modalService.open(modal, { windowClass: "custom-modal" });
+    }
   }
-  deleteModal(modal: any, id: any) {
-    this.modalService.open(modal, { windowClass: "custom-modal"});
-    this.id = id;
-  }
+
   onUpdate(modal: any) {
     this.submitted = true;
-    if (this.bloodGroupform.invalid) {
-      return;
-    }
-    else {
-      this.service.bloodgroupUpdate(this.bloodGroupform.value).subscribe((res) => {
-        this.toastr.success(res.data);
-        modal.dismiss('cross click');
-        this.bloodgroupPatch();
-      },
-        (err) => {
-          this.toastr.error(err.error.error.reason);
-        }
-      )
+    if (this.bloodGroupform.invalid) return;
+
+    const updatedData = this.bloodGroupform.value;
+    let storedData = localStorage.getItem('bloodGroups');
+    let bloodGroups = storedData ? JSON.parse(storedData) : [];
+
+    const index = bloodGroups.findIndex((item: any) => item.id === updatedData.id);
+    if (index !== -1) {
+      bloodGroups[index] = updatedData;
+      localStorage.setItem('bloodGroups', JSON.stringify(bloodGroups));
+      this.toastr.success('Blood Group Updated Successfully');
+      this.loadBloodGroups();
+      modal.dismiss('cross click');
     }
   }
+
+  deleteModal(modal: any, id: any) {
+    this.modalService.open(modal, { windowClass: "custom-modal" });
+    this.id = id;
+  }
+
   onDelete(modal: any) {
-    this.service.bloodgroupDelete(this.id).subscribe((res) => {
-      this.toastr.success(res.data);
-      this.bloodgroupPatch();
-      modal.dismiss('Cross click');
-    },
-      (err) => {
-        this.toastr.error(err.error.error.reason)
-      }
-    )
+    let storedData = localStorage.getItem('bloodGroups');
+    let bloodGroups = storedData ? JSON.parse(storedData) : [];
+
+    bloodGroups = bloodGroups.filter((item: any) => item.id !== this.id);
+    localStorage.setItem('bloodGroups', JSON.stringify(bloodGroups));
+
+    this.toastr.success('Blood Group Deleted Successfully');
+    this.loadBloodGroups();
+    modal.dismiss('Cross click');
   }
 }
