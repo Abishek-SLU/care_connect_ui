@@ -8,7 +8,208 @@
       <div class="card-body">
         <div class="pro-widget-content">
           <div class="profile-info-widget">
-            <a
+        <!-- <!-- <div>
+    <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"
+  >
+    <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
+  </ngx-spinner>
+</div> -->
+-->
+<div class="container-fluid">
+  <div class="col-12 dct-appoinment">
+    <div class="card">
+      <div class="card-body pt-0">
+        <div class="user-tabs">
+          <ul
+            ngbNav
+            #navCont="ngbNav"
+            [activeId]="activeKey"
+            class="nav nav-tabs nav-tabs-bottom nav-justified flex-wrap"
+          >
+            <li [ngbNavItem]="1" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab">Accepted</a>
+              <ng-template ngbNavContent>
+                <div class="row row-grid tab-pane show active" id="Accepted">
+                  <div
+                    class="col-md-6 col-lg-4 col-xl-3"
+                    *ngFor="let patient of patients; let i = index"
+                  >
+                    <div class="card widget-profile pat-widget-profile">
+                      <div class="card-body">
+                        <div class="pro-widget-content">
+                          <div class="profile-info-widget">
+                            <div class="profile-det-info">
+                              <!-- <img src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                                                            class="img-fluid" alt="Darren"> -->
+                              <!-- <a href="javascript:void(0)" class="img-fluid" *ngIf="patient">
+                                                                <img *ngIf="patient.doctorData"[src]="patient?.patientImage"
+                                                                src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"></a> -->
+                              <a>
+                                <img
+                                  *ngIf="patient.doctorData"
+                                  [src]="patient.doctorData?.patientImage"
+                                  class="img-fluid rounded-circle"
+                                  alt="Image"
+                                />
+                                <img
+                                  *ngIf="!patient.doctorData"
+                                  class="img-fluid rounded-circle"
+                                  src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                                />
+                              </a>
+
+                              <h3 class="name mt-2">
+                                <a (click)="viewPatient(patient.patientId)">{{
+                                  patient.patientName
+                                }}</a>
+                              </h3>
+
+                              <div class="patient-details">
+                                <!-- <h5><b>Patient ID :</b> {{patient.patientId}}</h5> -->
+                                <h5
+                                  class="mb-0"
+                                  *ngIf="patient?.city || patient.state"
+                                >
+                                  <i class="fas fa-map-marker-alt"></i>
+                                  {{ patient.city }},{{ patient.state }}
+                                </h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="patient-info">
+                          <ul>
+                            <li>
+                              Phone
+                              <span>+{{ patient.mobileNumber || "-" }}</span>
+                            </li>
+                            <li>
+                              Gender
+                              <span
+                                >{{ patient.gender || "-" }}
+                                {{ patient.patients?.type }}</span
+                              >
+                            </li>
+                            <li>
+                              Blood Group
+                              <span>{{ patient.bloodGroup || "-" }}</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--  <h4 *ngIf="appointments.length === 0" style="text-align:center;margin-top:1em;">No patients</h4 -->
+                </div>
+                <div *ngIf="patients?.length === 0">
+                  <div class="text-center">
+                    <i
+                      class="fas fa-search"
+                      style="font-size: 36px; opacity: 70%"
+                    ></i>
+                    <h5 class="mt-4">No data found</h5>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+            <li [ngbNavItem]="2" class="nav-item">
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab"
+                ><span>Completed</span></a
+              >
+              <ng-template ngbNavContent>
+                <div class="row row-grid tab-pane" id="Completed">
+                  <div
+                    class="col-md-6 col-lg-4 col-xl-3"
+                    *ngFor="let patient of completed; let i = index"
+                  >
+                    <div class="card widget-profile pat-widget-profile">
+                      <div class="card-body">
+                        <div class="pro-widget-content">
+                          <div class="profile-info-widget">
+                            <!-- <a [routerLink]="'/doctors/patients-profile'" class="booking-doc-img">
+                                                            <img [src]="patient.img" alt="User Image">
+                                                        </a> -->
+                            <div class="profile-det-info">
+                              <a>
+                                <img
+                                  *ngIf="patient.doctorData"
+                                  [src]="patient.doctorData?.patientImage"
+                                  class="img-fluid rounded-circle"
+                                  alt="Image"
+                                />
+                                <img
+                                  *ngIf="!patient.doctorData"
+                                  class="img-fluid rounded-circle"
+                                  src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                                />
+                              </a>
+
+                              <h3 class="name mt-2">
+                                <a (click)="viewPatient(patient.patientId)">{{
+                                  patient.patientName
+                                }}</a>
+                              </h3>
+
+                              <div class="patient-details">
+                                <!-- <h5><b>Patient ID :</b> {{patient.patientId}}</h5> -->
+                                <h5
+                                  class="mb-0"
+                                  *ngIf="patient?.city || patient.state"
+                                >
+                                  <i class="fas fa-map-marker-alt"></i>
+                                  {{ patient.city }},{{ patient.state }}
+                                </h5>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="patient-info">
+                          <ul>
+                            <li>
+                              Phone
+                              <span>+{{ patient.mobileNumber || "-" }}</span>
+                            </li>
+                            <li>
+                              Gender
+                              <span
+                                >{{ patient.gender || "-" }}
+                                {{ patient.patients?.type }}</span
+                              >
+                            </li>
+                            <li>
+                              Blood Group
+                              <span>{{ patient.bloodGroup || "-" }}</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <!--  <h4 *ngIf="appointments.length === 0" style="text-align:center;margin-top:1em;">No patients</h4 -->
+                </div>
+                <div *ngIf="completed?.length === 0">
+                  <div class="text-center">
+                    <i
+                      class="fas fa-search"
+                      style="font-size: 36px; opacity: 70%"
+                    ></i>
+                    <h5 class="mt-4">No data found</h5>
+                  </div>
+                </div>
+              </ng-template>
+            </li>
+          </ul>
+          <div [ngbNavOutlet]="navCont"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <a
               [routerLink]="'/doctors/patients-profile'"
               class="booking-doc-img"
             >
