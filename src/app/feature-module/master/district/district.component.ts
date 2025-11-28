@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from 'src/app/core/service/common/common.service';
 
 @Component({
   selector: 'app-district',
@@ -14,6 +15,7 @@ export class DistrictComponent implements OnInit {
   submitted = false;
   distArr: any[] = [];
   stateArr: any[] = [];
+  allStates: any[] = [];
   jobsArr: any[] = [];
   id: any;
 
@@ -21,7 +23,8 @@ export class DistrictComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
@@ -41,126 +44,160 @@ export class DistrictComponent implements OnInit {
     return this.districtForm.controls;
   }
 
-  loadCountries() {
+  loadCountries(): void {
     this.spinner.show();
-    const storedData = localStorage.getItem('countries');
-    this.jobsArr = storedData ? JSON.parse(storedData) : [];
-    this.spinner.hide();
+    this.commonService.getCountry().subscribe({
+      next: (res: any) => {
+        this.jobsArr = res?.data || [];
+        this.spinner.hide();
+      },
+      error: () => {
+        this.jobsArr = [];
+        this.spinner.hide();
+        this.toastr.error('Failed to load countries');
+      }
+    });
   }
 
-  loadStates() {
+  loadStates(): void {
     this.spinner.show();
-    const storedData = localStorage.getItem('states');
-    this.stateArr = storedData ? JSON.parse(storedData) : [];
-    this.spinner.hide();
+    this.commonService.getState().subscribe({
+      next: (res: any) => {
+        this.allStates = res?.data || [];
+        this.stateArr = [];
+        this.spinner.hide();
+      },
+      error: () => {
+        this.allStates = [];
+        this.stateArr = [];
+        this.spinner.hide();
+        this.toastr.error('Failed to load states');
+      }
+    });
   }
 
-  loadDistricts() {
+  loadDistricts(): void {
     this.spinner.show();
-    const storedData = localStorage.getItem('districts');
-    this.distArr = storedData ? JSON.parse(storedData) : [];
-    this.spinner.hide();
+    this.commonService.getCity().subscribe({
+      next: (res: any) => {
+        this.distArr = res?.data || [];
+        this.spinner.hide();
+      },
+      error: () => {
+        this.distArr = [];
+        this.spinner.hide();
+        this.toastr.error('Failed to load cities');
+      }
+    });
   }
 
-  newDistrict(modal: any) {
-    this.modalService.open(modal, { windowClass: 'custom-modal' });
+  newDistrict(modal: any): void {
     this.submitted = false;
-    this.districtForm.reset({});
-  }
-
-  onSubmit(modal: any) {
-    this.submitted = true;
-    if (this.districtForm.invalid) return;
-
-    const data = this.districtForm.value;
-    const selectedCountry = this.jobsArr.find((x: any) => x.id == data.countryId);
-    const selectedState = this.stateArr.find((x: any) => x.id == data.stateId);
-
-    data.id = new Date().getTime();
-    data.countryName = selectedCountry ? selectedCountry.countryName : '';
-    data.stateName = selectedState ? selectedState.stateName : '';
-
-    let storedData = localStorage.getItem('districts');
-    let districts = storedData ? JSON.parse(storedData) : [];
-
-    districts.push(data);
-    localStorage.setItem('districts', JSON.stringify(districts));
-
-    this.toastr.success('District Created Successfully');
-    this.loadDistricts();
-    modal.dismiss('Cross click');
-    this.districtForm.reset({});
-  }
-
-  onEdit(modal: any, id: any) {
-    const storedData = localStorage.getItem('districts');
-    const districts = storedData ? JSON.parse(storedData) : [];
-    const record = districts.find((item: any) => item.id === id);
-
-    if (record) {
-      const selectedCountryId = record.countryId;
-      this.stateArr = this.getStatesByCountry(selectedCountryId);
-
-      this.districtForm.patchValue({
-        id: record.id,
-        countryId: record.countryId,
-        stateId: record.stateId,
-        districtName: record.districtName,
-        shortName: record.shortName
-      });
-      this.modalService.open(modal, { windowClass: 'custom-modal' });
-    }
-  }
-
-  getStatesByCountry(countryId: any) {
-    const storedStates = localStorage.getItem('states');
-    const allStates = storedStates ? JSON.parse(storedStates) : [];
-    return allStates.filter((s: any) => s.countryId == countryId);
-  }
-
-  stateGet(event: any) {
-    const selectedCountryId = event.target.value;
-    this.stateArr = this.getStatesByCountry(selectedCountryId);
-  }
-
-  onUpdate(modal: any) {
-    this.submitted = true;
-    if (this.districtForm.invalid) return;
-
-    const updatedData = this.districtForm.value;
-    const selectedCountry = this.jobsArr.find((x: any) => x.id == updatedData.countryId);
-    const selectedState = this.stateArr.find((x: any) => x.id == updatedData.stateId);
-
-    updatedData.countryName = selectedCountry ? selectedCountry.countryName : '';
-    updatedData.stateName = selectedState ? selectedState.stateName : '';
-
-    let storedData = localStorage.getItem('districts');
-    let districts = storedData ? JSON.parse(storedData) : [];
-
-    const index = districts.findIndex((item: any) => item.id === updatedData.id);
-    if (index !== -1) {
-      districts[index] = updatedData;
-      localStorage.setItem('districts', JSON.stringify(districts));
-      this.toastr.success('District Updated Successfully');
-      this.loadDistricts();
-      modal.dismiss('cross click');
-    }
-  }
-
-  deleteModal(modal: any, id: any) {
+    this.districtForm.reset({ id: null, countryId: null, stateId: null });
+    this.stateArr = [];
     this.modalService.open(modal, { windowClass: 'custom-modal' });
-    this.id = id;
   }
 
-  onDelete(modal: any) {
-    let storedData = localStorage.getItem('districts');
-    let districts = storedData ? JSON.parse(storedData) : [];
+  stateGet(event: any): void {
+    const selectedCountryId = event.target.value;
+    this.stateArr = this.allStates.filter((s: any) => s.countryId === selectedCountryId);
+    this.districtForm.get('stateId')?.setValue(null);
+  }
 
-    districts = districts.filter((item: any) => item.id !== this.id);
-    localStorage.setItem('districts', JSON.stringify(districts));
+  onSubmit(modal: any): void {
+    this.submitted = true;
+    if (this.districtForm.invalid) return;
 
-    this.toastr.success('District Deleted Successfully');
-    this.loadDistricts();
-    modal.dismiss('Cross click');
+    const payload = this.districtForm.value;
+    this.spinner.show();
+
+    this.commonService.cityCreate(payload).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('City created successfully');
+        modal.dismiss('close');
+        this.districtForm.reset({});
+        this.submitted = false;
+        this.loadDistricts();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          err?.error?.error?.message || err?.error?.message || 'Failed to create city'
+        );
+      }
+    });
+  }
+
+  onEdit(modal: any, id: any): void {
+    this.spinner.show();
+    this.commonService.getCityById(id).subscribe({
+      next: (res: any) => {
+        const data = res?.data;
+        if (data?.countryId) {
+          this.stateArr = this.allStates.filter((s: any) => s.countryId === data.countryId);
+        }
+        this.districtForm.patchValue({
+          id: data.id,
+          countryId: data.countryId,
+          stateId: data.stateId,
+          districtName: data.districtName,
+          shortName: data.shortName
+        });
+        this.spinner.hide();
+        this.modalService.open(modal, { windowClass: 'custom-modal' });
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toastr.error('Failed to fetch city details');
+      }
+    });
+  }
+
+  onUpdate(modal: any): void {
+    this.submitted = true;
+    if (this.districtForm.invalid) return;
+
+    const payload = this.districtForm.value;
+    this.spinner.show();
+
+    this.commonService.cityUpdate(payload).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('City updated successfully');
+        modal.dismiss('close');
+        this.districtForm.reset({});
+        this.submitted = false;
+        this.loadDistricts();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          err?.error?.error?.message || err?.error?.message || 'Failed to update city'
+        );
+      }
+    });
+  }
+
+  deleteModal(modal: any, id: any): void {
+    this.id = id;
+    this.modalService.open(modal, { windowClass: 'custom-modal' });
+  }
+
+  onDelete(modal: any): void {
+    this.spinner.show();
+    this.commonService.cityDelete(this.id).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('City deleted successfully');
+        modal.dismiss('close');
+        this.loadDistricts();
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toastr.error('Failed to delete city');
+        modal.dismiss('close');
+      }
+    });
   }
 }

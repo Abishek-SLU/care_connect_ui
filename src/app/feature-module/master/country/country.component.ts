@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from 'src/app/core/service/common/common.service';
 
 @Component({
   selector: 'app-country',
@@ -19,7 +20,8 @@ export class CountryComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +31,7 @@ export class CountryComponent implements OnInit {
       shortName: [null, [Validators.required]],
       countryCode: [null, [Validators.required]]
     });
+
     this.loadCountries();
   }
 
@@ -36,85 +39,117 @@ export class CountryComponent implements OnInit {
     return this.countryForm.controls;
   }
 
-  loadCountries() {
+  loadCountries(): void {
     this.spinner.show();
-    const storedData = localStorage.getItem('countries');
-    this.jobsArr = storedData ? JSON.parse(storedData) : [];
-    this.spinner.hide();
+    this.commonService.getCountry().subscribe({
+      next: (res: any) => {
+        this.jobsArr = res?.data || [];
+        this.spinner.hide();
+      },
+      error: () => {
+        this.jobsArr = [];
+        this.spinner.hide();
+        this.toastr.error('Failed to load countries');
+      }
+    });
   }
 
-  newcountry(modal: any) {
-    this.modalService.open(modal, { windowClass: "custom-modal" });
+  newcountry(modal: any): void {
     this.submitted = false;
-    this.countryForm.reset({});
+    this.countryForm.reset({ id: null });
+    this.modalService.open(modal, { windowClass: 'custom-modal' });
   }
 
-  onSubmit(modal: any) {
+  onSubmit(modal: any): void {
     this.submitted = true;
     if (this.countryForm.invalid) return;
 
-    const data = this.countryForm.value;
-    let storedData = localStorage.getItem('countries');
-    let countries = storedData ? JSON.parse(storedData) : [];
+    const payload = this.countryForm.value;
+    this.spinner.show();
 
-    data.id = new Date().getTime();
-    countries.push(data);
-    localStorage.setItem('countries', JSON.stringify(countries));
-
-    this.toastr.success('Country Created Successfully');
-    this.loadCountries();
-    modal.dismiss('Cross click');
-    this.countryForm.reset({});
+    this.commonService.countryCreate(payload).subscribe({
+      next: (res: any) => {
+        this.spinner.hide();
+        this.toastr.success('Country created successfully');
+        modal.dismiss('close');
+        this.countryForm.reset({});
+        this.submitted = false;
+        this.loadCountries();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.error?.message || 'Failed to create');
+      }
+    });
   }
 
-  onEdit(modal: any, id: any) {
-    const storedData = localStorage.getItem('countries');
-    const countries = storedData ? JSON.parse(storedData) : [];
-    const record = countries.find((item: any) => item.id === id);
+  onEdit(modal: any, id: any): void {
+    this.spinner.show();
 
-    if (record) {
-      this.countryForm.patchValue({
-        id: record.id,
-        countryName: record.countryName,
-        shortName: record.shortName,
-        countryCode: record.countryCode
-      });
-      this.modalService.open(modal, { windowClass: "custom-modal" });
-    }
+    this.commonService.getCountryById(id).subscribe({
+      next: (res: any) => {
+        const data = res?.data;
+
+        this.countryForm.patchValue({
+          id: data.id,
+          countryName: data.countryName,
+          shortName: data.shortName,
+          countryCode: data.countryCode
+        });
+
+        this.spinner.hide();
+        this.modalService.open(modal, { windowClass: 'custom-modal' });
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toastr.error('Failed to fetch country details');
+      }
+    });
   }
 
-  onUpdate(modal: any) {
+  onUpdate(modal: any): void {
     this.submitted = true;
     if (this.countryForm.invalid) return;
 
-    const updatedData = this.countryForm.value;
-    let storedData = localStorage.getItem('countries');
-    let countries = storedData ? JSON.parse(storedData) : [];
+    const payload = this.countryForm.value;
+    this.spinner.show();
 
-    const index = countries.findIndex((item: any) => item.id === updatedData.id);
-    if (index !== -1) {
-      countries[index] = updatedData;
-      localStorage.setItem('countries', JSON.stringify(countries));
-      this.toastr.success('Country Updated Successfully');
-      this.loadCountries();
-      modal.dismiss('cross click');
-    }
+    this.commonService.countryUpdate(payload).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('Country updated successfully');
+        modal.dismiss('close');
+        this.countryForm.reset({});
+        this.submitted = false;
+        this.loadCountries();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(err?.error?.error?.message || 'Failed to update');
+      }
+    });
   }
 
-  deleteModal(modal: any, id: any) {
-    this.modalService.open(modal, { windowClass: "custom-modal" });
+  deleteModal(modal: any, id: any): void {
     this.id = id;
+    this.modalService.open(modal, { windowClass: 'custom-modal' });
   }
 
-  onDelete(modal: any) {
-    let storedData = localStorage.getItem('countries');
-    let countries = storedData ? JSON.parse(storedData) : [];
+  onDelete(modal: any): void {
+    this.spinner.show();
 
-    countries = countries.filter((item: any) => item.id !== this.id);
-    localStorage.setItem('countries', JSON.stringify(countries));
-
-    this.toastr.success('Country Deleted Successfully');
-    this.loadCountries();
-    modal.dismiss('Cross click');
+    this.commonService.countryDelete(this.id).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('Country deleted successfully');
+        modal.dismiss('close');
+        this.loadCountries();
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toastr.error('Failed to delete country');
+        modal.dismiss('close');
+      }
+    });
   }
 }

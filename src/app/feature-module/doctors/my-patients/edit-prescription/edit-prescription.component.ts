@@ -1,19 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'app-edit-prescription',
-  templateUrl: './edit-prescription.component.html',
-  styleUrls: ['./edit-prescription.component.css']
-})
-export class EditPrescriptionComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
-}
-import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -60,11 +45,13 @@ export class EditPrescriptionComponent implements OnInit {
     private appointmentsService: DocAppointmentsService,
     private DashBoardService: DashboardService,
     private route: Router
-  ) { this.myForm = this.fb.group({
-    doctorArray: this.fb.array([
+  ) {
+    this.myForm = this.fb.group({
+      doctorArray: this.fb.array([
 
-    ]),
-  }); }
+      ]),
+    });
+  }
 
   ngOnInit(): void {
     this.doctorId = localStorage.getItem('userRoleId')
@@ -172,9 +159,9 @@ export class EditPrescriptionComponent implements OnInit {
 
     });
   }
-  imageGet:any=[];
-  imagearr:any=[];
-  doctorData={}
+  imageGet: any = [];
+  imagearr: any = [];
+  doctorData = {}
   addDoctor(doctorData: any) {
     const doctorGroup = this.fb.group({
       patientId: [doctorData.patientId],
@@ -189,7 +176,7 @@ export class EditPrescriptionComponent implements OnInit {
     return this.myForm.get('doctorArray') as FormArray;
   }
   getId: any = []
-  imageArr:any=[]
+  imageArr: any = []
   // patchFormWithPrescriptionData:any
   getPrescriptionById() {
     this.spinner.show();
@@ -211,7 +198,7 @@ export class EditPrescriptionComponent implements OnInit {
     // }
     this.service.GetFormid(this.presid).subscribe(res => {
       this.patientInfo = res.data.patient;
-    
+
       this.getId = res.data.prescriptionDetails
       if (this.patientInfo.patientImage != null) {
         const doctorData = {
@@ -224,12 +211,12 @@ export class EditPrescriptionComponent implements OnInit {
         this.patientInfo.doctorData = doctorData;
       }
       this.imageArr.push(this.patientInfo);
-      
-    
-    // console.log(this.patientInfo);
-  
+
+
+      // console.log(this.patientInfo);
+
       this.editPrescription.patchValue({
-         prescriptionName:res.data.prescriptionName
+        prescriptionName: res.data.prescriptionName
         // status: 'ACTIVE',
 
       })
@@ -246,111 +233,111 @@ export class EditPrescriptionComponent implements OnInit {
           quantity: data.quantity,
           noOfDays: data.noOfDays,
           isMorning: data.isMorning,
-          isAfternoon:data.isAfternoon,
-          isEvening:data.isEvening,
-          isNight:data.isNight,
+          isAfternoon: data.isAfternoon,
+          isEvening: data.isEvening,
+          isNight: data.isNight,
           status: 'ACTIVE',  // Assuming a default value
         })
-      })      
+      })
     })
     this.spinner.hide();
-}
-
-//   patchFormWithPrescriptionData(prescriptionData: any) {
-
-//     if (prescriptionData) {
-//       this.editPrescription.patchValue({
-//         id: prescriptionData.prescriptionid,       
-//         prescriptionName: prescriptionData.prescriptionName,
-//         prescription: this.patchPrescriptions(prescriptionData.prescriptionNameDto),      
-
-//       });
-
-//     } else {
-//       console.error('Prescription data not found.');
-//     }
-
-// }
-// patchPrescriptions( data :any){
-//   if(data.length==0){
-//     this.editAddprescription();
-//   }
-//   else{
-//   let prescription = this.editPrescription.get('prescription') as FormArray;
-//   prescription.controls = [];
-//  data.forEach((x:any)=>{
-//     prescription.push(this.createPresFormGroup());
-//   })
-
-//  data.forEach((data:any,index:any)=>{
-//     prescription.at(index).patchValue({
-//       // id: data.prescriptionNameid,
-//       medicineName: data.medicineName,
-//       quantity: data.quantity,
-//       noOfDays: data.noOfDays,
-//       isMorning:[null, Validators.required],
-//       isAfternoon:[null, Validators.required],
-//       isEvening:[null, Validators.required],
-//       isNight:[null, Validators.required],
-//       status: 'ACTIVE',  // Assuming a default value
-//     })
-//   })
-// }
-// }
-// patchTimeObjects(timeObjects: any) {
-//   const timeObject = this.prescription.at(0).get('timeObj') as FormArray; // Assuming you want to patch the time for the first prescription item
-//   console.log(timeObject)
-//   timeObjects.forEach((timeObj: any) => {
-//     timeObject.push(this.fb.group({
-//       prescriptionTime: timeObj.prescriptionTime,
-//       prescriptionTimeId:timeObj.prescriptionTimeId,
-//       prescriptionNameId:timeObj.prescriptionNameId
-//     }));
-//   });
-// }
-
-// myPatientInfo() {
-//   this.AppointmentService.getPatient(this.addPresId).subscribe(res => {
-//     this.patientInfo = res.data;
-//     this.patient = this.patientInfo.patientId;
-
-//   })
-//   console.log(this.patient);
-// }
-acceptArr: any = [];
-appointmentid: any
-appointmentsGet() {
-  this.appointmentsService.appGet().subscribe((res: any) => {
-    this.value = res.data
-    // this.acceptArr = this.value.filter((item: any) => item.patientId == this.patient);
-    // this.appointmentid = this.acceptArr[0].appointmentId;
-
-  })
-  console.log(this.appointmentid);
-
-}
-getDoctorinfo() {
-  this.DashBoardService.getDoctorid().subscribe(res => {
-    this.values = res.data
-  })
-}
-doctorId: any;
-getUpdate(){
-  this.submitted = true;
-  if (this.editPrescription.invalid) {
-    return
   }
-  let obj = this.editPrescription.value;
-  obj.patientId = this.patient;
-  obj.doctorId = this.doctorId;
-  obj.appointmentId = this.appointmentid;
-  obj.prescription.forEach((x: any) => {
-  })
-  this.service.updateForm(this.editPrescription.value).subscribe(res => {
-    console.log(res);
-    this.route.navigate(['doctors/patientsprofile'])
 
-  })
-}
+  //   patchFormWithPrescriptionData(prescriptionData: any) {
+
+  //     if (prescriptionData) {
+  //       this.editPrescription.patchValue({
+  //         id: prescriptionData.prescriptionid,       
+  //         prescriptionName: prescriptionData.prescriptionName,
+  //         prescription: this.patchPrescriptions(prescriptionData.prescriptionNameDto),      
+
+  //       });
+
+  //     } else {
+  //       console.error('Prescription data not found.');
+  //     }
+
+  // }
+  // patchPrescriptions( data :any){
+  //   if(data.length==0){
+  //     this.editAddprescription();
+  //   }
+  //   else{
+  //   let prescription = this.editPrescription.get('prescription') as FormArray;
+  //   prescription.controls = [];
+  //  data.forEach((x:any)=>{
+  //     prescription.push(this.createPresFormGroup());
+  //   })
+
+  //  data.forEach((data:any,index:any)=>{
+  //     prescription.at(index).patchValue({
+  //       // id: data.prescriptionNameid,
+  //       medicineName: data.medicineName,
+  //       quantity: data.quantity,
+  //       noOfDays: data.noOfDays,
+  //       isMorning:[null, Validators.required],
+  //       isAfternoon:[null, Validators.required],
+  //       isEvening:[null, Validators.required],
+  //       isNight:[null, Validators.required],
+  //       status: 'ACTIVE',  // Assuming a default value
+  //     })
+  //   })
+  // }
+  // }
+  // patchTimeObjects(timeObjects: any) {
+  //   const timeObject = this.prescription.at(0).get('timeObj') as FormArray; // Assuming you want to patch the time for the first prescription item
+  //   console.log(timeObject)
+  //   timeObjects.forEach((timeObj: any) => {
+  //     timeObject.push(this.fb.group({
+  //       prescriptionTime: timeObj.prescriptionTime,
+  //       prescriptionTimeId:timeObj.prescriptionTimeId,
+  //       prescriptionNameId:timeObj.prescriptionNameId
+  //     }));
+  //   });
+  // }
+
+  // myPatientInfo() {
+  //   this.AppointmentService.getPatient(this.addPresId).subscribe(res => {
+  //     this.patientInfo = res.data;
+  //     this.patient = this.patientInfo.patientId;
+
+  //   })
+  //   console.log(this.patient);
+  // }
+  acceptArr: any = [];
+  appointmentid: any
+  appointmentsGet() {
+    this.appointmentsService.appGet().subscribe((res: any) => {
+      this.value = res.data
+      // this.acceptArr = this.value.filter((item: any) => item.patientId == this.patient);
+      // this.appointmentid = this.acceptArr[0].appointmentId;
+
+    })
+    console.log(this.appointmentid);
+
+  }
+  getDoctorinfo() {
+    this.DashBoardService.getDoctorid().subscribe(res => {
+      this.values = res.data
+    })
+  }
+  doctorId: any;
+  getUpdate() {
+    this.submitted = true;
+    if (this.editPrescription.invalid) {
+      return
+    }
+    let obj = this.editPrescription.value;
+    obj.patientId = this.patient;
+    obj.doctorId = this.doctorId;
+    obj.appointmentId = this.appointmentid;
+    obj.prescription.forEach((x: any) => {
+    })
+    this.service.updateForm(this.editPrescription.value).subscribe(res => {
+      console.log(res);
+      this.route.navigate(['doctors/patientsprofile'])
+
+    })
+  }
 }
 

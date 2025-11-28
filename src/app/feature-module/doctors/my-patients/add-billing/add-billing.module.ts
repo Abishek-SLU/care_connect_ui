@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AddBillingRoutingModule } from './add-billing-routing.module';
 import { AddBillingComponent } from './add-billing.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -11,7 +12,9 @@ import { AddBillingComponent } from './add-billing.component';
   ],
   imports: [
     CommonModule,
-    AddBillingRoutingModule
+    AddBillingRoutingModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AddBillingModule { }

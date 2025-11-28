@@ -10,14 +10,14 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class LoginInterceptorInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor() { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     let token = localStorage.getItem("token");
-    if(token){
+    if (token) {
       request = request.clone({
         setHeaders: {
-          "Authorization" : `BslogiKey ${token}`
+          "Authorization": `Bearer ${token}`
         }
       })
     }

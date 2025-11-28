@@ -6,24 +6,25 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class DoctorService {
+
   private base_url = environment.Api_url;
   private createDoctor = this.base_url + "api/doctor/create";
-  private getDoctor= this.base_url+"api/doctor/get";
-  private updateDoctor = this.base_url+"api/doctor/update";
-  private deleteDoctor = this.base_url+"api/doctor/delete";
+  private getDoctor = this.base_url + "api/doctor/get";
+  private updateDoctor = this.base_url + "api/doctor/update";
+  private deleteDoctor = this.base_url + "api/doctor/delete";
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
-  doctorCreate(data:any){
-    return this.http.post<any>(this.createDoctor,data);
+  doctorCreate(data: any) {
+    return this.http.post<any>(this.createDoctor, data);
   }
-  doctorGet(){
-    return this.http.get(this.getDoctor);
+  doctorGet(data: any) {
+    return this.http.get(this.getDoctor + `/${data}`);
   }
-  doctorUpdate(data:any){
-    return this.http.put<any>(this.updateDoctor,data);
+  doctorUpdate(data: any) {
+    return this.http.put<any>(this.updateDoctor, data);
   }
-  doctorDelete(){
+  doctorDelete() {
     return this.http.delete(this.deleteDoctor);
   }
 }

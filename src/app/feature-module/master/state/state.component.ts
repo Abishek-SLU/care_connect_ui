@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { CommonService } from 'src/app/core/service/common/common.service';
 
 @Component({
   selector: 'app-state',
@@ -20,15 +21,16 @@ export class StateComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private spinner: NgxSpinnerService
-  ) { }
+    private spinner: NgxSpinnerService,
+    private commonService: CommonService
+  ) {}
 
   ngOnInit(): void {
     this.stateForm = this.formBuilder.group({
       id: [null],
       countryId: [null, [Validators.required]],
       stateName: [null, [Validators.required]],
-      shortName: [null, [Validators.required]],
+      shortName: [null, [Validators.required]]
     });
     this.loadCountries();
     this.loadStates();
@@ -38,98 +40,132 @@ export class StateComponent implements OnInit {
     return this.stateForm.controls;
   }
 
-  loadCountries() {
+  loadCountries(): void {
     this.spinner.show();
-    const storedData = localStorage.getItem('countries');
-    this.jobsArr = storedData ? JSON.parse(storedData) : [];
-    this.spinner.hide();
+    this.commonService.getCountry().subscribe({
+      next: (res: any) => {
+        this.jobsArr = res?.data || [];
+        this.spinner.hide();
+      },
+      error: () => {
+        this.jobsArr = [];
+        this.spinner.hide();
+        this.toastr.error('Failed to load countries');
+      }
+    });
   }
 
-  loadStates() {
+  loadStates(): void {
     this.spinner.show();
-    const storedData = localStorage.getItem('states');
-    this.stateArr = storedData ? JSON.parse(storedData) : [];
-    this.spinner.hide();
+    this.commonService.getState().subscribe({
+      next: (res: any) => {
+        this.stateArr = res?.data || [];
+        this.spinner.hide();
+      },
+      error: () => {
+        this.stateArr = [];
+        this.spinner.hide();
+        this.toastr.error('Failed to load states');
+      }
+    });
   }
 
-  newState(modal: any) {
-    this.modalService.open(modal, { windowClass: "custom-modal" });
+  newState(modal: any): void {
     this.submitted = false;
-    this.stateForm.reset({});
+    this.stateForm.reset({ id: null, countryId: null });
+    this.modalService.open(modal, { windowClass: 'custom-modal' });
   }
 
-  onSubmit(modal: any) {
+  onSubmit(modal: any): void {
     this.submitted = true;
     if (this.stateForm.invalid) return;
 
-    const data = this.stateForm.value;
-    const selectedCountry = this.jobsArr.find((x: any) => x.id == data.countryId);
-    data.id = new Date().getTime();
-    data.countryName = selectedCountry ? selectedCountry.countryName : '';
+    const payload = this.stateForm.value;
+    this.spinner.show();
 
-    let storedData = localStorage.getItem('states');
-    let states = storedData ? JSON.parse(storedData) : [];
-
-    states.push(data);
-    localStorage.setItem('states', JSON.stringify(states));
-
-    this.toastr.success('State Created Successfully');
-    this.loadStates();
-    modal.dismiss('Cross click');
-    this.stateForm.reset({});
+    this.commonService.stateCreate(payload).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('State created successfully');
+        modal.dismiss('close');
+        this.stateForm.reset({});
+        this.submitted = false;
+        this.loadStates();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          err?.error?.error?.message || err?.error?.message || 'Failed to create state'
+        );
+      }
+    });
   }
 
-  onEdit(modal: any, id: any) {
-    const storedData = localStorage.getItem('states');
-    const states = storedData ? JSON.parse(storedData) : [];
-    const record = states.find((item: any) => item.id === id);
-
-    if (record) {
-      this.stateForm.patchValue({
-        id: record.id,
-        countryId: record.countryId,
-        stateName: record.stateName,
-        shortName: record.shortName
-      });
-      this.modalService.open(modal, { windowClass: "custom-modal" });
-    }
+  onEdit(modal: any, id: any): void {
+    this.spinner.show();
+    this.commonService.getStateById(id).subscribe({
+      next: (res: any) => {
+        const data = res?.data;
+        this.stateForm.patchValue({
+          id: data.id,
+          countryId: data.countryId,
+          stateName: data.stateName,
+          shortName: data.shortName
+        });
+        this.spinner.hide();
+        this.modalService.open(modal, { windowClass: 'custom-modal' });
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toastr.error('Failed to fetch state details');
+      }
+    });
   }
 
-  onUpdate(modal: any) {
+  onUpdate(modal: any): void {
     this.submitted = true;
     if (this.stateForm.invalid) return;
 
-    const updatedData = this.stateForm.value;
-    const selectedCountry = this.jobsArr.find((x: any) => x.id == updatedData.countryId);
-    updatedData.countryName = selectedCountry ? selectedCountry.countryName : '';
+    const payload = this.stateForm.value;
+    this.spinner.show();
 
-    let storedData = localStorage.getItem('states');
-    let states = storedData ? JSON.parse(storedData) : [];
-
-    const index = states.findIndex((item: any) => item.id === updatedData.id);
-    if (index !== -1) {
-      states[index] = updatedData;
-      localStorage.setItem('states', JSON.stringify(states));
-      this.toastr.success('State Updated Successfully');
-      this.loadStates();
-      modal.dismiss('cross click');
-    }
+    this.commonService.stateUpdate(payload).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('State updated successfully');
+        modal.dismiss('close');
+        this.stateForm.reset({});
+        this.submitted = false;
+        this.loadStates();
+      },
+      error: (err: any) => {
+        this.spinner.hide();
+        this.toastr.error(
+          err?.error?.error?.message || err?.error?.message || 'Failed to update state'
+        );
+      }
+    });
   }
 
-  deleteModal(modal: any, id: any) {
-    this.modalService.open(modal, { windowClass: "custom-modal" });
+  deleteModal(modal: any, id: any): void {
     this.id = id;
+    this.modalService.open(modal, { windowClass: 'custom-modal' });
   }
 
-  onDelete(modal: any) {
-    let storedData = localStorage.getItem('states');
-    let states = storedData ? JSON.parse(storedData) : [];
-
-    states = states.filter((item: any) => item.id !== this.id);
-    localStorage.setItem('states', JSON.stringify(states));
-
-    this.toastr.success('State Deleted Successfully');
-    this.loadStates();
-    modal.dismiss('Cross click');
+  onDelete(modal: any): void {
+    this.spinner.show();
+    this.commonService.stateDelete(this.id).subscribe({
+      next: () => {
+        this.spinner.hide();
+        this.toastr.success('State deleted successfully');
+        modal.dismiss('close');
+        this.loadStates();
+      },
+      error: () => {
+        this.spinner.hide();
+        this.toastr.error('Failed to delete state');
+        modal.dismiss('close');
+      }
+    });
   }
 }
