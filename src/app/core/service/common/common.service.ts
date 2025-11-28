@@ -9,12 +9,26 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class CommonService {
+
+
+
   private baseUrl = environment.Api_url;
   private loginUrl = this.baseUrl + "auth/login";
+  private userDetailsUrl = this.baseUrl + "auth/user-details";
   private generateOTPUrl = this.baseUrl + "api/register/generate-otp";
   private verifyOTPUrl = this.baseUrl + "api/register/verify-otp";
   private userUpdateURL = this.baseUrl + "api/register/update";
+  private getCityURL = this.baseUrl + "api/city/get";
+  private getStateURL = this.baseUrl + "api/state/get";
+  private getCountryURL = this.baseUrl + "api/country/get";
 
+  private createCountryURL = this.baseUrl + "api/country/create";
+  private updateCountryURL = this.baseUrl + "api/country/update";
+  private deleteCountryURL = this.baseUrl + "api/country/delete/";
+
+  private createStateURL = this.baseUrl + "api/state/create";
+  private updateStateURL = this.baseUrl + "api/state/update";
+  private deleteStateURL = this.baseUrl + "api/state/delete/";
 
   public patients: any = [
     {
@@ -62,6 +76,28 @@ export class CommonService {
     },
   ];
 
+private createCityURL = this.baseUrl + "api/city/create";
+private updateCityURL = this.baseUrl + "api/city/update";
+private deleteCityURL = this.baseUrl + "api/city/delete/";
+
+
+
+getCityById(id: any) {
+  return this.http.get(this.getCityURL + `/${id}`);
+}
+
+cityCreate(payload: any) {
+  return this.http.post(this.createCityURL, payload);
+}
+
+cityUpdate(payload: any) {
+  return this.http.put(this.updateCityURL, payload);
+}
+
+cityDelete(id: any) {
+  return this.http.delete(this.deleteCityURL + `${id}`);
+}
+
   messages: any = '';
   SERVER_URL: string = 'http://localhost:8080/api/';
   public message: BehaviorSubject<String> = new BehaviorSubject<String>('');
@@ -70,11 +106,51 @@ export class CommonService {
     this.message = new BehaviorSubject(this.messages);
   }
 
+  getStateById(id: any) {
+    return this.http.get(this.getStateURL + `/${id}`);
+  }
+
+  stateCreate(payload: any) {
+    return this.http.post(this.createStateURL, payload);
+  }
+
+  stateUpdate(payload: any) {
+    return this.http.put(this.updateStateURL, payload);
+  }
+
+  stateDelete(id: any) {
+    return this.http.delete(this.deleteStateURL + `${id}`);
+  }
+  getCountryById(id: any) {
+    return this.http.get(this.getCountryURL + `/${id}`);
+  }
+  countryDelete(id: any) {
+    return this.http.delete(this.deleteCountryURL + `${id}`);
+  }
+  countryUpdate(payload: any) {
+    return this.http.put(this.updateCountryURL, payload);
+  }
+  countryCreate(payload: any) {
+    return this.http.post(this.createCountryURL, payload);
+  }
+
+  getCity() {
+    return this.http.get(this.getCityURL);
+  }
+  getState() {
+    return this.http.get(this.getStateURL);
+  }
+  getCountry() {
+    return this.http.get(this.getCountryURL);
+  }
+
   login_Url(data: any) {
     return this.http.post<any>(this.loginUrl, data);
   }
-
-    userRegisterUpdate(data: any) {
+  userDetails() {
+    return this.http.get<any>(this.userDetailsUrl);
+  }
+  userRegisterUpdate(data: any) {
     return this.http.put<any>(this.userUpdateURL, data);
   }
 

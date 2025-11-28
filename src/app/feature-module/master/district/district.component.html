@@ -13,7 +13,7 @@
   <div class="text m-3">
     <div class="row">
       <div class="col-sm-6 profile-det-info">
-        <h3 class="card-title">County</h3>
+        <h3 class="card-title">City</h3>
       </div>
       <div class="col-sm-6">
         <div class="text-end">
@@ -57,13 +57,14 @@
                         class="btn bg-info-light"
                         (click)="onEdit(content, Arr.id)"
                       >
-                        <i class="fas fa-edit"></i
-                      ></a>
+                        <i class="fas fa-edit"></i>
+                      </a>
                       <a
                         class="btn bg-danger-light trash"
                         (click)="deleteModal(delete, Arr.id)"
-                        ><i class="far fa-trash-alt"></i
-                      ></a>
+                      >
+                        <i class="far fa-trash-alt"></i>
+                      </a>
                     </div>
                   </td>
                 </tr>
@@ -87,8 +88,8 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h6 *ngIf="!districtForm.value.id" class="modal-title">Create District</h6>
-    <h6 *ngIf="districtForm.value.id" class="modal-title">Update District</h6>
+    <h6 *ngIf="!districtForm.value.id" class="modal-title">Create City</h6>
+    <h6 *ngIf="districtForm.value.id" class="modal-title">Update City</h6>
     <button
       type="button"
       class="btn outline-none"
@@ -107,14 +108,15 @@
           (change)="stateGet($event)"
           class="form-control"
           formControlName="countryId"
+          [ngClass]="{ 'is-invalid': submitted && b['countryId'].invalid }"
         >
-          <option class="country" [ngValue]="null">Select Country</option>
+          <option [ngValue]="null">Select Country</option>
           <option *ngFor="let country of jobsArr" [value]="country.id">
             {{ country.countryName }}
           </option>
         </select>
         <div
-          *ngIf="submitted && (b['countryId'].errors || b['countryId'].invalid)"
+          *ngIf="submitted && b['countryId'].invalid"
           class="invalid-feedback"
         >
           Required
@@ -122,46 +124,34 @@
       </div>
 
       <div class="mt-3">
-        <label for="StateName">State<span class="text-danger">*</span></label>
+        <label for="stateId">State<span class="text-danger">*</span></label>
         <select
           id="stateId"
           class="form-control"
           formControlName="stateId"
-          placeholder="select state"
-          [ngClass]="{ 'is-invalid': submitted && b['stateId'].errors }"
+          [ngClass]="{ 'is-invalid': submitted && b['stateId'].invalid }"
         >
-          <option class="country" [ngValue]="null">Select State</option>
+          <option [ngValue]="null">Select State</option>
           <option *ngFor="let state of stateArr" [value]="state.id">
             {{ state.stateName }}
           </option>
         </select>
-        <div
-          *ngIf="submitted && (b['stateId'].errors || b['stateId'].invalid)"
-          class="invalid-feedback"
-        >
+        <div *ngIf="submitted && b['stateId'].invalid" class="invalid-feedback">
           Required
         </div>
       </div>
+
       <div class="mt-3">
         <label for="DistrictName">Name<span class="text-danger">*</span></label>
         <input
           type="text"
           class="form-control"
           formControlName="districtName"
-          placeholder="District Name"
-          [ngClass]="{
-            'is-invalid':
-              (submitted && b['districtName'].errors) ||
-              (b['districtName'].invalid &&
-                (b['districtName'].dirty || b['districtName'].touched))
-          }"
+          placeholder="City Name"
+          [ngClass]="{ 'is-invalid': submitted && b['districtName'].invalid }"
         />
         <div
-          *ngIf="
-            (submitted && b['districtName'].errors) ||
-            (b['districtName'].invalid &&
-              (b['districtName'].dirty || b['districtName'].touched))
-          "
+          *ngIf="submitted && b['districtName'].invalid"
           class="invalid-feedback"
         >
           Required
@@ -175,20 +165,11 @@
           type="text"
           class="form-control"
           formControlName="shortName"
-          placeholder=" Short Name"
-          [ngClass]="{
-            'is-invalid':
-              (submitted && b['shortName'].errors) ||
-              (b['shortName'].invalid &&
-                (b['shortName'].dirty || b['shortName'].touched))
-          }"
+          placeholder="Short Name"
+          [ngClass]="{ 'is-invalid': submitted && b['shortName'].invalid }"
         />
         <div
-          *ngIf="
-            (submitted && b['shortName'].errors) ||
-            (b['shortName'].invalid &&
-              (b['shortName'].dirty || b['shortName'].touched))
-          "
+          *ngIf="submitted && b['shortName'].invalid"
           class="invalid-feedback"
         >
           Required
@@ -218,7 +199,7 @@
 
 <ng-template #delete let-modal>
   <div class="modal-header">
-    <h6 class="modal-title">Delete District</h6>
+    <h6 class="modal-title">Delete City</h6>
     <button
       type="button"
       class="btn outline-none"

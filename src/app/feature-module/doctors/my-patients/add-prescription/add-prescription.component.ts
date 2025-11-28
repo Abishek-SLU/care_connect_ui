@@ -1,16 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
-@Component({
-  selector: 'app-add-prescription',
-  templateUrl: './add-prescription.component.html',
-  styleUrls: ['./add-prescription.component.css']
-})
-export class AddPrescriptionComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }import { Component, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -38,7 +26,7 @@ export class AddPrescriptionComponent implements OnInit {
   addPrescription!: FormGroup;
   submitted = false;
   num = 2;
-  value: any=[];
+  value: any = [];
   submit = false;
   values: any;
   id: any;
@@ -52,8 +40,8 @@ export class AddPrescriptionComponent implements OnInit {
   patientInfo: any = [];
   appointmentId: any;
   addPresId: any;
-  presid:any;
-  status='COMPLETED'
+  presid: any;
+  status = 'COMPLETED'
   profilePicture: any = 'assets/doc image/default-avatar-profile-icon-vector-18942381.jpg';
   timing: any[] = [
     {
@@ -66,7 +54,7 @@ export class AddPrescriptionComponent implements OnInit {
       time: 'Night'
     }
   ];
-  myForm:FormGroup;
+  myForm: FormGroup;
   currentName: string = 'Morning';
   checkedValues: string[] = [];
   constructor(
@@ -76,30 +64,32 @@ export class AddPrescriptionComponent implements OnInit {
     private route: Router,
     private toastr: ToastrService,
     private rout: ActivatedRoute,
-     private spinner: NgxSpinnerService,
+    private spinner: NgxSpinnerService,
     private AppointmentService: DocAppointmentService,
     private appointmentsService: DocAppointmentsService
-  ) {  this.myForm = this.fb.group({
-    doctorArray: this.fb.array([
+  ) {
+    this.myForm = this.fb.group({
+      doctorArray: this.fb.array([
 
-    ]),
-  });}
+      ]),
+    });
+  }
 
   ngOnInit(): void {
 
-     //this.id = this.rout.snapshot.paramMap.get('id');
-     console.log(this.id);
-     localStorage.setItem('isactive', JSON.stringify(this.num))
+    //this.id = this.rout.snapshot.paramMap.get('id');
+    console.log(this.id);
+    localStorage.setItem('isactive', JSON.stringify(this.num))
     this.userId = localStorage.getItem('userId');
     this.doctorId = localStorage.getItem('userRoleId')
     // this.patientId = localStorage.getItem('userRoleId')
     this.addPresId = localStorage.getItem('prescriptionId');
-    this.presid=localStorage.getItem('prescription')
-    console.log(this.addPresId);    
-    this.viewPatientId = this.rout.snapshot.paramMap.get('id')    
+    this.presid = localStorage.getItem('prescription')
+    console.log(this.addPresId);
+    this.viewPatientId = this.rout.snapshot.paramMap.get('id')
     this.myPatientInfo();
     // this.getPresId();
-    
+
     this.addPrescription = <FormGroup>this.fb.group({
 
       // id: [null],
@@ -126,14 +116,14 @@ export class AddPrescriptionComponent implements OnInit {
       if (!control) {
         return null; // Return null if control is null
       }
-  
+
       const morning = control.get('isMorning')?.value;
       const afternoon = control.get('isAfternoon')?.value;
       const evening = control.get('isEvening')?.value;
       const night = control.get('isNight')?.value;
-  
+
       const atLeastOneChecked = morning || afternoon || evening || night;
-  
+
       return atLeastOneChecked ? null : { atLeastOneCheckboxChecked: true };
     };
   }
@@ -157,20 +147,20 @@ export class AddPrescriptionComponent implements OnInit {
   appointmentid: any
   appointmentsGet() {
     this.spinner.show();
-  
-  this.appointmentsService.appGet().subscribe(res => {
-    console.log(res);
-    this.value = res.data;
-    this.spinner.hide();
-     this.acceptArr = this.value.filter((item: any) => item.patientId == this.addPresId);
-     console.log(this.acceptArr);
-     
+
+    this.appointmentsService.appGet().subscribe(res => {
+      console.log(res);
+      this.value = res.data;
+      this.spinner.hide();
+      this.acceptArr = this.value.filter((item: any) => item.patientId == this.addPresId);
+      console.log(this.acceptArr);
+
       this.appointmentid = this.acceptArr[0]?.appointmentId;
-      console.log(this.appointmentid);    
+      console.log(this.appointmentid);
     })
-    
+
   }
-  
+
   atLeastOneCheckedValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
     const controls = control as any; // Cast the control to any
     const checkboxes = controls.controls;
@@ -185,15 +175,15 @@ export class AddPrescriptionComponent implements OnInit {
     return this.addPrescription.get('prescription') as FormArray;
   }
   addprescription() {
-    
-   
+
+
     this.prescription.push(this.createPresFormGroup());
     // this.submitted = false;
   }
   deletePrescription(i: number) {
     const lenth = this.prescription.length
     if (lenth === 1) {
-      this.toastr.warning("Can't delete the row when there is only one row","warning");
+      this.toastr.warning("Can't delete the row when there is only one row", "warning");
       return;
     } else {
       if (this.prescription.length > 1) {
@@ -210,19 +200,19 @@ export class AddPrescriptionComponent implements OnInit {
     if (this.addPrescription.invalid) {
       this.toastr.error("Please select the time field");
 
-    } 
+    }
     else {
       let obj = this.addPrescription.value;
       // obj.id=this.id
       obj.patientId = this.patient;
-      obj.doctorId=this.doctorId;
+      obj.doctorId = this.doctorId;
       obj.appointmentId = this.appointmentid;
       obj.prescription.forEach((x: any) => {
         // x.patientId = this.patient
         // x.id=this.id
 
       })
-      
+
       localStorage.setItem('isactive', JSON.stringify(this.num))
       this.service.createForm(this.addPrescription.value).subscribe(res => {
         this.route.navigate(['doctors/patientsprofile', id]);
@@ -281,43 +271,43 @@ export class AddPrescriptionComponent implements OnInit {
   //   })
   // }
 
-//   getPresId() {
-//   console.log(this.presid);
-  
-//     this.service.GetFormid(this.presid).subscribe(res => {
-//       this.edit = res.data
-//       console.log(res,'getPresId');
-      
-//       this.addPrescription.patchValue({
-//         id: this.edit.id,       
-//         prescriptionName: this.edit.prescriptionName,
-//         prescription:this.prescriptionPatch()
-       
-//       })
-//     })
+  //   getPresId() {
+  //   console.log(this.presid);
 
-// }
-// prescriptionPatch(): void {
+  //     this.service.GetFormid(this.presid).subscribe(res => {
+  //       this.edit = res.data
+  //       console.log(res,'getPresId');
 
-    // const { prescription } = this.presid;
-    // if (!Array.isArray(prescription)) {
-    //   console.error('this.doctorGet.education is not an array');
-    //   return;
-    // }
-//     this.prescription.clear();
-//     prescription.forEach((data: any, index: number) => {
-//       data.index = index;
-//       const formGroup = this.fb.group({
-//         medicineName: this.data.medicineName,
-//         quantity: this.data.quantity,
-//         noOfDays: this.data.noOfDays,
-//         timeObj: this.data.timeObj,
-//         status: 'ACTIVE',
-//       });
-//       this.prescription.push(formGroup);
-//     });
-  
-// }
+  //       this.addPrescription.patchValue({
+  //         id: this.edit.id,       
+  //         prescriptionName: this.edit.prescriptionName,
+  //         prescription:this.prescriptionPatch()
+
+  //       })
+  //     })
+
+  // }
+  // prescriptionPatch(): void {
+
+  // const { prescription } = this.presid;
+  // if (!Array.isArray(prescription)) {
+  //   console.error('this.doctorGet.education is not an array');
+  //   return;
+  // }
+  //     this.prescription.clear();
+  //     prescription.forEach((data: any, index: number) => {
+  //       data.index = index;
+  //       const formGroup = this.fb.group({
+  //         medicineName: this.data.medicineName,
+  //         quantity: this.data.quantity,
+  //         noOfDays: this.data.noOfDays,
+  //         timeObj: this.data.timeObj,
+  //         status: 'ACTIVE',
+  //       });
+  //       this.prescription.push(formGroup);
+  //     });
+
+  // }
 
   // getPresUpdate() {
   //   this.submitted = true;
@@ -337,14 +327,14 @@ export class AddPrescriptionComponent implements OnInit {
   //   }
 
   // }
-  image:any;
-  view:any;
-  imageGet:any=[];
-  imagearr:any=[];
-  doctorData={}
+  image: any;
+  view: any;
+  imageGet: any = [];
+  imagearr: any = [];
+  doctorData = {}
   addDoctor(doctorData: any) {
     const doctorGroup = this.fb.group({
-    
+
       patientImage: [doctorData.patientImage.patientImage],
     });
     this.doctorArray.push(doctorGroup);
@@ -353,24 +343,24 @@ export class AddPrescriptionComponent implements OnInit {
   get doctorArray(): FormArray {
     return this.myForm.get('doctorArray') as FormArray;
   }
-  imageArr:any=[]
+  imageArr: any = []
   myPatientInfo() {
     this.spinner.show();
     this.AppointmentService.getPatient(this.addPresId).subscribe(res => {
 
       this.patientInfo = res.data;
       this.patient = this.patientInfo.patientId;
-     
-      // for (let i = 0; i < this.patientInfo?.length; i++) {
-        if (this.patientInfo.patientImage != null) {
-          const doctorData = {
-            patientImage: atob(this.patientInfo.patientImage)
-          };
-          this.patientInfo.doctorData = doctorData;
-        }
-        this.imageArr.push(this.patientInfo);
 
-        this.spinner.hide();
+      // for (let i = 0; i < this.patientInfo?.length; i++) {
+      if (this.patientInfo.patientImage != null) {
+        const doctorData = {
+          patientImage: atob(this.patientInfo.patientImage)
+        };
+        this.patientInfo.doctorData = doctorData;
+      }
+      this.imageArr.push(this.patientInfo);
+
+      this.spinner.hide();
       // console.log(this.patientInfo);
     })
   }
@@ -393,7 +383,7 @@ export class AddPrescriptionComponent implements OnInit {
   //         if (res) {
   //           this.edit = res.data;
   //           this.patchFormWithPrescriptionData(this.edit);
-                       
+
   //         } else {
   //           console.error('Prescription data not found.');
   //         }
@@ -404,37 +394,37 @@ export class AddPrescriptionComponent implements OnInit {
   //     );
   //   }
   // }
-//   patchFormWithPrescriptionData(prescriptionData: any) {
-//     if (prescriptionData.length == 0) { }
-//     else{
-//     if (prescriptionData) {
-//       this.addPrescription.patchValue({
-//         id: prescriptionData.prescriptionid,       
-//         prescriptionName: prescriptionData.prescriptionName,
-//         // prescription: this.patchPrescriptions(prescriptionData.prescriptionNameDto),
-       
-        
-//       });
-//       let prescription = this.addPrescription.get('prescription') as FormArray;
-//       prescription.controls = [];
-//       prescriptionData.prescriptionNameDto.forEach((x:any)=>{
-//         prescription.push(this.createPresFormGroup());
-//       })
-//       prescriptionData.prescriptionNameDto.forEach((data:any,index:any)=>{
-//         prescription.at(index).patchValue({
-//           id: data.prescriptionNameid,
-//           medicineName: data.medicineName,
-//           quantity: data.quantity,
-//           noOfDays: data.noOfDays,
-//           status: 'ACTIVE',  // Assuming a default value
-//            timeObj: this.patchTimeObjects(data.prescriptionTime)
-//         })
-//       })
-//     } else {
-//       console.error('Prescription data not found.');
-//     }
-//   }
-// }
+  //   patchFormWithPrescriptionData(prescriptionData: any) {
+  //     if (prescriptionData.length == 0) { }
+  //     else{
+  //     if (prescriptionData) {
+  //       this.addPrescription.patchValue({
+  //         id: prescriptionData.prescriptionid,       
+  //         prescriptionName: prescriptionData.prescriptionName,
+  //         // prescription: this.patchPrescriptions(prescriptionData.prescriptionNameDto),
+
+
+  //       });
+  //       let prescription = this.addPrescription.get('prescription') as FormArray;
+  //       prescription.controls = [];
+  //       prescriptionData.prescriptionNameDto.forEach((x:any)=>{
+  //         prescription.push(this.createPresFormGroup());
+  //       })
+  //       prescriptionData.prescriptionNameDto.forEach((data:any,index:any)=>{
+  //         prescription.at(index).patchValue({
+  //           id: data.prescriptionNameid,
+  //           medicineName: data.medicineName,
+  //           quantity: data.quantity,
+  //           noOfDays: data.noOfDays,
+  //           status: 'ACTIVE',  // Assuming a default value
+  //            timeObj: this.patchTimeObjects(data.prescriptionTime)
+  //         })
+  //       })
+  //     } else {
+  //       console.error('Prescription data not found.');
+  //     }
+  //   }
+  // }
   // patchPrescriptions(prescriptionData: any[]): FormGroup[] {
   //   return prescriptionData.map(data => {
   //     return this.fb.group({
@@ -447,7 +437,7 @@ export class AddPrescriptionComponent implements OnInit {
   //     });
   //   });
   // }
-  
+
   // patchTimeObjects(timeObjects: any) {
   //   let timeObject = this.prescription.get('timeObj') as FormArray;
   //   timeObject.controls =[]
@@ -459,36 +449,33 @@ export class AddPrescriptionComponent implements OnInit {
   //       time:x.prescriptionTime
   //     })
   //   })
-    // return timeObjects.map(data => {
-    //   return this.fb.group({
-    //     time: data.prescriptionTime
-    //   });   
-    // });
+  // return timeObjects.map(data => {
+  //   return this.fb.group({
+  //     time: data.prescriptionTime
+  //   });   
+  // });
 
-    // patchTimeObjects(timeObjects: any) {
-    //   const timeObject = this.prescription.at(0).get('timeObj') as FormArray; // Assuming you want to patch the time for the first prescription item
-    
-    //   // timeObject.clear(); // Clear any existing time objects
-    
-    //   timeObjects.forEach((timeObj: any) => {
-    //     timeObject.push(this.fb.group({
-    //       prescriptionTime: timeObj.prescriptionTime,
-    //       prescriptionTimeId:timeObj.prescriptionTimeId,
-    //       prescriptionNameId:timeObj.prescriptionNameId
-    //     }));
-    //   });
-    // }
-  }
+  // patchTimeObjects(timeObjects: any) {
+  //   const timeObject = this.prescription.at(0).get('timeObj') as FormArray; // Assuming you want to patch the time for the first prescription item
 
+  //   // timeObject.clear(); // Clear any existing time objects
 
-
-
-
-
-
-
-
-
-
-
+  //   timeObjects.forEach((timeObj: any) => {
+  //     timeObject.push(this.fb.group({
+  //       prescriptionTime: timeObj.prescriptionTime,
+  //       prescriptionTimeId:timeObj.prescriptionTimeId,
+  //       prescriptionNameId:timeObj.prescriptionNameId
+  //     }));
+  //   });
+  // }
 }
+
+
+
+
+
+
+
+
+
+

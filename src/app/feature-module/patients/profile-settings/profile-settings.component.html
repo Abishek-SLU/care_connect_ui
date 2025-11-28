@@ -13,9 +13,9 @@
                   <span><i class="fa fa-upload"></i> Upload Photo</span>
                   <input type="file" (change)="onImageChange($event)" />
                 </div>
-                <small class="form-text text-muted"
-                  >Allowed JPG, GIF, PNG. Max 2MB</small
-                >
+                <small class="form-text text-muted">
+                  Allowed JPG, GIF, PNG. Max 2MB
+                </small>
               </div>
             </div>
           </div>
@@ -23,22 +23,37 @@
 
         <div class="col-12 col-md-6">
           <label>First Name</label>
-          <input type="text" class="form-control" formControlName="firstName" />
+          <input type="text" class="form-control" formControlName="firstname" />
         </div>
 
         <div class="col-12 col-md-6">
           <label>Last Name</label>
-          <input type="text" class="form-control" formControlName="lastName" />
+          <input type="text" class="form-control" formControlName="lastname" />
         </div>
 
         <div class="col-12 col-md-6">
           <label>Date of Birth</label>
-          <input type="date" class="form-control" formControlName="dob" />
+          <input
+            type="date"
+            class="form-control"
+            formControlName="dateOfBirth"
+          />
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label>Gender</label>
+          <select class="form-control form-select" formControlName="gender">
+            <option value="">Select</option>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+            <option value="OTHER">Other</option>
+          </select>
         </div>
 
         <div class="col-12 col-md-6">
           <label>Blood Group</label>
           <select class="form-control form-select" formControlName="bloodGroup">
+            <option value="">Select</option>
             <option
               *ngFor="
                 let bg of ['A-', 'A+', 'B-', 'B+', 'AB-', 'AB+', 'O-', 'O+']
@@ -56,32 +71,60 @@
 
         <div class="col-12 col-md-6">
           <label>Mobile</label>
-          <input type="text" class="form-control" formControlName="mobile" />
-        </div>
-
-        <div class="col-12">
-          <label>Address</label>
-          <input type="text" class="form-control" formControlName="address" />
+          <input type="text" class="form-control" formControlName="phoneNo" />
         </div>
 
         <div class="col-12 col-md-6">
-          <label>City</label>
-          <input type="text" class="form-control" formControlName="city" />
+          <label>Address Line 1</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="addressLine1"
+          />
         </div>
 
         <div class="col-12 col-md-6">
-          <label>State</label>
-          <input type="text" class="form-control" formControlName="state" />
-        </div>
-
-        <div class="col-12 col-md-6">
-          <label>Zip Code</label>
-          <input type="text" class="form-control" formControlName="zip" />
+          <label>Address Line 2</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="addressLine2"
+          />
         </div>
 
         <div class="col-12 col-md-6">
           <label>Country</label>
-          <input type="text" class="form-control" formControlName="country" />
+          <select class="form-control form-select" formControlName="countryId">
+            <option value="">Select Country</option>
+            <option *ngFor="let country of countries" [value]="country.id">
+              {{ country.countryName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label>State</label>
+          <select class="form-control form-select" formControlName="stateId">
+            <option value="">Select State</option>
+            <option *ngFor="let state of states" [value]="state.id">
+              {{ state.stateName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label>City</label>
+          <select class="form-control form-select" formControlName="cityId">
+            <option value="">Select City</option>
+            <option *ngFor="let city of cities" [value]="city.id">
+              {{ city.districtName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label>Zip Code</label>
+          <input type="text" class="form-control" formControlName="zipcode" />
         </div>
       </div>
 

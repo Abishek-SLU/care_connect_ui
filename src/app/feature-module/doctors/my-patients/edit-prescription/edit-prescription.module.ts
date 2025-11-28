@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { EditPrescriptionRoutingModule } from './edit-prescription-routing.module';
 import { EditPrescriptionComponent } from './edit-prescription.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 @NgModule({
@@ -11,7 +13,10 @@ import { EditPrescriptionComponent } from './edit-prescription.component';
   ],
   imports: [
     CommonModule,
-    EditPrescriptionRoutingModule
+    EditPrescriptionRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxSpinnerModule
   ]
 })
 export class EditPrescriptionModule { }

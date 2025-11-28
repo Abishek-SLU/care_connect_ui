@@ -1,289 +1,371 @@
 <app-home-one-header></app-home-one-header>
 <!-- Home Banner -->
 <section class="section section-search">
-    <div class="container-fluid">
-        <div class="banner-wrapper">
-            <div class="banner-header text-center aos" data-aos="fade-up">
-                <h1>Search Doctor, Make an Appointment</h1>
-                <p>Discover the best doctors, clinic & hospital the city nearest to you.</p>
-            </div>
+  <div class="container-fluid">
+    <div class="banner-wrapper">
+      <div class="banner-header text-center aos" data-aos="fade-up">
+        <h1>Search Doctor, Make an Appointment</h1>
+        <p>
+          Discover the best doctors, clinic & hospital the city nearest to you.
+        </p>
+      </div>
 
-            <!-- Search -->
-            <div class="search-box aos" data-aos="fade-up">
-                <form>
-                    <div class="form-group search-location">
-                    <input type="text" class="form-control" placeholder="Search Location">
-                        <span class="form-text">Based on your Location</span>
-                    </div>
-                    <div class="form-group search-info">
-                        <!-- <input type="text" class="form-control"
+      <!-- Search -->
+      <div class="search-box aos" data-aos="fade-up">
+        <form>
+          <div class="form-group search-location">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search Location"
+            />
+            <span class="form-text">Based on your Location</span>
+          </div>
+          <div class="form-group search-info">
+            <!-- <input type="text" class="form-control"
                         placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc"/>
                     <span class="form-text">Ex : Dental or Sugar Check up etc</span> -->
-                        <ng-autocomplete [data]="countries" type="text" class="form-control"
-                            [searchKeyword]="keyword" placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc" (selected)='selectEvent($event)'
-                            (inputChanged)='onChangeSearch($event)' (inputFocused)='onFocused($event)'
-                            historyIdentifier="countries" [itemTemplate]="itemTemplate"
-                            [notFoundTemplate]="notFoundTemplate">
-                        </ng-autocomplete>
+            <ng-autocomplete
+              [data]="countries"
+              type="text"
+              class="form-control"
+              [searchKeyword]="keyword"
+              placeholder="Search Doctors, Clinics, Hospitals, Diseases Etc"
+              (selected)="selectEvent($event)"
+              (inputChanged)="onChangeSearch($event)"
+              (inputFocused)="onFocused($event)"
+              historyIdentifier="countries"
+              [itemTemplate]="itemTemplate"
+              [notFoundTemplate]="notFoundTemplate"
+            >
+            </ng-autocomplete>
 
-                        <ng-template #itemTemplate let-item>
-                            <a [innerHTML]="item.name"></a>
-                        </ng-template>
+            <ng-template #itemTemplate let-item>
+              <a [innerHTML]="item.name"></a>
+            </ng-template>
 
-                        <ng-template #notFoundTemplate let-notFound>
-                            <div [innerHTML]="notFound"></div>
-                        </ng-template>
-                        <span class="form-text">Ex : Dental or Sugar Check up etc</span>                          
-                    </div>
-                    <button type="submit" class="btn btn-primary search-btn mt-0"
-                        [routerLink]="'/patients/search-doctor'"><i class="fas fa-search"></i>
-                        <span>Search</span></button>
-                </form>
-            </div>
-            <!-- /Search -->
-
-        </div>
+            <ng-template #notFoundTemplate let-notFound>
+              <div [innerHTML]="notFound"></div>
+            </ng-template>
+            <span class="form-text">Ex : Dental or Sugar Check up etc</span>
+          </div>
+          <button
+            type="submit"
+            class="btn btn-primary search-btn mt-0"
+            [routerLink]="'/patients/search-doctor'"
+          >
+            <i class="fas fa-search"></i> <span>Search</span>
+          </button>
+        </form>
+      </div>
+      <!-- /Search -->
     </div>
+  </div>
 </section>
 <!-- /Home Banner -->
 <section class="section home-tile-section">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-9 m-auto">
-                <div class="section-header text-center aos" data-aos="fade-up">
-                    <h2>What are you looking for?</h2>
-                </div>
-                <div class="row">
-                    <div class="col-lg-4 mb-3 aos" data-aos="fade-up">
-                        <div class="card text-center doctor-book-card">
-                            <img src="assets/img/doctors/doctor-07.jpg" alt="" class="img-fluid">
-                            <div class="doctor-book-card-content tile-card-content-1">
-                                <div>
-                                    <h3 class="card-title mb-0">Visit a Doctor</h3>
-                                    <a [routerLink]="'/patients/search-doctor'" class="btn book-btn1 px-3 py-2 mt-3" tabindex="0">Book Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-3 aos" data-aos="fade-up">
-                        <div class="card text-center doctor-book-card">
-                            <img src="assets/img/img-pharmacy1.jpg" alt="" class="img-fluid">
-                            <div class="doctor-book-card-content tile-card-content-1">
-                                <div>
-                                    <h3 class="card-title mb-0">Find a Pharmacy</h3>
-                                    <a [routerLink]="'/pharmacy/pharmacy-search'" class="btn book-btn1 px-3 py-2 mt-3" tabindex="0">Find Now</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 mb-3 aos" data-aos="fade-up">
-                        <div class="card text-center doctor-book-card">
-                            <img src="assets/img/lab-image.jpg" alt="" class="img-fluid">
-                            <div class="doctor-book-card-content tile-card-content-1">
-                                <div>
-                                <h3 class="card-title mb-0">Find a Lab</h3>
-                                    <a href="javascript:void(0);" class="btn book-btn1 px-3 py-2 mt-3" tabindex="0">Coming Soon</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-9 m-auto">
+        <div class="section-header text-center aos" data-aos="fade-up">
+          <h2>What are you looking for?</h2>
         </div>
+        <div class="row">
+          <div class="col-lg-4 mb-3 aos" data-aos="fade-up">
+            <div class="card text-center doctor-book-card">
+              <img
+                src="data:image/jpeg;base64,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"
+                alt=""
+                class="img-fluid"
+              />
+              <div class="doctor-book-card-content tile-card-content-1">
+                <div>
+                  <h3 class="card-title mb-0">Visit a Doctor</h3>
+                  <a
+                    [routerLink]="'/patients/search-doctor'"
+                    class="btn book-btn1 px-3 py-2 mt-3"
+                    tabindex="0"
+                    >Book Now</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3 aos" data-aos="fade-up">
+            <div class="card text-center doctor-book-card">
+              <img
+                src="data:image/jpeg;base64,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"
+                alt=""
+                class="img-fluid"
+              />
+              <div class="doctor-book-card-content tile-card-content-1">
+                <div>
+                  <h3 class="card-title mb-0">Find a Pharmacy</h3>
+                  <a
+                    [routerLink]="'/pharmacy/pharmacy-search'"
+                    class="btn book-btn1 px-3 py-2 mt-3"
+                    tabindex="0"
+                    >Coming Soon</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 mb-3 aos" data-aos="fade-up">
+            <div class="card text-center doctor-book-card">
+              <img
+                src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEhUTExMVFRUVFRUWFhcYFxUQFRUVFRUXFxUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLisBCgoKDg0OGxAQGi0lHSUrLS0rLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIALcBEwMBIgACEQEDEQH/xAAcAAABBQEBAQAAAAAAAAAAAAAFAAIDBAYBBwj/xABFEAACAQIDBQUEBwUGBQUAAAABAgADEQQSIQUGMUFREyJhcYEykaGxI0JScsHR8AcUFWKSJDOCorLhFkNUwvE0U4PS4v/EABkBAAMBAQEAAAAAAAAAAAAAAAECAwAEBf/EACURAAICAgICAwEAAwEAAAAAAAABAhEDIRIxBEEiMlETcYHwQv/aAAwDAQACEQMRAD8Ao7PX2pbRZX2f9aWknYcorSTCD6Wn96NjsN/e0/vQMBb2xtdA7Ump5rW10gF6FE3IpAegmn2ls9GcsRqbSBdnp0iVGh9mn2D/AOnpfcHyl8CUdgD+z0/BRLzX5C8DGXQlve1tOslCyIM/2R748F/sj3xaCiVUj8sjVn+yPfJAX+yPfAGzjpppI8nWSnP9ke+Rtn6D3zAsj52tGvSvH9/oJzv9BMY5k0mWRbFvvGbALpMkw77/AHzGgLM6BO2iivHEFacM7ecJmCctFaK8V5jHLThE7ecJmMctFaKK8xhZYrTt40VRMYREaVj7zhmCRkRhWStGmYxWKRSSKMKZ7Z57x8pbSU9n+2fKW1jMw+Ow5+lp/eEaZzDn6RPvCKAn23vBTp1uzPHS/hLeHxKsLgzDb8YZlxTOOBCyvsjbTU9CdPlEX4Fuj2bd5v7OkJU4F3QqZsKh63+cKYrECkhc6gQPuiierLL1AoJPAR2Hqh1DDgeEq4hs1Fj1Un4SvsjFqtOkh4sNPSDjo3LYYBj1aQO4HE2lDYLkq9yTZ2+cHHVhb3QWLRhaMqvYSE1dBBRrJyY0tI0e4kVaoF1YgfrpMYsLUvAa0RdtPrGT/wAaog2zH3EyDD11YmzDU6cj7jMah/Yr0i7FekktOTWakR9ivSc7JekknBNZqRH2S9IuxXpJbRrDSHZtEXZL0nDSXpLeGw94sagUeM2zUUuyXpKL+0RL4MoMRmN5SCbJTkolHF176CD6jsDDf7sp1XWVKtDvTciqiDsJjGD2vpDga8CUMMbk25mFcK2kwrRK0YY4xpjAIzFOmcmFM7gPb9JcWVMD/eS5zMZhoTRuHP0ifeEc8iw5+kT7wigZLvNhgzkHmBMBtLBtSbhpPU9q4FHfvVcpsNNIOq7EokWNUH3SbVjml/Z2b4Kn/i/1GGdsp9A/lBu5VJUoZFNwrsAfUzQ1KQdSrag8YLqQUvjQGTGGwp20NO95VwJ1w58D8ofGCS4OUaC3p0jkwiC3dGnDwjc0LwYL2rWV2pFTezkfAybYPCp99pfFBB9UdY5QBwForlqg8d2MxHCV5bJEiJHCKg0VHrWBHDS5PQQNj7kE8F6sbXHPx9wP5HsXT8h5jNr1tzgLaeBzg988L3bKovwHH10hsKQErYlVByksbDguW9zYWJ168oLevUPOx7xtc6WtbnwhGts6xu9SwHRSwvbTUGcqYehoAxbTmQunHmJPbZdJFnZm23VslQ3U8NblRpz5gc/Kaa8xGLADi2gZT4m4cqSD8Zpth4nNTseXDy5TqeP42vRCUqYQM4sV5wSATtRrRhePqCMteUMTUqpGokWNcsCZMw00jCvdMBmU1OkCYit3mENAaTNYlu+3nLYPscflfQIthTQompTJJ4kHUGDm26DrbvW1EsUNpdzI0h2VsPtsSarC1MAWHUxMuFraZ0ePntU0RHG4hwOyoEjrw09YRwquB3lKnpNUWCiygWEB7QZmaBaHasrxERqPeOMYmRmKIxTAM5hP7wesuObEwW2MSixdzZV4mG9lUUrAVi2ZWAZVHCx1BN4ZMYrs1xIKLfSJ94SvRqEVsSh4LUXL91kHE8zcNqeskpN9In3h84BWFNpbFevWZgwAAAjBurU+2PdC+Bc9vVHKy/KFbRBwPsarXwimmKXaDMSGuF4wmNvYk8MOvq/+0kKxqrDr8B0c/i+LP/KpD/GT+Eix+0saiB/oteXeP4yyVjsTSDUBfpAqvoNAqlj8a65u1pjyUn8ZVxeIxucKtcC/8ghDBjuS1iaQ0PlCqNRSpYOuVGfEvfnlCqPlLuzcMaRZzUd7AWDHnfiJMnCVsTj6aHIcxbLmsqO9lJIzEqCALgxX0aK2S4rHCrdXBC30IY38zltb0vBGO2c9s9N2YeDE21vYg+7XrFdCnaCqCp1BBFrecWHxqqbrVW/gy/EX1nD/AGkel/CPoE1HI0qDU3NxpqefjykdakL3vYAanjpfurrzM0GIqUqmjjs2PB7XQ+B5j9awTi9mOHynVRcmwKqSdBY8+Y8o8Zp7ElBrRHVNzSUaZVGnHRmP5CF9jNa48QOnLX4ylTwK3vzAUW4WVdB6/lLWzVu7HThbwvcE/EH3T0vGyKcWjj8nG4Uw+BYcIi+nCSUXHA8DK2KIUEg8JCSqTQI/VMT1T0nAWgz+JOeCR1DGuWGYC0Gw7CmZomzHnOgzrVlF7m0ArZWqWXSZuuO+0K7SrhiMpvBB4mVgJLotbLwPavbkOM1qUgi2EDbuJZSephZ2vDIMFoiZoOx+g0hOsABeDMa/dijoFM9jeWQdJUqrpJ8MbrGQJI6ZydMUYmef7yC9KqPX3EGaTcKvmwVLwzr7nYD4WlXaeyC1Gqcpv2bn1ykyD9nFX+ykdKrD4KfxMk3bK+ibGjLjK381Okw9C4PzEjpv9In31+cI4zCZ8bTH26NQeqsrD4Xl6psFUsx5EH4xrEaCWD/v6n3VhUQBjNrrSfRLkgayJt5wB7Bg4th6NGY1Jm6e9N/qH4R3/Ehv7BgarsFp9GmMzG9W9NTCBKa0kqBkufaUqdNCRcG9x7xGvvUQbCkSfTXwh3Gbu0sXTRq6ODZSVzuliBbUA2vbSK3SsaLTdGQ2Bvc9atTotTSmHVje7OSwJApjhqQL3m8roxW4GgAudBBmH3NwtKolRKZzUzdSz1CAeGozWPHnBn7QcRiqdMMpXsyQCVBXs9NLj6wvz0FyNOcSM30ysoLtE22d7aGHOQd97cBwHmeUw28e8eJxLLkR0XUJluPEntRb7OuvLlK+7tfDLXvi1L0iDmN2vmJFnbLqQNdB1nsK7LopQFAUwaIB7h74AJLfW14kwzlxFjCzyXC06VfN3h2oRTUHCj2guHqqODZrqToLG55yDYmy63bU6iCoF7UKD7Abjqo4kXt7jNcm5KLiwwYdj7SU+GuoIc8wLi1+PPnfTfwZFcOqhSOFmGW5FiwFtDqdfGTS5FXNQpeyLD7OZUtlJ01LEa+dzIKGJKrly9oo9n7V+YUnlyA8poaSaXZl8rj5wFhcOVBYjKFBOvUcLTnnj4NUdeLMsifL0RIaf2wBqLnu3I4+A1HwljBUqakKKqHS9gyk631sD5wPt3EBaBJGt/nx+Zk27O61HKK1FnCuAVL2Nx1AsD6zu8ecVC4/7OXyotz4sNYsgm6tytKlRrA3Mo43EMjvTtfKxF+FwDoZSqgsONo8W32cknGOkElbpwjwplXCECwzR+I2nST2nEDRWEk0GcHWuviI7EUgy6zO4Db1O5ym4hnCPUrrdRlHU8/KOsM65dI5pZ8fPgnb/CP9yC8BBhXvEeMP/uVQEd4HrLIwKcbTJUP2cwNDIoEsM1o1mtztB2JxFzYTdjlmtWuDaUuy01MXeawAsvPxlgqAJmgoE41cokWDOkh29tRV059IDbbzgd1QIqkkM1aNMYpjzvFW8Io3NE+DPUKuFVgV6gj3i08k/Z9VKpWp81dT/UCD/onsT6AnoCZ4zu25TG4pLe0XI/w1LD4NJoK6NTSqWxeEYn/msh8qlJwB7wJNvxtfKUprxLAfGCtrVCio44pXovfyqC/wMg3t1q0z/MPnKMRbDW0UXQnjlEBYrH0hpeFNvGwH3RMaiiCJHyc7x9IJ0NroDwMtLttCfZPuMFU1HSHt0BRGJRqzKqpdxmIVS4tlBJ8Tf/DNON7Zx4/Mm5KKrZ6Fuzu+tJRVqr9MwvY69kDyH83U+nmdrVMokFDGK2qsG8iG+UhxdX9cJzSdI9mESNnvIMZhlq02puLq6lSPA/KRVto0U9qtTXzdV+ZjKO16DC6VkYcO6wcf5byFnQkeHbdw9bC16lBzfLcBiqnNTb2XuRoSNLjmDPYt0NsPicJTqOpFRRla4K5yumceDDX39JbxmyaVZs7qpIsASoJ04akacTJKGDWne1yT+H/mVkm42ycWlKhuNTMtxoRZl6X6eov75TSopuTTFxxFh+Mu1ieB0t8P94Sp0kYC6ixtbQHKLanzJhwO7Rs6qmCf3mwA7oHQcr9T+Ag3aO0VNqSnS93PLTgvv19B1ke++IydmES1PMQ9gB3bZbm3i1/SSbp7GD2q1B3Ae4vJiPrHw+fzGa38ENgSj82XMHsIYgA11+juCFPF7a97ovhz8uOmygDoANJwGRl83kPj4+UOOCgqRsmRzds883yrvSxDMykJUsUN7g2UBh4G4vbxEDJtfS09P21suniaTU6g0OoI9pWHBlPUfmOc8f21sp8LUNOqPFWHsuv2l/Ecp0KRzuCCH8SF785QfKSSQDfqbwfnE4agm5m4F920sDbytPQN3N5aXYqhOUqADfwnl4qCOj/1bVMRY4p2ls9yTEhgGBuDOPWtPIdm7xV6Ayg5l6Hl5GXm3zq/Z+M2gm9xmM43NhG4Ol2gJB0nmW194a1cBRdRztxM9C3OzdihbpG16MHqVGy2gza9cU6bMeULo41mQ3wxQLLTU+Jk5OlYUrZmKl2JY8TIKoltxKlaRhsswbUrEEi07G1BqYpfgS5Hu1QAgi44H5TyGpR7Lazp9q4/qoCp81Mu7Nxlq1M9tUfvr3clXvd4aXIt753fdey2tSbkwpfF3pH4ERHXpioW8FO+HrAcchI811/CQbytcUG65T77GGMagam46qw96zO41y+Fwp4nJTvbqAAb+6M90BKrDu06IqslMm3cBkNPdin9oySu301M8skLYQdowRbFmNh+flznFmnOMviM8UJ/ZFPZ+5q1WspNhxbkB+fhNjsndjD4cdxAzc3bvN6fZ9IUwWGWkgReXE8yeZMdia+UeJ4SsXJL5MRYMalcYoDbQ3ewbG70KZbwUA+8Siu7uEBv+7UjbmyioR6te0dt7bC4an2jguzEJTQe1VqN7KL+fITH72Gq+zzUrOL1HpkLcinTGa2UBRdgfG5iNuR1KKijVnaWCpOKeegrkgBFyZrk2Ayrw1k9SkHcNpZb6cyfwH688XuRgkdagcIVp1UqIFv3WsbMC2o0UacNJuMOPjCoatjcvwtWjKnEecYuJUtkBuw4gakefSXRgAw7xPI6GVkrRCP2BzISeF+g5frxhjCJ3deIAH6/XOLIF0A/XiYxKtjbrJ4o8WWyPkgbtHDU6tQ03F1yksP5dAbnle/zlqnigqgMuUDgRqv/AOflK9c2zHTM+p65V0QfM+pk4OglqJWO7TPwN15nk3r0/XWW0EqUhc25Dlw1/IS4DbxPwgZkcIgXePZC4qi1MgZh3qZ6MPwI0PnC9SseA4nnyEYy2tb9GCDVjSWjzVNyanhJRuO/UTc10IJ/XGMCsYxO2Yv/AIHbqPdONuTbi4E1m1MfTw6ZqjgeFwJ5dvFvRVrORTcrT5W0JjRi2LYXxe5dWwNNg1/QR1HcWsfaYD0mz3Q2glfDIU5CxHMEaGGbR+jGU2BunTo95u83jymkGCNrKQBJWsDaTqwtpNyNRSxVM00vxtMBjKvaVXbxsJ6BtWsBScnkDPPaC6X66yOaWqKY1sgqiUa/SEa0oFbsB4wY+xpHP4Sx1ih5dIp10c9nodbKiliBYTzb9royVsPVtoFq380NKoB8Wm123iwWFK+lxm8ybAfGYr9plftsFh6q6gVSt/ApUQ/FBIyhUU37NGVyoKJSvzlDdTB0DRC1Ws+apZS2W69o4VgOhAlHB7TZsOrWtmpjXxKjh8ZD+7rVVGemFORQBxKgDQX6xgM3tLZFAC+QHxOsL7GwqAllUC3dFhbz/Ceb06zqhRajAG1uZFuh5T0LdNGXCUs7l2OZizak3cke4WHpFnpGj2GrwViquZj0Ggl+s9lJ8IJ5TlyM6ca9gjaO0qVz2iqRTN7uEsptxu3Dj8YO2riP3vDlKeUKynLVuCoIOYODopsbHjMBv1ja1LaFcrUIUNT7ujAA0kvYMCBK9beWsy2zA30vlsbW5EDTXwlFP4qgcflbN5u5g6mGV89RK5chiwK0zYX4k6vqTqT0hnD7bp3Fwy28Aw/yk3nmux6WLxIPZV6eY3urPlqd22tspNtRr4yxR3T2m9TK4fs2K5mFZWULezHLnudOVosbrZWfHk+PR6OopLWav26gvlCJcKWJCixzcSSNAP8AaaPDVsygjhPPKP7O6FFlc1qpZGVh7CLdSGF7KTxHIza7Hq3W3TTjeUe0RqmEWldVvrJ6p0tO0kkygJFIkknr8pIj3PgJ3Eta48Z3D09Pj+UuSLNBB11/RMnZrcJDhhbS1v11nXbW0nJjxR3nGltZyubSFDc5ff8AjBGkMxuKfUeX5yvUrlVJ6AyXajWsf1p/5gfHYruHyMpRzSezyXeHab1qzs7E2YgdAAbaQUa0m2gPpH+83zlErrLWMkqNz+zXeAUaxpObJU4dA3+4+U9Vq4y3Dh1nzhmKm40tNlhdvYhqajtDYD19TFbNR6smPS+rCSvtKmBownlOG2m6nXUekMU9sIw42MTYdB3eHaF6ba8Zn6WIFpa2lRU0QXYi/A8pnWNtAxMScHNhi6CGIryXZuH1zH0lLCprrDNDhLY8fHYJyskJnYwmKVIlza2NyO7E37KnUrP5hSEHvYH0EymGxPa7EqUybvQqhv8AC1UOT/nf3Sni8a7YbE1nJvXqIijkASXcf0qo9JX3fUnD4gD6yFbdSVOX1vb3wZWpy/wgYoOC3+mr3GwIxVKipvkpqS/iRVZQvllU++ekpgaY4U0/pE8u3Tq1qOH7Mg0yKjEWNmKkDQ25XzTWbLwNWuhqNiClNTYkub3ABOl9OI1MROkLOLcjRY6pTo03qFRZATYAAnoB5mw9Y/ZOKNWjTqWAzqGsNQL8gZj9o1cAFZGxjOSLXDZwDyOmhseV5o903vg6JuD3bXGoNmIuPCTyO0PjjQTxTd2BtpbVpUADUe1+AtcnyAhfFHumeTb47QtiHLC+U00APAKUDN7yTOdx5M6YypALfXGUq+KqPTOZHy66j2aaqfiILXEUlwtamUvUY0jSfmgVruL3uLgy9tKoCSiWVVHA/XNwNNNTrfW2gPlKFJDUqZbU19nXuUlAGnh14Dj00mqtDd7LG6+J7CtRqVM2VWJJHe0ykdZ7PgtrLUVOyDHOAQWVkGovxIsZ5VQ3aJsn7xQzMRazMQb9CyC89I2Fgq2EoZalWm1tAchXKgA0uDrYA6nrHiZhLFVbghrdDbr4GCN3cU1OsyNwPA+I/MSnjttLcimLeJ4nxtyg8bT171x0NidfSXjHWycmencbRV6lhYcZR2DtJK1JWB14cCOHHjL3Z3NzOdqiiZXSlfVuEZhSDlYG9+ctVgMpHI6Hy5ynh6JpnQ3TppdelrcRDHSA9l9l1BkS8ZYIlYHiYGFENd9Y+gthfr8hIKQzN4A6/iJYqVlBsWA8JkMxmKoFgAOsrVdnEgjML26Xl5n0uDeRF5VvZzNbPI94dwsYrPURVrKSTame+L/yNa/peYtqTK5VgVYaFWBVgehB1E+ju0gnb+wMPi1tVTvAHLUGlRPJuY8DcR1P9MrPAqohvZLXQQftrAmhWqUWNzTcqSNAbcDblcEH1hDYR7s0xkX7HpOgeEmMkwmrp95fnFTMzUb1UsuDoi3T5THpeeib7r/ZVH3Zh6FGNEBJhVMLUyQOEgw1Lwl0KbcJZCsrFzFJTTPSKYQym+NQhKVIfzOR52Rf9Lx+6tbLSyMp71ZGPLu0xnH+YL/VLj7xrUADYOqbdGQ/MRo2kockYasRlFgCndY6uCTbX2R4ZZLkhzUJjQYnYHpANPbI/wClxPp2R/7pIdtD/pcT76P/ANoOQKGbbys6IVU6FjcDwA+Rnom6YC4Sitrd02HDTMSCB0I1mM3X2YMdXdqmekioLA5c5sdASLgalprNr7Xo4Sh2a1BdV7NSPpMlhYM9r2AtxPhJzYyQbr8DMdvNummI71yLixItfTgbTU4PFJWpLUQgq6ggjhrx/ESTKJzzv0Xx1Wzy0bsYXDkHFV2fjlUKyXAtxKkk+lplt4MjVh+50mVLLdfbcsC13sSWsbj3T1x9uYarU7Hs6lQXtmFF3pX+8B8bW8YVo4ainsoq+S2/CZT1TQXHdpniVDZ+NqgBKNVrWt3WFrX5tpN5htn4haCtWRlyhVbMyseAF7AnS83IqL1jcVTV0ZDwYEe+NDI4voEo2YUMJxnhXH7ulEZ1qBgouQRZrDjrzmeadamn0c7i12G9g47JUyk6Nw8/95sqVS44zy018hDfZIPuN56FszFBgNbggEHqDqD7pPIrHxsvVmIHjJ8Mo1HHXveRAt8jGFLkeEmsFux5/hw/GSRUbVYjTnwlWu9hbmZJVq8XPACBijVWPaey2gA0sPE8zFbHSCVDEK2lMhraEg3APn1i/cU4nUnib8YPNP8Ad6isPZfuP0zD2W9eHuhjNpeExDly6CMZos3PxkNd5SL0QmvkNNTWTX087D36SgrXMuVagRczcFDOfJQTFm/Q0FWzwvfGvnx2JYf+84/o7n/bD+4eFpvTbPa95n6lAVmapfV2LHzY3MvbOQUgQDx8ZaT0JE2lfZtEcxOYbDUQ66i+YfOZV65PMyTZlQmtT1+uvzk0O3o9O3ly9mgbhpAKNQHMS1v+/wBCnmJhA5jIRG4XGURzE420qXUTFq8kDR0gGsO1KXhFMgYoQFivi6lNMhS1UkKjAHs2zfWB5EWN1PxlzC4PKACb293iepN9bmSYlAzL/Lr68JNmgQrHqto1hOh4iwmsBT2gSMNiAjlGZFtYkF7MLoCOZB9bSPGbpYlKWfMuJU5SVAKVAhGpDMePAW14yXaNHOjL1FoAorjMP/cYh1H2c11/oN1+ERjJnon7P3FKilEiovtMi1RZst9VPXW58jNpnU/VE8c2XvjiGrUlxFNLhxlqAFO9a2ViCVs2ovYWvNJT/adhVdkrU61JlNiCocXH3Tf4RGh1Zt3K9JGG8BMjU/aRgLEh6h8BTYH/ADWgPF/tYp8KOGZj1dwnwUN85zu7Lxqj0rPOhzPH637QMfVJCCnSB4EJmYerkg+6CtoYzHVfbxVZh0DGmP6UsIEmF1R6nvhtZqSoilCahZXU6sKZRiWUA8cwUXOmsyJrXmf3e2SVuT7V7k9f1rD60bTpxqkRnsrYq5GkNbt7YyqKbaMns3+snG3mPlKXZyCvh7i0oxEeiUtsGoAKaEG2pawA8rcY+lQJN3bMfh6CefYWpVThUqAdM7W917Q9s3EGotmN2B1udSJF2joikw3tGozEBfYU6+LfkJaogFZ3ZtIAWkz0QOEVDDKtIVEKHn+riV9n1CVKt7SGx8TyPqLGWVexkxw6Zs4GpUDidRxFx6mEBVxJsog+rWhPaKgrryF+ky/71c2jx6JTXyC2DFzKe/mK7PA4g/aQUx/8rBD8Df0l/Z41EHb4KHpKh1BqX/pUj5kRf/Qz1FnjVGqQfCHt1KVKpiLVT3bc4b/hdI/VEs7M2ArN3U068pSyJpE3cwR4W98lG7GFQhwNQQRK1LZtCh3jq3nKm09puwtT981go0u1NkpikAJtbhM/id1uz1C5h4cZT2UcWTftiB0sJqMPXrqveKvp0tKwwyl0TnljD7GJxS01uvZlT4i0HJSnpSOtUfSUh8DB7bu0HJy3Xlbl7o6wz/APPDe+jCGlFNPX3bKsQGGh6mciuEhlOL9lyjsyidcpJJt7R4ceXkZONl0e9dD3f5m6XPPyiikhjn8KogqOz48e8/Ictetp1dmUNe5wNh3n6Djr1iimsw87Loa9zT7zfnIcTszD20p/FvziimAzM7V2fS7Uoq27oPXj5yntLYyVQC6hnAsG0uyjkT1HX/adimCDl3Yp/Z+P5y5Q3eUchFFJsqi7S2MolldmrORRRyVMOF4ThSKKViTkd7OJKUUUZionNIWlS5pVAfqNYHwPWciioons0VGtWTmPnCmH2vcd8a+GonYorRRFlXV+F7zrFl7uY8NNFNvhFFECROhYFXYm/P2b6ag2mIrqaeJ7Mm9jofCKKGLFaNTgXg7eM3FP/GfeRFFMuxZ9ASwhnC47Lh8i6HrFFGJA7KOLEsfGdFS8UUwWFtnsAIZWsAD5fhFFPR8RWjzfOlSREuJC+shqYrIbnmTOxT0YY02keF5Hkzi3X/bJXKsSepMUUUWhf6yP/9k="
+                alt=""
+                class="img-fluid"
+              />
+              <div class="doctor-book-card-content tile-card-content-1">
+                <div>
+                  <h3 class="card-title mb-0">Find a Lab</h3>
+                  <a
+                    href="javascript:void(0);"
+                    class="btn book-btn1 px-3 py-2 mt-3"
+                    tabindex="0"
+                    >Coming Soon</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 <!-- Clinic and Specialities -->
 <section class="section section-specialities">
-    <div class="container-fluid">
-        <div class="section-header text-center aos" data-aos="fade-up">
-            <h2>Clinic and Specialities</h2>
-            <p class="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-9 aos" data-aos="fade-up">
-                <!-- Slider -->
-
-                <div class="specialities-slider slider">
-                    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig3">
-                        <div ngxSlickItem *ngFor="let slide of slides" class="speicality-item text-center">
-                            <div class="">
-                                <div class="speicality-img">
-                                    <img src="{{slide.img}}" class="img-fluid" alt="Speciality">
-                                    <span><i class="fa fa-circle" aria-hidden="true"></i></span>
-                                </div>
-                                <p>{{slide.name}}</p>
-                            </div>
-                        </div>
-                    </ngx-slick-carousel>
-                </div>
-                <!-- /Slider -->
-
-            </div>
-        </div>
+  <div class="container-fluid">
+    <div class="section-header text-center aos" data-aos="fade-up">
+      <h2>Clinic and Specialities</h2>
+      <p class="sub-title">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
     </div>
+    <div class="row justify-content-center">
+      <div class="col-md-9 aos" data-aos="fade-up">
+        <!-- Slider -->
+
+        <div class="specialities-slider slider">
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfig3"
+          >
+            <div
+              ngxSlickItem
+              *ngFor="let slide of slides"
+              class="speicality-item text-center"
+            >
+              <div class="">
+                <div class="speicality-img">
+                  <img
+                    src="{{ slide.img }}"
+                    class="img-fluid"
+                    alt="Speciality"
+                  />
+                  <span><i class="fa fa-circle" aria-hidden="true"></i></span>
+                </div>
+                <p>{{ slide.name }}</p>
+              </div>
+            </div>
+          </ngx-slick-carousel>
+        </div>
+        <!-- /Slider -->
+      </div>
+    </div>
+  </div>
 </section>
 <!-- Clinic and Specialities -->
 
 <!-- popular section-->
 <section class="section section-doctor">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-4">
-                <div class="section-header aos" data-aos="fade-up">
-                    <h2>Book Our Doctor</h2>
-                    <p>Lorem Ipsum is simply dummy text </p>
-                </div>
-                <div class="about-content aos" data-aos="fade-up">
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a
-                        page
-                        when looking at its layout. The point of using Lorem Ipsum.</p>
-                    <p>web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem
-                        ipsum'
-                        will uncover many web sites still in their infancy. Various versions have evolved over the
-                        years, sometimes</p>
-                    <a href="javascript:;">Read More..</a>
-                </div>
-            </div>
-            <div class="col-lg-8">                    
-                <div class="doctor-slider slider aos" data-aos="fade-up">
-                    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfigure">
-                        <div class="slick-slide" *ngFor="let doctor of doctors;let i=index">
-                            <div ngxSlickItem>
-                                <div class="profile-widget" style="width: 100%; display: inline-block;">
-                                    <div class="doc-img">
-                                        <a [routerLink]="'/patients/doctor-profile'"
-                                            [queryParams]="{id: doctor.id}" tabindex="-1">
-                                            <img class="img-fluid" alt="User Image" [src]="doctor.profile">
-                                        </a>
-                                        <a href="javascript:void(0)" class="fav-btn" tabindex="-1">
-                                            <i class="far fa-bookmark"></i>
-                                        </a>
-                                    </div>
-                                    <div class="pro-content">
-                                        <h3 class="title">
-                                            <a [routerLink]="'/patients/doctor-profile'"
-                                                [queryParams]="{id: doctor.id}"
-                                                tabindex="-1">{{doctor.doctor_name}}</a>
-                                            <i class="fas fa-check-circle verified"></i>
-                                        </h3>
-                                        <p class="speciality">{{doctor.Education}}</p>
-                                        <div class="rating">
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star filled"></i>
-                                            <i class="fas fa-star"></i>
-                                            <span class="d-inline-block average-rating">({{doctor.span}})</span>
-                                        </div>
-                                        <ul class="available-info">
-                                            <li>
-                                                <i class="fas fa-map-marker-alt"></i> {{doctor.location}}
-                                            </li>
-                                            <li>
-                                                <i class="far fa-clock"></i> {{doctor.Available}}
-                                            </li>
-                                            <li>
-                                                <i class="far fa-money-bill-alt"></i> {{doctor.Price}}
-                                                <a href="javascript:void(0)" tooltip="Lorem Ipsum" placement="top"><i class="fas fa-info-circle"></i></a>
-                                            </li>
-                                        </ul>
-                                        <div class="row row-sm">
-                                            <div class="col-6">
-                                                <a [routerLink]="'/patients/doctor-profile'"
-                                                    [queryParams]="{id: doctor.id}" class="btn view-btn"
-                                                    tabindex="-1">View Profile</a>
-                                            </div>
-                                            <div class="col-6">
-                                                <a [routerLink]="'/patients/booking'"
-                                                    [queryParams]="{id: doctor.id}" class="btn book-btn"
-                                                    tabindex="-1">Book
-                                                    Now</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </ngx-slick-carousel>
-                </div>
-            </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="section-header aos" data-aos="fade-up">
+          <h2>Book Our Doctor</h2>
+          <p>Lorem Ipsum is simply dummy text</p>
         </div>
+        <div class="about-content aos" data-aos="fade-up">
+          <p>
+            It is a long established fact that a reader will be distracted by
+            the readable content of a page when looking at its layout. The point
+            of using Lorem Ipsum.
+          </p>
+          <p>
+            web page editors now use Lorem Ipsum as their default model text,
+            and a search for 'lorem ipsum' will uncover many web sites still in
+            their infancy. Various versions have evolved over the years,
+            sometimes
+          </p>
+          <a href="javascript:;">Read More..</a>
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="doctor-slider slider aos" data-aos="fade-up">
+          <ngx-slick-carousel
+            class="carousel"
+            #slickModal="slick-carousel"
+            [config]="slideConfigure"
+          >
+            <div
+              class="slick-slide"
+              *ngFor="let doctor of doctors; let i = index"
+            >
+              <div ngxSlickItem>
+                <div
+                  class="profile-widget"
+                  style="width: 100%; display: inline-block"
+                >
+                  <div class="doc-img">
+                    <a
+                      [routerLink]="'/patients/doctor-profile'"
+                      [queryParams]="{ id: doctor.id }"
+                      tabindex="-1"
+                    >
+                      <img
+                        class="img-fluid"
+                        alt="User Image"
+                        [src]="doctor.profile"
+                      />
+                    </a>
+                    <a href="javascript:void(0)" class="fav-btn" tabindex="-1">
+                      <i class="far fa-bookmark"></i>
+                    </a>
+                  </div>
+                  <div class="pro-content">
+                    <h3 class="title">
+                      <a
+                        [routerLink]="'/patients/doctor-profile'"
+                        [queryParams]="{ id: doctor.id }"
+                        tabindex="-1"
+                        >{{ doctor.doctor_name }}</a
+                      >
+                      <i class="fas fa-check-circle verified"></i>
+                    </h3>
+                    <p class="speciality">{{ doctor.Education }}</p>
+                    <div class="rating">
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star filled"></i>
+                      <i class="fas fa-star"></i>
+                      <span class="d-inline-block average-rating"
+                        >({{ doctor.span }})</span
+                      >
+                    </div>
+                    <ul class="available-info">
+                      <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ doctor.location }}
+                      </li>
+                      <li>
+                        <i class="far fa-clock"></i> {{ doctor.Available }}
+                      </li>
+                      <li>
+                        <i class="far fa-money-bill-alt"></i> {{ doctor.Price }}
+                        <a
+                          href="javascript:void(0)"
+                          tooltip="Lorem Ipsum"
+                          placement="top"
+                          ><i class="fas fa-info-circle"></i
+                        ></a>
+                      </li>
+                    </ul>
+                    <div class="row row-sm">
+                      <div class="col-6">
+                        <a
+                          [routerLink]="'/patients/doctor-profile'"
+                          [queryParams]="{ id: doctor.id }"
+                          class="btn view-btn"
+                          tabindex="-1"
+                          >View Profile</a
+                        >
+                      </div>
+                      <div class="col-6">
+                        <a
+                          [routerLink]="'/patients/booking'"
+                          [queryParams]="{ id: doctor.id }"
+                          class="btn book-btn"
+                          tabindex="-1"
+                          >Book Now</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ngx-slick-carousel>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
 <!--popular section-->
 
-<section class="section section-features">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-5 features-img aos" data-aos="fade-up">
-                <img src="assets/img/features/feature.png" class="img-fluid" alt="Feature">
-            </div>
-            <div class="col-md-7">
-                <div class="section-header aos" data-aos="fade-up">	
-                    <h2 class="mt-2">Available Features in Our Clinic</h2>
-                    <p>It is a long established fact that a reader will be distracted by the readable content of a
-                        page when looking at its layout. </p>
-                </div>
-                <div class="features-slider slider aos" data-aos="fade-up">
-                    
-                        <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig2">
-                            <div ngxSlickItem *ngFor="let slide of sliderContent">
-                                <div class="feature-item text-center">
-                                <img src="{{slide.img}}" class="img-fluid" alt="Feature">
-                                    <p>{{slide.name}}</p>
-                                </div>
-                            </div>
-                        </ngx-slick-carousel>
-                    </div>
-                </div>
-            </div>
-        </div>
-</section>
-
 <section class="section section-blogs">
-    <div class="container-fluid">
-
-        <!-- Section Header -->
-        <div class="section-header text-center aos" data-aos="fade-up">
-            <h2>Blogs and News</h2>
-            <p class="sub-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                incididunt ut labore et dolore magna aliqua.</p>
-        </div>
-        <!-- /Section Header -->
-
-        <div class="row blog-grid-row aos" data-aos="fade-up">
-            <div class="col-md-6 col-lg-3 col-sm-12" *ngFor="let blog of blogs;let i=index" [hidden]="i>3">
-
-                <!-- Blog Post -->
-                <div class="blog grid-blog">
-                    <div class="blog-image">
-                        <a [routerLink]="'/blog/blog-details'" [queryParams]="{id: blog.id}"><img class="img-fluid"
-                                [src]="blog.img" alt="Post Image"></a>
-                    </div>
-                    <div class="blog-content">
-                        <ul class="entry-meta meta-item">
-                            <li>
-                                <div class="post-author">
-                                    <a [routerLink]="'/patients/doctor-profile'"><img [src]="blog.doctor_pic"
-                                            alt="Post Author"> <span>{{blog.doctor_name}}</span></a>
-                                </div>
-                            </li>
-                            <li><i class="far fa-clock"></i> {{blog.createdAt}}</li>
-                        </ul> 
-                        <h3 class="blog-title"><a [routerLink]="'/blog/blog-details'"
-                                [queryParams]="{id: blog.id}">{{blog.title}}</a></h3>
-                        <p class="mb-0 desc-ellipsis">{{blog.description}}</p>
-                    </div>
-                </div>
-                <!-- /Blog Post -->
-
-            </div>
-
-        </div>
-        <div class="view-all text-center aos" data-aos="fade-up"> 
-            <a [routerLink]="'/blog/blog-details'" class="btn btn-primary">View All</a>
-        </div>
+  <div class="container-fluid">
+    <!-- Section Header -->
+    <div class="section-header text-center aos" data-aos="fade-up">
+      <h2>Blogs and News</h2>
+      <p class="sub-title">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+        tempor incididunt ut labore et dolore magna aliqua.
+      </p>
     </div>
+    <!-- /Section Header -->
+
+    <div class="row blog-grid-row aos" data-aos="fade-up">
+      <div
+        class="col-md-6 col-lg-3 col-sm-12"
+        *ngFor="let blog of blogs; let i = index"
+        [hidden]="i > 3"
+      >
+        <!-- Blog Post -->
+        <div class="blog grid-blog">
+          <div class="blog-image">
+            <a
+              [routerLink]="'/blog/blog-details'"
+              [queryParams]="{ id: blog.id }"
+              ><img class="img-fluid" [src]="blog.img" alt="Post Image"
+            /></a>
+          </div>
+          <div class="blog-content">
+            <ul class="entry-meta meta-item">
+              <li>
+                <div class="post-author">
+                  <a [routerLink]="'/patients/doctor-profile'"
+                    ><img [src]="blog.doctor_pic" alt="Post Author" />
+                    <span>{{ blog.doctor_name }}</span></a
+                  >
+                </div>
+              </li>
+              <li><i class="far fa-clock"></i> {{ blog.createdAt }}</li>
+            </ul>
+            <h3 class="blog-title">
+              <a
+                [routerLink]="'/blog/blog-details'"
+                [queryParams]="{ id: blog.id }"
+                >{{ blog.title }}</a
+              >
+            </h3>
+            <p class="mb-0 desc-ellipsis">{{ blog.description }}</p>
+          </div>
+        </div>
+        <!-- /Blog Post -->
+      </div>
+    </div>
+    <div class="view-all text-center aos" data-aos="fade-up">
+      <a [routerLink]="'/blog/blog-details'" class="btn btn-primary"
+        >View All</a
+      >
+    </div>
+  </div>
 </section>
 <app-home-one-footer></app-home-one-footer>
