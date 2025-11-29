@@ -1,8 +1,3 @@
-<!-- <div>
-    <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
-        <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
-    </ngx-spinner>
-</div> -->
 <div class="row">
   <div class="col-sm-12">
     <div class="card">
@@ -12,34 +7,25 @@
           <div class="row">
             <div class="col-md-12">
               <div class="card schedule-widget mb-0">
-                <!-- Schedule Header -->
                 <div class="schedule-header">
-                  <!-- Schedule Nav -->
                   <div class="schedule-nav">
                     <ul class="nav nav-tabs nav-justified">
-                      <li
-                        class="nav-item"
-                        *ngFor="let date of dateArr; let i = index"
-                      >
+                      <li class="nav-item" *ngFor="let date of dateArr; let i = index">
                         <a
                           class="nav-link"
                           data-bs-toggle="tab"
                           [href]="'#slot_' + date.weekday"
                           [ngClass]="{ active: date.weekday === weekDay }"
                           (click)="dateGet(date.date, date.weekday)"
-                          >{{ date.weekday }}</a
                         >
+                          {{ date.weekday }}
+                        </a>
                       </li>
                     </ul>
                   </div>
-                  <!-- /Schedule Nav -->
                 </div>
-                <!-- /Schedule Header -->
 
-                <!-- Schedule Content -->
                 <div class="tab-content schedule-cont">
-                  <!-- Reusable day block -->
-                  <!-- Sunday -->
                   <div
                     id="slot_SUNDAY"
                     class="tab-pane fade"
@@ -51,26 +37,26 @@
                         class="edit-link"
                         (click)="openModal(modal)"
                         *ngIf="!sundaySchedule.length"
-                        ><i class="fa fa-plus-circle"></i> Add Slot</a
                       >
+                        <i class="fa fa-plus-circle"></i> Add Slot
+                      </a>
                       <a
-                        (click)="openEditModal(sundaySchedule[0].dayId, modal)"
+                        (click)="openEditModal('SUNDAY', modal)"
                         class="edit-link"
                         *ngIf="sundaySchedule.length > 0"
-                        ><i class="fa fa-edit me-1"></i>Edit</a
                       >
+                        <i class="fa fa-edit me-1"></i>Edit
+                      </a>
                     </h4>
                     <div class="d-flex flex-wrap">
                       <div
                         class="doc-times"
-                        *ngFor="let shedule of sundaySchedule[0]?.chidObj"
+                        *ngFor="let schedule of sundaySchedule"
                       >
                         <div class="doc-slot-list">
-                          {{ convertTo12HourFormat(shedule.startTime) }} -
-                          {{ convertTo12HourFormat(shedule.endTime) }}
-                          <span class="ms-1"
-                            >(Max {{ shedule.maxPatients }})</span
-                          >
+                          {{ convertTo12HourFormat(schedule.startTime) }} -
+                          {{ convertTo12HourFormat(schedule.endTime) }}
+                          <span class="ms-1">(Max {{ schedule.maxPatient }})</span>
                         </div>
                       </div>
                     </div>
@@ -79,10 +65,9 @@
                     </p>
                   </div>
 
-                  <!-- Monday -->
                   <div
                     id="slot_MONDAY"
-                    class="tab-pane fade show"
+                    class="tab-pane fade"
                     [ngClass]="{ 'show active': 'MONDAY' === weekDay }"
                   >
                     <h4 class="card-title d-flex justify-content-between">
@@ -91,26 +76,26 @@
                         class="edit-link"
                         (click)="openModal(modal)"
                         *ngIf="!mondaySchedule.length"
-                        ><i class="fa fa-plus-circle"></i> Add Slot</a
                       >
+                        <i class="fa fa-plus-circle"></i> Add Slot
+                      </a>
                       <a
-                        (click)="openEditModal(mondaySchedule[0].dayId, modal)"
+                        (click)="openEditModal('MONDAY', modal)"
                         class="edit-link"
                         *ngIf="mondaySchedule.length"
-                        ><i class="fa fa-edit me-1"></i>Edit</a
                       >
+                        <i class="fa fa-edit me-1"></i>Edit
+                      </a>
                     </h4>
                     <div class="d-flex flex-wrap">
                       <div
                         class="doc-times"
-                        *ngFor="let shedule of mondaySchedule[0]?.chidObj"
+                        *ngFor="let schedule of mondaySchedule"
                       >
                         <div class="doc-slot-list">
-                          {{ convertTo12HourFormat(shedule.startTime) }} -
-                          {{ convertTo12HourFormat(shedule.endTime) }}
-                          <span class="ms-1"
-                            >(Max {{ shedule.maxPatients }})</span
-                          >
+                          {{ convertTo12HourFormat(schedule.startTime) }} -
+                          {{ convertTo12HourFormat(schedule.endTime) }}
+                          <span class="ms-1">(Max {{ schedule.maxPatient }})</span>
                         </div>
                       </div>
                     </div>
@@ -119,7 +104,6 @@
                     </p>
                   </div>
 
-                  <!-- Tuesday -->
                   <div
                     id="slot_TUESDAY"
                     class="tab-pane fade"
@@ -131,26 +115,26 @@
                         class="edit-link"
                         (click)="openModal(modal)"
                         *ngIf="!tuesdaySchedule.length"
-                        ><i class="fa fa-plus-circle"></i> Add Slot</a
                       >
+                        <i class="fa fa-plus-circle"></i> Add Slot
+                      </a>
                       <a
-                        (click)="openEditModal(tuesdaySchedule[0].dayId, modal)"
+                        (click)="openEditModal('TUESDAY', modal)"
                         class="edit-link"
                         *ngIf="tuesdaySchedule.length"
-                        ><i class="fa fa-edit me-1"></i>Edit</a
                       >
+                        <i class="fa fa-edit me-1"></i>Edit
+                      </a>
                     </h4>
                     <div class="d-flex flex-wrap">
                       <div
                         class="doc-times"
-                        *ngFor="let shedule of tuesdaySchedule[0]?.chidObj"
+                        *ngFor="let schedule of tuesdaySchedule"
                       >
                         <div class="doc-slot-list">
-                          {{ convertTo12HourFormat(shedule.startTime) }} -
-                          {{ convertTo12HourFormat(shedule.endTime) }}
-                          <span class="ms-1"
-                            >(Max {{ shedule.maxPatients }})</span
-                          >
+                          {{ convertTo12HourFormat(schedule.startTime) }} -
+                          {{ convertTo12HourFormat(schedule.endTime) }}
+                          <span class="ms-1">(Max {{ schedule.maxPatient }})</span>
                         </div>
                       </div>
                     </div>
@@ -159,7 +143,6 @@
                     </p>
                   </div>
 
-                  <!-- Wednesday -->
                   <div
                     id="slot_WEDNESDAY"
                     class="tab-pane fade"
@@ -171,40 +154,34 @@
                         class="edit-link"
                         (click)="openModal(modal)"
                         *ngIf="!wednesdaySchedule.length"
-                        ><i class="fa fa-plus-circle"></i> Add Slot</a
                       >
+                        <i class="fa fa-plus-circle"></i> Add Slot
+                      </a>
                       <a
-                        (click)="
-                          openEditModal(wednesdaySchedule[0].dayId, modal)
-                        "
+                        (click)="openEditModal('WEDNESDAY', modal)"
                         class="edit-link"
                         *ngIf="wednesdaySchedule.length"
-                        ><i class="fa fa-edit me-1"></i>Edit</a
                       >
+                        <i class="fa fa-edit me-1"></i>Edit
+                      </a>
                     </h4>
                     <div class="d-flex flex-wrap">
                       <div
                         class="doc-times"
-                        *ngFor="let shedule of wednesdaySchedule[0]?.chidObj"
+                        *ngFor="let schedule of wednesdaySchedule"
                       >
                         <div class="doc-slot-list">
-                          {{ convertTo12HourFormat(shedule.startTime) }} -
-                          {{ convertTo12HourFormat(shedule.endTime) }}
-                          <span class="ms-1"
-                            >(Max {{ shedule.maxPatients }})</span
-                          >
+                          {{ convertTo12HourFormat(schedule.startTime) }} -
+                          {{ convertTo12HourFormat(schedule.endTime) }}
+                          <span class="ms-1">(Max {{ schedule.maxPatient }})</span>
                         </div>
                       </div>
                     </div>
-                    <p
-                      class="text-muted mb-0"
-                      *ngIf="!wednesdaySchedule.length"
-                    >
+                    <p class="text-muted mb-0" *ngIf="!wednesdaySchedule.length">
                       Not Available
                     </p>
                   </div>
 
-                  <!-- Thursday -->
                   <div
                     id="slot_THURSDAY"
                     class="tab-pane fade"
@@ -216,28 +193,26 @@
                         class="edit-link"
                         (click)="openModal(modal)"
                         *ngIf="!thursdaySchedule.length"
-                        ><i class="fa fa-plus-circle"></i> Add Slot</a
                       >
+                        <i class="fa fa-plus-circle"></i> Add Slot
+                      </a>
                       <a
-                        (click)="
-                          openEditModal(thursdaySchedule[0].dayId, modal)
-                        "
+                        (click)="openEditModal('THURSDAY', modal)"
                         class="edit-link"
                         *ngIf="thursdaySchedule.length"
-                        ><i class="fa fa-edit me-1"></i>Edit</a
                       >
+                        <i class="fa fa-edit me-1"></i>Edit
+                      </a>
                     </h4>
                     <div class="d-flex flex-wrap">
                       <div
                         class="doc-times"
-                        *ngFor="let shedule of thursdaySchedule[0]?.chidObj"
+                        *ngFor="let schedule of thursdaySchedule"
                       >
                         <div class="doc-slot-list">
-                          {{ convertTo12HourFormat(shedule.startTime) }} -
-                          {{ convertTo12HourFormat(shedule.endTime) }}
-                          <span class="ms-1"
-                            >(Max {{ shedule.maxPatients }})</span
-                          >
+                          {{ convertTo12HourFormat(schedule.startTime) }} -
+                          {{ convertTo12HourFormat(schedule.endTime) }}
+                          <span class="ms-1">(Max {{ schedule.maxPatient }})</span>
                         </div>
                       </div>
                     </div>
@@ -246,7 +221,6 @@
                     </p>
                   </div>
 
-                  <!-- Friday -->
                   <div
                     id="slot_FRIDAY"
                     class="tab-pane fade"
@@ -258,26 +232,26 @@
                         class="edit-link"
                         (click)="openModal(modal)"
                         *ngIf="!fridaySchedule.length"
-                        ><i class="fa fa-plus-circle"></i> Add Slot</a
                       >
+                        <i class="fa fa-plus-circle"></i> Add Slot
+                      </a>
                       <a
-                        (click)="openEditModal(fridaySchedule[0].dayId, modal)"
+                        (click)="openEditModal('FRIDAY', modal)"
                         class="edit-link"
                         *ngIf="fridaySchedule.length"
-                        ><i class="fa fa-edit me-1"></i>Edit</a
                       >
+                        <i class="fa fa-edit me-1"></i>Edit
+                      </a>
                     </h4>
                     <div class="d-flex flex-wrap">
                       <div
                         class="doc-times"
-                        *ngFor="let shedule of fridaySchedule[0]?.chidObj"
+                        *ngFor="let schedule of fridaySchedule"
                       >
                         <div class="doc-slot-list">
-                          {{ convertTo12HourFormat(shedule.startTime) }} -
-                          {{ convertTo12HourFormat(shedule.endTime) }}
-                          <span class="ms-1"
-                            >(Max {{ shedule.maxPatients }})</span
-                          >
+                          {{ convertTo12HourFormat(schedule.startTime) }} -
+                          {{ convertTo12HourFormat(schedule.endTime) }}
+                          <span class="ms-1">(Max {{ schedule.maxPatient }})</span>
                         </div>
                       </div>
                     </div>
@@ -286,7 +260,6 @@
                     </p>
                   </div>
 
-                  <!-- Saturday -->
                   <div
                     id="slot_SATURDAY"
                     class="tab-pane fade"
@@ -298,28 +271,26 @@
                         class="edit-link"
                         (click)="openModal(modal)"
                         *ngIf="!saturdaySchedule.length"
-                        ><i class="fa fa-plus-circle"></i> Add Slot</a
                       >
+                        <i class="fa fa-plus-circle"></i> Add Slot
+                      </a>
                       <a
-                        (click)="
-                          openEditModal(saturdaySchedule[0].dayId, modal)
-                        "
+                        (click)="openEditModal('SATURDAY', modal)"
                         class="edit-link"
                         *ngIf="saturdaySchedule.length"
-                        ><i class="fa fa-edit me-1"></i>Edit</a
                       >
+                        <i class="fa fa-edit me-1"></i>Edit
+                      </a>
                     </h4>
                     <div class="d-flex flex-wrap">
                       <div
                         class="doc-times"
-                        *ngFor="let shedule of saturdaySchedule[0]?.chidObj"
+                        *ngFor="let schedule of saturdaySchedule"
                       >
                         <div class="doc-slot-list">
-                          {{ convertTo12HourFormat(shedule.startTime) }} -
-                          {{ convertTo12HourFormat(shedule.endTime) }}
-                          <span class="ms-1"
-                            >(Max {{ shedule.maxPatients }})</span
-                          >
+                          {{ convertTo12HourFormat(schedule.startTime) }} -
+                          {{ convertTo12HourFormat(schedule.endTime) }}
+                          <span class="ms-1">(Max {{ schedule.maxPatient }})</span>
                         </div>
                       </div>
                     </div>
@@ -328,7 +299,6 @@
                     </p>
                   </div>
                 </div>
-                <!-- /Schedule Content -->
               </div>
             </div>
           </div>
@@ -338,10 +308,9 @@
   </div>
 </div>
 
-<!-- /Add/Edit Time Slot Modal -->
 <ng-template #modal let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">{{ dayId ? "Edit" : "Add" }} Time Slots</h4>
+    <h4 class="modal-title">{{ isEditMode ? "Edit" : "Add" }} Time Slots</h4>
     <button
       type="button"
       class="btn-close"
@@ -463,19 +432,15 @@
                   </div>
                 </div>
 
-                <div class="col-12 col-md-1 d-flex align-items-end">
-                  <!-- <a href="javascript:void(0);" (click)="deleteAddClinic(modal, addTimeSlot, i)" class="btn bg-danger-light trash"
-                    ><i class="far fa-trash-alt trashicon"></i
-                  ></a> -->
-                </div>
+                <div class="col-12 col-md-1 d-flex align-items-end"></div>
               </div>
             </div>
           </div>
 
           <div class="add-more m-0">
-            <a href="javascript:void(0);" (click)="addClinicButton()"
-              ><i class="fa fa-plus-circle"></i> Add More</a
-            >
+            <a href="javascript:void(0);" (click)="addClinicButton()">
+              <i class="fa fa-plus-circle"></i> Add More
+            </a>
           </div>
         </div>
 

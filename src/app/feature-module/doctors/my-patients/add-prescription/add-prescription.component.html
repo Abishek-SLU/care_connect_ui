@@ -1,6 +1,5 @@
-<!-- Page Content -->
-<!-- <!-- <div>
-    <ngx-spinner
+<div>
+  <ngx-spinner
     bdColor="rgba(51,51,51,0.8)"
     size="medium"
     color="#fff"
@@ -8,50 +7,42 @@
   >
     <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
   </ngx-spinner>
-</div> -->
--->
+</div>
+
 <div class="container-fluid mt-5">
   <div class="row div">
     <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
       <div class="sticky-grid">
-        <!-- Profile Widget -->
         <div class="card widget-profile pat-widget-profile">
           <div class="card-body">
             <div class="pro-widget-content">
               <div class="profile-info-widget">
                 <a>
                   <img
-                    *ngIf="patientInfo.doctorData"
-                    [src]="patientInfo.doctorData?.patientImage"
+                    *ngIf="profileImageSrc"
+                    [src]="profileImageSrc"
                     class="img-fluid rounded-circle circle"
                     alt="Image"
                   />
                   <img
-                    *ngIf="!patientInfo.doctorData"
+                    *ngIf="!profileImageSrc"
                     class="img-fluid rounded-circle"
                     src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
                   />
                 </a>
-                <!-- <a>
-                                        <img *ngIf="patientInfo" [src]="patientInfo?.patientImage" class="img-fluid"
-                                            alt="Image">
-                                        <img *ngIf="!patientInfo" class="img-fluid"
-                                            src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg">
-                                    </a> -->
                 <div class="profile-det-info mt-3">
                   <h3>
-                    <a (click)="viewPatient(patientInfo.patientId)">{{
-                      patientInfo?.name
-                    }}</a>
+                    <a (click)="viewPatient(patientInfo.patientId)">
+                      {{ patientInfo?.name }}
+                    </a>
                   </h3>
                   <div class="patient-details">
-                    <!-- <h5><b>Patient ID :</b> PT0016</h5> -->
                     <h5
                       class="mb-0"
                       *ngIf="patientInfo?.state || patientInfo?.city"
                     >
-                      <i class="fas fa-map-marker-alt"></i
-                      >{{ patientInfo?.state }}, {{ patientInfo?.city }}
+                      <i class="fas fa-map-marker-alt"></i>
+                      {{ patientInfo?.state }}, {{ patientInfo?.city }}
                     </h5>
                   </div>
                 </div>
@@ -59,20 +50,15 @@
             </div>
             <div class="patient-info">
               <ul>
+                <li>Phone <span>{{ patientInfo?.mobileno || '-' }}</span></li>
+                <li>Gender <span>{{ patientInfo?.gender || '-' }}</span></li>
                 <li>
-                  Phone <span>{{ patientInfo?.mobileno || "-" }}</span>
-                </li>
-                <li>
-                  Gender <span>{{ patientInfo?.gender || "-" }}</span>
-                </li>
-                <li>
-                  Blood Group <span>{{ patientInfo?.bloodGroup || "-" }}</span>
+                  Blood Group <span>{{ patientInfo?.bloodGroup || '-' }}</span>
                 </li>
               </ul>
             </div>
           </div>
         </div>
-        <!-- /Profile Widget -->
       </div>
     </div>
 
@@ -86,22 +72,15 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="biller-info">
-                  <h4 class="d-block">{{ values?.doctorName }}</h4>
-                  <span class="d-block text-sm text-muted"
-                    >{{ values?.education }},{{
-                      values?.specializationName
-                    }}</span
-                  >
-                  <span class="d-block text-sm text-muted"></span>
+                  <h4 class="d-block">{{ doctorInfo?.doctorName }}</h4>
+                  <span class="d-block text-sm text-muted">
+                    {{ doctorInfo?.education }},
+                    {{ doctorInfo?.specializationName }}
+                  </span>
                 </div>
               </div>
-              <!-- <div class="col-sm-6 text-sm-end">
-                                    <div class="billing-info">
-                                        <h4 class="d-block">1 November 2019</h4>
-                                        <span class="d-block text-muted">#INV0001</span>
-                                    </div>
-                                  </div> -->
             </div>
+
             <div class="row">
               <div class="form-group col-lg-6 col-md-6 col-sm-6 mb-3">
                 <th class="form-floating">
@@ -128,47 +107,23 @@
                   "
                   class="invalid-feedback"
                 >
-                  *Requried
+                  Required
                 </div>
-                <!-- <div class="col-6 mt-2 mb-2">
-                                        <label class="form-floating"><b>Specialization</b></label>
-                                        <ng-select class="form-select" formControlName="specializationName" [ngClass]="{ 'is-invalid': submitted && b['specializationName'].errors || b['specializationName'].invalid && (b['specializationName'].dirty || b['specializationName'].touched)}"></ng-select>
-                                        <div *ngIf="submitted && b['specializationName'].errors || b['specializationName'].invalid && (b['specializationName'].dirty || b['specializationName'].touched)"
-                                        class="invalid-feedback">
-                                        *Requried
-                                    </div>
-                                    </div> -->
               </div>
-              <!-- Add Item -->
               <div
                 class="col-lg-6 col-md-6 col-sm-6 add-more-item text-end d-flex align-items-end justify-content-end"
               >
-                <a (click)="addprescription()" href="javascript:void(0);"
-                  ><i class="fas fa-plus-circle"></i> Add Item</a
-                >
+                <a (click)="addPrescriptionRow()" href="javascript:void(0);">
+                  <i class="fas fa-plus-circle"></i> Add Item
+                </a>
               </div>
             </div>
-            <!-- /Add Item -->
 
-            <!-- Prescription Item -->
             <div class="card card-table">
               <div class="card-body">
-                <!-- <div class="table-responsive">
-
-                                        <table class="table table-hover"> -->
-                <!-- 
-                                            <thead>
-                                                <tr>
-                                                    <th>Medicine Name</th>
-                                                    <th>Quantity</th>
-                                                    <th>Days</th>
-                                                    <th>Time</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead> -->
                 <div formArrayName="prescription">
                   <div
-                    *ngFor="let pres of prescription?.controls; let i = index"
+                    *ngFor="let pres of prescription.controls; let i = index"
                     [formGroupName]="i"
                     class="Prescription row"
                   >
@@ -183,29 +138,21 @@
                         [ngClass]="{
                           'is-invalid':
                             (submitted &&
-                              prescription.controls[i].get('medicineName')
-                                ?.errors) ||
-                            (prescription.controls[i].get('medicineName')
-                              ?.invalid &&
-                              (prescription.controls[i].get('medicineName')
-                                ?.dirty ||
-                                prescription.controls[i].get('medicineName')
-                                  ?.touched))
+                              pres.get('medicineName')?.errors) ||
+                            (pres.get('medicineName')?.invalid &&
+                              (pres.get('medicineName')?.dirty ||
+                                pres.get('medicineName')?.touched))
                         }"
                       />
                       <div
                         *ngIf="
-                          (submitted &&
-                            prescription.controls[i]?.get('medicineName')
-                              ?.errors) ||
-                          (prescription.controls[i].get('medicineName')
-                            ?.invalid &&
-                            prescription.controls[i].get('medicineName')
-                              ?.touched)
+                          (submitted && pres.get('medicineName')?.errors) ||
+                          (pres.get('medicineName')?.invalid &&
+                            pres.get('medicineName')?.touched)
                         "
                         class="invalid-feedback req"
                       >
-                        *Required
+                        Required
                       </div>
                     </div>
 
@@ -219,29 +166,24 @@
                         formControlName="quantity"
                         [ngClass]="{
                           'is-invalid':
-                            (submitted &&
-                              prescription.controls[i].get('quantity')
-                                ?.errors) ||
-                            (prescription.controls[i].get('quantity')
-                              ?.invalid &&
-                              (prescription.controls[i].get('quantity')
-                                ?.dirty ||
-                                prescription.controls[i].get('quantity')
-                                  ?.touched))
+                            (submitted && pres.get('quantity')?.errors) ||
+                            (pres.get('quantity')?.invalid &&
+                              (pres.get('quantity')?.dirty ||
+                                pres.get('quantity')?.touched))
                         }"
                       />
                       <div
                         *ngIf="
-                          (submitted &&
-                            prescription.controls[i].get('quantity')?.errors) ||
-                          (prescription.controls[i].get('quantity')?.invalid &&
-                            prescription.controls[i].get('quantity')?.touched)
+                          (submitted && pres.get('quantity')?.errors) ||
+                          (pres.get('quantity')?.invalid &&
+                            pres.get('quantity')?.touched)
                         "
                         class="invalid-feedback req"
                       >
-                        *Required
+                        Required
                       </div>
                     </div>
+
                     <div
                       class="form-group col-sm-4 col-md-4 col-lg-4 col-xl-2 column"
                     >
@@ -252,42 +194,29 @@
                         formControlName="noOfDays"
                         [ngClass]="{
                           'is-invalid':
-                            (submitted &&
-                              prescription.controls[i].get('noOfDays')
-                                ?.errors) ||
-                            (prescription.controls[i].get('noOfDays')
-                              ?.invalid &&
-                              (prescription.controls[i].get('noOfDays')
-                                ?.dirty ||
-                                prescription.controls[i].get('noOfDays')
-                                  ?.touched))
+                            (submitted && pres.get('noOfDays')?.errors) ||
+                            (pres.get('noOfDays')?.invalid &&
+                              (pres.get('noOfDays')?.dirty ||
+                                pres.get('noOfDays')?.touched))
                         }"
                       />
                       <div
                         *ngIf="
-                          (submitted &&
-                            prescription.controls[i].get('noOfDays')?.errors) ||
-                          (prescription.controls[i].get('noOfDays')?.invalid &&
-                            prescription.controls[i].get('noOfDays')?.touched)
+                          (submitted && pres.get('noOfDays')?.errors) ||
+                          (pres.get('noOfDays')?.invalid &&
+                            pres.get('noOfDays')?.touched)
                         "
                         class="invalid-feedback req"
                       >
-                        *Required
+                        Required
                       </div>
                     </div>
+
                     <div
                       class="form-group col-sm-11 col-md-11 col-lg-11 col-xl-5 column"
                     >
                       <th>Time<span class="text-danger">*</span></th>
-                      <!-- <div class="check form-check-inline row"> -->
                       <div class="form-check mt-2">
-                        <!-- <label class="mx-1"
-                                                                *ngFor="let choice of timing; let j=index">
-                                                                <input type="checkbox" [value]="choice.time"
-                                                                    formArrayName="timeObj"
-                                                                    (change)="onCheckChange($event, i, j)">
-                                                                {{choice.time}}
-                                                            </label> -->
                         <div class="form-check-inline">
                           <input
                             type="checkbox"
@@ -322,72 +251,49 @@
                         </div>
                         <div
                           *ngIf="
-                            addPrescription.hasError(
-                              'atLeastOneCheckboxChecked'
-                            )
+                            submitted &&
+                            pres.hasError('atLeastOneCheckboxChecked')
                           "
-                          class="invalid-feedback"
+                          class="invalid-feedback d-block"
                         >
-                          * At least one checkbox is required
+                          At least one time is required
                         </div>
-
-                        <!-- <div *ngIf="submit && time.controls[i].get('time')?.errors || time.controls[i].get('time')?.invalid && (time.controls[i].get('time')?.touched)"
-                                                                class="invalid-feedback req">
-                                                             required
-                                                         
-                                                            </div> -->
                       </div>
-                      <!-- </div> -->
                     </div>
+
                     <div class="col-sm-1 col-md-1 col-lg-1 col-xl-1 mt-4">
                       <a
                         class="btn bg-danger-light"
-                        (click)="deletePrescription(i)"
-                        ><i class="fas fa-trash"></i
-                      ></a>
+                        (click)="deletePrescriptionRow(i)"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </a>
                     </div>
                   </div>
                 </div>
-                <!-- </table> -->
-                <!-- </div> -->
               </div>
             </div>
-            <!-- /Prescription Item -->
 
-            <!-- Signature -->
-            <!-- <div class="row">
-                                <div class="col-md-12 text-end">
-                                    <div class="signature-wrap">
-                                        <div class="signature">
-                                            Click here to sign
-                                        </div>
-                                        <div class="sign-name">
-                                            <p class="mb-0">( Dr. Darren Elder )</p>
-                                            <span class="text-muted">Signature</span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-            <!-- /Signature -->
-
-            <!-- Submit Section -->
             <div class="row">
               <div class="col-md-12 text-end">
                 <div class="submit-section">
                   <button
-                    type="submit"
+                    type="button"
                     class="btn btn-primary submit-btn"
-                    (click)="save(patientInfo.patientId)"
+                    (click)="save()"
                   >
                     Save
                   </button>
-                  <button type="reset" class="btn btn-secondary submit-btn">
+                  <button
+                    type="button"
+                    class="btn btn-secondary submit-btn"
+                    (click)="clear()"
+                  >
                     Clear
                   </button>
                 </div>
               </div>
             </div>
-            <!-- /Submit Section -->
           </div>
         </div>
       </form>

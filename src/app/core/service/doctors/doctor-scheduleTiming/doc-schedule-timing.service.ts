@@ -1,45 +1,36 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { data } from 'jquery';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocScheduleTimingService {
-  private base_url = environment.Api_url;
-  private createAddSlot = this.base_url + "api/doctorschedule/create";
-  private getDoctorClinicId = this.base_url + "api/doctorschedule/getclinic";
-  private getSchedule = this.base_url + "api/doctorschedule/getBySlot";
-  private deleteSchedule = this.base_url + "api/doctorschedule/delete";
-  private updateSchedule = this.base_url + "api/doctorschedule/update";
-  private getBySchedule = this.base_url + "api/doctorschedule/getByDay";
-  private inactiveSchedule = this.base_url + "api/doctorschedule/InActive";
-  private cancelSchedule = this.base_url + "api/appoinment/cancelAll";
+  private base_url = environment.Api_url + 'api/doctor/schedule';
+
   constructor(private http: HttpClient) { }
 
-  addSlotCreate(data: any) {
-    return this.http.post<any>(this.createAddSlot, data);
+  createSchedules(data: any) {
+    return this.http.post<any>(this.base_url + '/create', data);
   }
-  doctorClinicIdGet(id: any) {
-    return this.http.get<any>(this.getDoctorClinicId + '/' + id);
+
+  getScheduleById(id: string) {
+    return this.http.get<any>(this.base_url + '/id/' + id);
   }
-  scheduleGet(id: any) {
-    return this.http.get(this.getSchedule + '/' + id);
+
+  getSchedules(doctorId?: string) {
+    let params = new HttpParams();
+    if (doctorId) {
+      params = params.set('doctorId', doctorId);
+    }
+    return this.http.get<any>(this.base_url + '/list', { params });
   }
-  scheduleDelete(id: any) {
-    return this.http.delete(this.deleteSchedule + '/' + id);
+
+  updateSchedule(id: string, data: any) {
+    return this.http.put<any>(this.base_url + '/update/' + id, data);
   }
-  scheduleUpdate(data: any) {
-    return this.http.put<any>(this.updateSchedule, data);
-  }
-  scheduleGetBy(id: any) {
-    return this.http.get<any>(this.getBySchedule + '/' + id);
-  }
-  scheduleInActive(data: any) {
-    return this.http.put(this.inactiveSchedule, data);
-  }
-  scheduleCancel(id:any,data: any) {
-    return this.http.put(this.cancelSchedule + '/' + id, data);
+
+  deleteSchedule(id: string) {
+    return this.http.delete<any>(this.base_url + '/delete/' + id);
   }
 }
