@@ -4,20 +4,26 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
+import { DocScheduleTimingService } from 'src/app/core/service/doctors/doctor-scheduleTiming/doc-schedule-timing.service';
+import { forkJoin, of } from 'rxjs';
 
-type ChildSlot = {
-  childScheduleId: string; // local id
-  maxPatients: number;
-  startTime: string; // HH:mm:ss
-  endTime: string;   // HH:mm:ss
+type BackendSchedule = {
+  id: string;
+  doctorId: string;
+  day: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  maxPatient: number;
 };
 
-type DaySchedule = {
-  dayId: string;      // local id
+type ScheduleItemPayload = {
   doctorId: string;
-  day: string;        // e.g., 'MONDAY'
-  date: string;       // YYYY/MM/DD
-  chidObj: ChildSlot[];
+  day: string;
+  date: string;
+  startTime: string;
+  endTime: string;
+  maxPatient: number;
 };
 
 @Component({
@@ -27,9 +33,6 @@ type DaySchedule = {
   providers: [DatePipe]
 })
 export class ScheduleTimingComponent implements OnInit {
-  private STORAGE_KEY = 'doctorSchedule';
-
-  [x: string]: any;
   addTimeSlotForm!: FormGroup;
   isAddTime = false;
   showRequiredMessage = false;
@@ -49,50 +52,61 @@ export class ScheduleTimingComponent implements OnInit {
   currentTime: any;
   getCurrentTime: any;
 
-  // In-memory cache from localStorage
-  getSchedule: DaySchedule[] = [];
-  sundaySchedule: DaySchedule[] = [];
-  mondaySchedule: DaySchedule[] = [];
-  tuesdaySchedule: DaySchedule[] = [];
-  wednesdaySchedule: DaySchedule[] = [];
-  thursdaySchedule: DaySchedule[] = [];
-  fridaySchedule: DaySchedule[] = [];
-  saturdaySchedule: DaySchedule[] = [];
+  sundaySchedule: BackendSchedule[] = [];
+  mondaySchedule: BackendSchedule[] = [];
+  tuesdaySchedule: BackendSchedule[] = [];
+  wednesdaySchedule: BackendSchedule[] = [];
+  thursdaySchedule: BackendSchedule[] = [];
+  fridaySchedule: BackendSchedule[] = [];
+  saturdaySchedule: BackendSchedule[] = [];
 
   dateCurrent: any;
-  dayId: string | null = null;
+  currentDayForModal: string | null = null;
+  editingSchedules: BackendSchedule[] = [];
+  isEditMode = false;
 
   constructor(
     private modalservice: NgbModal,
     private fb: FormBuilder,
     private toastr: ToastrService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private docScheduleService: DocScheduleTimingService
   ) { }
 
   ngOnInit(): void {
-    this.doctorId = localStorage.getItem('userRoleId') || 'LOCAL_DOCTOR';
+    this.doctorId = localStorage.getItem('userRoleId') || '';
     this.bootstrapDates();
     this.buildForm();
-
-    // initialize collections
     this.getDocSchedule();
     this.dateGet(this.currentDate, this.dayGet);
   }
 
-  // ---------- UI setup ----------
   private bootstrapDates() {
     const now = new Date();
-    this.getCurrentTime = now.getHours() + ':' + now.getMinutes();
-    this.currentTime = now.getHours() + ':' + now.getMinutes() + ':' + now.getSeconds();
+    this.getCurrentTime =
+      now.getHours() + ':' + now.getMinutes().toString().padStart(2, '0');
+    this.currentTime =
+      now.getHours() +
+      ':' +
+      now.getMinutes().toString().padStart(2, '0') +
+      ':' +
+      now.getSeconds().toString().padStart(2, '0');
     this.currentDate = now.toLocaleDateString('en-us');
-    this.dayGet = now.toLocaleDateString('en-us', { weekday: 'long' }).toUpperCase();
+    this.dayGet = now
+      .toLocaleDateString('en-us', { weekday: 'long' })
+      .toUpperCase();
     this.weekDay = this.dayGet;
 
     for (let i = 0; i < 7; i++) {
       const d = new Date(now);
       d.setDate(now.getDate() + i);
-      this.day = d.toLocaleDateString('en-us', { weekday: 'long', day: 'numeric', month: 'numeric', year: 'numeric' });
+      this.day = d.toLocaleDateString('en-us', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'numeric',
+        year: 'numeric'
+      });
       const [weekday, date] = this.day.split(', ');
       this.weekDayAll = weekday.toUpperCase();
       this.dateArr.push({ date, weekday: this.weekDayAll });
@@ -101,7 +115,6 @@ export class ScheduleTimingComponent implements OnInit {
 
   private buildForm() {
     this.addTimeSlotForm = this.fb.group({
-      id: [null],
       doctorId: [this.doctorId],
       day: [null],
       date: [null],
@@ -109,34 +122,19 @@ export class ScheduleTimingComponent implements OnInit {
     });
   }
 
-  // ---------- Helpers ----------
   get addTimeSlotInfo(): FormArray {
     return this.addTimeSlotForm.get('drScheduleObj') as FormArray;
   }
 
   private createAddTimeSlot(): FormGroup {
     return this.fb.group({
-      id: [null], // local placeholder; we’ll map to childScheduleId
+      id: [null],
       maxPatients: [null, Validators.required],
-      startTime: [null, Validators.required], // "HH:mm" from input
+      startTime: [null, Validators.required],
       endTime: [null, Validators.required]
     });
   }
 
-  private loadAll(): DaySchedule[] {
-    const raw = localStorage.getItem(this.STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as DaySchedule[]) : [];
-  }
-
-  private saveAll(data: DaySchedule[]) {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
-  }
-
-  private genId(prefix: string): string {
-    return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
-  }
-
-  // ---------- UI Actions ----------
   setActiveDate(index: number) {
     this.activeIndex = index;
   }
@@ -145,47 +143,64 @@ export class ScheduleTimingComponent implements OnInit {
     this.dateCurrent = this.date;
     this.validation = false;
     this.showRequiredMessage = false;
-    this.addTimeSlotInfo.clear();
+    this.isEditMode = false;
+    this.currentDayForModal = this.dayGet;
+    this.editingSchedules = [];
+    while (this.addTimeSlotInfo.length) {
+      this.addTimeSlotInfo.removeAt(0);
+    }
     this.addTimeSlotForm.reset({});
+    this.addTimeSlotForm.patchValue({
+      doctorId: this.doctorId,
+      day: this.currentDayForModal,
+      date: this.date
+    });
     this.addClinicButton();
-    this.dayId = null; // creating new set
     this.modalservice.open(tpl, { size: 'lg' });
   }
 
-  openEditModal(id: string, tpl: any) {
-    this.dayId = id;
-    this.modalservice.open(tpl, { size: 'lg' });
+  openEditModal(day: string, tpl: any) {
+    this.currentDayForModal = day;
+    this.isEditMode = true;
+    this.validation = false;
+    this.showRequiredMessage = false;
 
-    const all = this.loadAll();
-    const found = all.find((d) => d.dayId === id);
-    if (!found) {
-      this.toastr.error('Schedule not found');
+    const schedules = this.getDayArray(day);
+    this.editingSchedules = schedules;
+
+    if (!schedules.length) {
+      this.toastr.error('No schedule found for this day');
       return;
     }
 
-    this.dateCurrent = found.date;
+    const first = schedules[0];
+    this.date = this.formatDisplayDate(first.date);
+    this.dateCurrent = this.date;
+
+    while (this.addTimeSlotInfo.length) {
+      this.addTimeSlotInfo.removeAt(0);
+    }
+    this.addTimeSlotForm.reset({});
 
     this.addTimeSlotForm.patchValue({
-      id: found.dayId,
-      doctorId: found.doctorId,
-      day: found.day,
-      date: found.date
+      doctorId: this.doctorId,
+      day: day,
+      date: this.date
     });
 
-    const schedule = this.addTimeSlotInfo;
-    // reset and populate
-    while (schedule.length) schedule.removeAt(0);
-    found.chidObj.forEach((x) => schedule.push(this.createAddTimeSlot()));
-    found.chidObj.forEach((x, i) => {
-      const [hS, mS] = x.startTime.split(':');
-      const [hE, mE] = x.endTime.split(':');
-      schedule.at(i).patchValue({
-        id: x.childScheduleId,
-        maxPatients: x.maxPatients,
-        startTime: `${hS}:${mS}`,
-        endTime: `${hE}:${mE}`
+    schedules.forEach(() => this.addTimeSlotInfo.push(this.createAddTimeSlot()));
+    schedules.forEach((s, i) => {
+      const [sH, sM] = s.startTime.split(':');
+      const [eH, eM] = s.endTime.split(':');
+      this.addTimeSlotInfo.at(i).patchValue({
+        id: s.id,
+        maxPatients: s.maxPatient,
+        startTime: `${sH}:${sM}`,
+        endTime: `${eH}:${eM}`
       });
     });
+
+    this.modalservice.open(tpl, { size: 'lg' });
   }
 
   addClinicButton() {
@@ -194,51 +209,50 @@ export class ScheduleTimingComponent implements OnInit {
     this.addTimeSlotInfo.push(this.createAddTimeSlot());
   }
 
-  deleteAddClinic(modal: any, group: FormGroup, i: number) {
-    const childId = group.value.id as string | null;
-    // If editing an existing day, delete immediately from storage
-    if (this.dayId && childId) {
-      const all = this.loadAll();
-      const dayIdx = all.findIndex((d) => d.dayId === this.dayId);
-      if (dayIdx !== -1) {
-        all[dayIdx].chidObj = all[dayIdx].chidObj.filter((c) => c.childScheduleId !== childId);
-        if (all[dayIdx].chidObj.length === 0) {
-          // remove the whole day entry if empty
-          all.splice(dayIdx, 1);
-        }
-        this.saveAll(all);
-        this.toastr.error('Schedule Deleted Successfully');
-        this.getDocSchedule();
-      }
-    }
-
-    this.addTimeSlotInfo.removeAt(i);
-    if (this.addTimeSlotInfo.length === 0) {
-      modal.dismiss('Cross click');
-    }
-  }
-
   dateGet(date: any, day: any) {
     this.date = date;
     this.dayGet = day;
+    this.weekDay = day;
   }
 
-  getCurrentDate(res: any) {
-    const parts = res.split('/');
-    const date = ((+parts[1] > 10) ? parts[1] : '0' + parts[1]) + '/' + parts[0] + '/' + parts[2];
-    return date;
+  private formatDateForPayload(displayDate: string): string {
+    if (!displayDate) {
+      return '';
+    }
+    const parts = displayDate.split('/');
+    if (parts.length !== 3) {
+      return displayDate;
+    }
+    const mm = parts[0].padStart(2, '0');
+    const dd = parts[1].padStart(2, '0');
+    const yyyy = parts[2];
+    return `${yyyy}-${mm}-${dd}`;
   }
 
-  dateChanger(res: string) {
-    if (!res) return '';
-    const [mm, dd, yyyy] = res.split('/');
-    const day2 = parseInt(dd, 10) < 10 ? '0' + parseInt(dd, 10) : dd;
-    return `${yyyy}/${mm}/${day2}`;
+  private formatDisplayDate(apiDate: string): string {
+    if (!apiDate) {
+      return '';
+    }
+    const parts = apiDate.split('-');
+    if (parts.length !== 3) {
+      return apiDate;
+    }
+    const yyyy = parts[0];
+    const mm = parts[1];
+    const dd = parts[2];
+    return `${mm}/${dd}/${yyyy}`;
   }
 
   convertTo12HourFormat(time24: string): string {
-    if (time24 == null) return '';
-    const [hours, minutes] = time24.split(':');
+    if (!time24) {
+      return '';
+    }
+    const parts = time24.split(':');
+    if (parts.length < 2) {
+      return time24;
+    }
+    const hours = parts[0];
+    const minutes = parts[1];
     const hour = parseInt(hours, 10);
     const isPM = hour >= 12;
     const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
@@ -246,16 +260,22 @@ export class ScheduleTimingComponent implements OnInit {
     return `${hour12}:${minutes} ${period}`;
   }
 
-  // ---------- Time validation ----------
   passTime(e: any, i: number) {
-    const time = e.target.value as string; // "HH:mm"
+    const time = e.target.value as string;
     const date = this.date;
     const now = new Date();
-    const getCurrentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    const currentTime =
+      now.getHours().toString().padStart(2, '0') +
+      ':' +
+      now.getMinutes().toString().padStart(2, '0');
 
-    const ctrl = this.addTimeSlotInfo.at(i).get('startTime')!;
+    const ctrl = this.addTimeSlotInfo.at(i).get('startTime');
+    if (!ctrl) {
+      return;
+    }
+
     if (time) {
-      if (this.currentDate === date && getCurrentTime >= time) {
+      if (this.currentDate === date && currentTime >= time) {
         this.toastr.error('Time has finished, Choose another Time');
         ctrl.setValue('');
         ctrl.setErrors({ required: true });
@@ -266,14 +286,21 @@ export class ScheduleTimingComponent implements OnInit {
   }
 
   passEndTime(e: any, i: number) {
-    const time = e.target.value as string; // "HH:mm"
+    const time = e.target.value as string;
     const date = this.date;
     const now = new Date();
-    const getCurrentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+    const currentTime =
+      now.getHours().toString().padStart(2, '0') +
+      ':' +
+      now.getMinutes().toString().padStart(2, '0');
 
-    const ctrl = this.addTimeSlotInfo.at(i).get('endTime')!;
+    const ctrl = this.addTimeSlotInfo.at(i).get('endTime');
+    if (!ctrl) {
+      return;
+    }
+
     if (time) {
-      if (this.currentDate === date && getCurrentTime >= time) {
+      if (this.currentDate === date && currentTime >= time) {
         this.toastr.error('Time has finished, Choose another Time');
         ctrl.setValue('');
         ctrl.setErrors({ required: true });
@@ -283,102 +310,173 @@ export class ScheduleTimingComponent implements OnInit {
     }
   }
 
-  // ---------- Save / Load ----------
   saveChanges(modal: any) {
     this.validation = true;
 
-    const obj = this.addTimeSlotForm.value;
-    obj.day = this.dayGet;
-    obj.doctorId = this.doctorId;
-    obj.date = this.dateChanger(this.date);
+    const formValue = this.addTimeSlotForm.value;
+    const day = this.currentDayForModal || this.dayGet;
+    const dateDisplay = this.date;
+    const dateForPayload = this.formatDateForPayload(dateDisplay);
 
-    // normalize & validate times
-    for (const ele of obj.drScheduleObj) {
-      if (!ele.startTime || !ele.endTime || !ele.maxPatients) {
+    if (!day || !dateForPayload) {
+      this.toastr.error('Day or Date missing');
+      return;
+    }
+
+    const scheduleArray = this.addTimeSlotInfo.controls;
+    if (!scheduleArray.length) {
+      this.toastr.error('Add at least one slot');
+      return;
+    }
+
+    const payloadItems: { ctrlId: string | null; item: ScheduleItemPayload }[] =
+      [];
+
+    for (let i = 0; i < scheduleArray.length; i++) {
+      const group = scheduleArray[i] as FormGroup;
+      const startTime = group.get('startTime')?.value;
+      const endTime = group.get('endTime')?.value;
+      const maxPatients = group.get('maxPatients')?.value;
+
+      if (!startTime || !endTime || !maxPatients) {
         this.toastr.error('Please complete all fields.');
         return;
       }
-      // add seconds
-      const [sH, sM] = ele.startTime.split(':');
-      const [eH, eM] = ele.endTime.split(':');
-      ele.maxPatients = Number(ele.maxPatients);
-      ele.startTime = `${sH}:${sM}:00`;
-      ele.endTime = `${eH}:${eM}:00`;
 
-      // basic logical validation: end after start
-      if (ele.endTime <= ele.startTime) {
+      const [sH, sM] = startTime.split(':');
+      const [eH, eM] = endTime.split(':');
+      const startTimeFull = `${sH}:${sM}:00`;
+      const endTimeFull = `${eH}:${eM}:00`;
+
+      if (endTimeFull <= startTimeFull) {
         this.toastr.error('End time must be after Start time.');
         return;
       }
+
+      const ctrlId = group.get('id')?.value || null;
+
+      payloadItems.push({
+        ctrlId,
+        item: {
+          doctorId: this.doctorId,
+          day: day,
+          date: dateForPayload,
+          startTime: startTimeFull,
+          endTime: endTimeFull,
+          maxPatient: Number(maxPatients)
+        }
+      });
     }
 
-    const all = this.loadAll();
-
-    if (this.dayId) {
-      // Update existing day
-      const idx = all.findIndex((d) => d.dayId === this.dayId);
-      if (idx === -1) {
-        this.toastr.error('Schedule not found to update');
-        return;
-      }
-
-      // Keep/assign child ids
-      const newChildren: ChildSlot[] = obj.drScheduleObj.map((x: any) => ({
-        childScheduleId: x.id || this.genId('child'),
-        maxPatients: x.maxPatients,
-        startTime: x.startTime,
-        endTime: x.endTime
-      }));
-
-      all[idx] = {
-        ...all[idx],
-        day: obj.day,
-        date: obj.date,
-        chidObj: newChildren
+    if (!this.isEditMode) {
+      const body = {
+        schedules: payloadItems.map((p) => p.item)
       };
-
-      this.saveAll(all);
-      this.toastr.success('Schedule updated');
-    } else {
-      // Create new day
-      const exists = all.find((d) => d.day === obj.day && d.date === obj.date && d.doctorId === obj.doctorId);
-      if (exists) {
-        this.toastr.error('A schedule for this day already exists. Use Edit instead.');
-        return;
-      }
-
-      const newDay: DaySchedule = {
-        dayId: this.genId('day'),
-        doctorId: obj.doctorId,
-        day: obj.day,
-        date: obj.date,
-        chidObj: obj.drScheduleObj.map((x: any) => ({
-          childScheduleId: this.genId('child'),
-          maxPatients: x.maxPatients,
-          startTime: x.startTime,
-          endTime: x.endTime
-        }))
-      };
-
-      all.push(newDay);
-      this.saveAll(all);
-      this.toastr.success('Schedule created');
+      this.docScheduleService.createSchedules(body).subscribe(
+        () => {
+          this.toastr.success('Schedule created');
+          this.addTimeSlotForm.reset({});
+          modal.dismiss('cross click');
+          this.getDocSchedule();
+        },
+        (err) => {
+          this.toastr.error('Error creating schedule');
+        }
+      );
+      return;
     }
 
-    this.addTimeSlotForm.reset({});
-    modal.dismiss('cross click');
-    this.getDocSchedule();
+    const updates = payloadItems
+      .filter((p) => p.ctrlId)
+      .map((p) =>
+        this.docScheduleService.updateSchedule(p.ctrlId as string, p.item)
+      );
+    const newItems = payloadItems.filter((p) => !p.ctrlId).map((p) => p.item);
+
+    const update$ = updates.length ? forkJoin(updates) : of(null);
+    const create$ = newItems.length
+      ? this.docScheduleService.createSchedules({ schedules: newItems })
+      : of(null);
+
+    forkJoin([update$, create$]).subscribe(
+      () => {
+        this.toastr.success('Schedule saved');
+        this.addTimeSlotForm.reset({});
+        modal.dismiss('cross click');
+        this.editingSchedules = [];
+        this.isEditMode = false;
+        this.getDocSchedule();
+      },
+      (err) => {
+        this.toastr.error('Error saving schedule');
+      }
+    );
+  }
+
+  private getDayArray(day: string): BackendSchedule[] {
+    switch (day) {
+      case 'SUNDAY':
+        return this.sundaySchedule;
+      case 'MONDAY':
+        return this.mondaySchedule;
+      case 'TUESDAY':
+        return this.tuesdaySchedule;
+      case 'WEDNESDAY':
+        return this.wednesdaySchedule;
+      case 'THURSDAY':
+        return this.thursdaySchedule;
+      case 'FRIDAY':
+        return this.fridaySchedule;
+      case 'SATURDAY':
+        return this.saturdaySchedule;
+      default:
+        return [];
+    }
   }
 
   getDocSchedule() {
-    this.getSchedule = this.loadAll().filter((d) => d.doctorId === this.doctorId);
+    this.docScheduleService.getSchedules(this.doctorId).subscribe(
+      (res: any) => {
+        let raw = res;
+        if (res && res.data) {
+          raw = res.data;
+        }
+        let list: BackendSchedule[] = [];
+        if (Array.isArray(raw)) {
+          list = raw;
+        } else if (raw && raw.content && Array.isArray(raw.content)) {
+          list = raw.content;
+        }
 
-    this.sundaySchedule = this.getSchedule.filter((day: any) => day.day === 'SUNDAY');
-    this.mondaySchedule = this.getSchedule.filter((day: any) => day.day === 'MONDAY');
-    this.tuesdaySchedule = this.getSchedule.filter((day: any) => day.day === 'TUESDAY');
-    this.wednesdaySchedule = this.getSchedule.filter((day: any) => day.day === 'WEDNESDAY');
-    this.thursdaySchedule = this.getSchedule.filter((day: any) => day.day === 'THURSDAY');
-    this.fridaySchedule = this.getSchedule.filter((day: any) => day.day === 'FRIDAY');
-    this.saturdaySchedule = this.getSchedule.filter((day: any) => day.day === 'SATURDAY');
+        const doctorSchedules = list.filter(
+          (s) => s.doctorId === this.doctorId
+        );
+
+        this.sundaySchedule = doctorSchedules.filter(
+          (d) => d.day === 'SUNDAY'
+        );
+        this.mondaySchedule = doctorSchedules.filter(
+          (d) => d.day === 'MONDAY'
+        );
+        this.tuesdaySchedule = doctorSchedules.filter(
+          (d) => d.day === 'TUESDAY'
+        );
+        this.wednesdaySchedule = doctorSchedules.filter(
+          (d) => d.day === 'WEDNESDAY'
+        );
+        this.thursdaySchedule = doctorSchedules.filter(
+          (d) => d.day === 'THURSDAY'
+        );
+        this.fridaySchedule = doctorSchedules.filter(
+          (d) => d.day === 'FRIDAY'
+        );
+        this.saturdaySchedule = doctorSchedules.filter(
+          (d) => d.day === 'SATURDAY'
+        );
+      },
+      (err) => {
+        this.toastr.error('Error loading schedule');
+      }
+    );
   }
 }
