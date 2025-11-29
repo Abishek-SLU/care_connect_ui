@@ -1,0 +1,32 @@
+.delmodal {
+    border: 0;
+}
+
+.scroll {
+    height: 700px;
+    position: inherit;
+    overflow-y: scroll;
+}
+
+.scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #fff;
+    opacity: 1;
+}
+
+.add-new-btn {
+    cursor: pointer;
+}
+
+.gender {
+    pointer-events: none;
+}
+
+.rounded-circle {
+    height: 50px;
+    width: 50px;
+}

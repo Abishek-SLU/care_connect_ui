@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 
 import { MedicalDetailsRoutingModule } from './medical-details-routing.module';
 import { MedicalDetailsComponent } from './medical-details.component';
-import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
-
-
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerModule } from 'ngx-spinner';
 @NgModule({
   declarations: [
     MedicalDetailsComponent
@@ -14,8 +13,10 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     MedicalDetailsRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    NgbModalModule,
+    NgxSpinnerModule
   ]
 })
 export class MedicalDetailsModule { }

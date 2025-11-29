@@ -1,381 +1,404 @@
+<!-- <div>
+    <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"
+  >
+    <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
+  </ngx-spinner>
+</div> -->
 <div class="row">
     <div class="col-sm-12">
         <div class="card">
             <div class="card-body pt-0">
-            
-                <!-- Tab Menu -->
                 <nav class="user-tabs mb-4">
                     <ul class="nav nav-tabs nav-tabs-bottom nav-justified">
                         <li class="nav-item">
-                            <a class="nav-link active" href="#pat_medicalrecords" data-bs-toggle="tab">Medical Records</a>
+                            <a class="nav-link active" href="#pat_medicalrecords" data-bs-toggle="tab">Medical
+                                Records</a>
                         </li>
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="#pat_prescription" data-bs-toggle="tab">Prescription</a>
-                        </li> -->
+                        </li>
                     </ul>
                 </nav>
-                <!-- /Tab Menu -->
-                
-                <!-- Tab Content -->
                 <div class="tab-content pt-0">
-                    
-                    <!-- Medical Records Tab -->
                     <div id="pat_medicalrecords" class="tab-pane fade show active">
                         <div class="text-end">
-                            <a href="javascript:void(0)" class="add-new-btn" data-bs-toggle="modal" data-bs-target="#add_medical_records_modal">Add Medical Records</a>
+                            <a (click)="openmodal(shedule)" class="add-new-btn" data-bs-toggle="modal"
+                                data-bs-target="#add_medical_records_modal">Add Medical Records</a>
                         </div>
-                        <div class="card card-table mb-0">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-center mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Name</th>
-                                                <th>Date</th>
-                                                <th>Description</th>
-                                                <th>Attachment</th>
-                                                <th>Orderd By</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Richard Wilson</td>
-                                                <td>11 Nov 2019 <span class="d-block text-info">10.00 AM</span></td>
-                                                <td>Benzaxapine Croplex</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" title="Download attachment" class="btn btn-primary btn-sm"> <i class="fa fa-download"></i></a>
-                                                </td>
-                                                <td>Your Self</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-                                                        <i class="far fa-trash-alt"></i> 
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <!-- <tr>
-                                                <td>2</td>
-                                                <td>Vena</td>
-                                                <td>3 Nov 2019 <span class="d-block text-info">11.00 AM</span></td>
-                                                <td>Rapalac Neuronium</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" title="Download attachment" class="btn btn-primary btn-sm"> <i class="fa fa-download"></i></a>
-                                                </td>
-                                                <td>Your Self</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-                                                        <i class="far fa-trash-alt"></i> 
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Tressie</td>
-                                                <td>1 Nov 2019 <span class="d-block text-info">1.00 PM</span></td>
-                                                <td>Ombinazol Bonibamol</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" title="Download attachment" class="btn btn-primary btn-sm"> <i class="fa fa-download"></i></a>
-                                                </td>
-                                                <td>Your Self</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-                                                        <i class="far fa-trash-alt"></i> 
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>Richard Wilson</td>
-                                                <td>30 Oct 2019 <span class="d-block text-info">9.00 AM</span></td>
-                                                <td>Dantotate Dantodazole</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" title="Download attachment" class="btn btn-primary btn-sm"> <i class="fa fa-download"></i></a>
-                                                </td>
-                                                <td>Your Self</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-                                                        <i class="far fa-trash-alt"></i> 
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>Christopher</td>
-                                                <td>28 Oct 2019 <span class="d-block text-info">6.00 PM</span></td>
-                                                <td>Acetrace Amionel</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" title="Download attachment" class="btn btn-primary btn-sm"> <i class="fa fa-download"></i></a>
-                                                </td>
-                                                <td>Your Self</td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="btn btn-sm bg-danger-light">
-                                                        <i class="far fa-trash-alt"></i> 
-                                                    </a>
-                                                </td>
-                                            </tr> -->
-                                        </tbody>
-                                    </table>
+                        <div class="scroll">
+                            <div class="card card-table mb-0">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Name</th>
+                                                    <th>Date</th>
+                                                    <th>Hospital Name</th>
+                                                    <th>Attachment</th>
+                                                    <th>Orderd By</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let data of medicalRecords; let i = index">
+                                                    <td>{{ i + 1 }}</td>
+                                                    <td>{{ data.name }}</td>
+                                                    <td>{{ data.date | date : "dd/MM/YYYY" }}</td>
+                                                    <td>{{ data.hospitalName }}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0);" title="Download attachment"
+                                                            class="btn btn-primary btn-sm"
+                                                            (click)="fileDownload(data.id)">
+                                                            <i class="fa fa-download"></i></a>
+                                                    </td>
+                                                    <td>{{ data.recordBy }}</td>
+                                                    <td>
+                                                        <a href="javascript:void(0);" class="btn btn-sm bg-danger-light"
+                                                            (click)="deleteModal(data.id, delete)">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="!medicalRecords.length">
+                                                    <td class="text-center" colspan="7">
+                                                        <i class="fas fa-search"
+                                                            style="font-size: 36px; opacity: 70%"></i>
+                                                        <h5 class="mt-4">No data found</h5>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- /Medical Records Tab -->
-                    
-                    <!-- Prescription Tab -->
-                    <!-- <div class="tab-pane fade" id="pat_prescription">
-                        <div class="card card-table mb-0">
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-center mb-0">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Date</th>
-                                                <th>Name</th>
-                                                <th>Doctor</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>11 Nov 2019 <span class="d-block text-info">10.00 AM</span></td>
-                                                <td>Prescription</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
-                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-01.jpg" alt="User Image">
-                                                        </a>
-                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Ruby Perrin <span>Dental</span></a>
-                                                    </h2>
-                                                </td>
-                                                <td>
-                                                    <div class="table-action">
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-                                                            <i class="far fa-eye"></i> View
-                                                        </a>
-                                                        
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-print"></i> Print
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>3 Nov 2019 <span class="d-block text-info">11.00 AM</span></td>
-                                                <td>Prescription</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
-                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-                                                        </a>
-                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Darren Elder <span>Dental</span></a>
-                                                    </h2>
-                                                </td>
-                                                <td>
-                                                    <div class="table-action">
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-                                                            <i class="far fa-eye"></i> View
-                                                        </a>
-                                                        
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-print"></i> Print
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>1 Nov 2019 <span class="d-block text-info">1.00 PM</span></td>
-                                                <td>Prescription</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
-                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-03.jpg" alt="User Image">
-                                                        </a>
-                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Deborah Angel <span>Cardiology</span></a>
-                                                    </h2>
-                                                </td>
-                                                <td>
-                                                    <div class="table-action">
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-                                                            <i class="far fa-eye"></i> View
-                                                        </a>
-                                                        
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-print"></i> Print
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>4</td>
-                                                <td>30 Oct 2019 <span class="d-block text-info">9.00 AM</span></td>
-                                                <td>Prescription</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
-                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-04.jpg" alt="User Image">
-                                                        </a>
-                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Sofia Brient <span>Urology</span></a>
-                                                    </h2>
-                                                </td>
-                                                <td>
-                                                    <div class="table-action">
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-                                                            <i class="far fa-eye"></i> View
-                                                        </a>
-                                                        
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-print"></i> Print
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>5</td>
-                                                <td>28 Oct 2019 <span class="d-block text-info">6.00 PM</span></td>
-                                                <td>Prescription</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
-                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-05.jpg" alt="User Image">
-                                                        </a>
-                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Marvin Campbell <span>Ophthalmology</span></a>
-                                                    </h2>
-                                                </td>
-                                                <td>
-                                                    <div class="table-action">
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-                                                            <i class="far fa-eye"></i> View
-                                                        </a>
-                                                        
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-print"></i> Print
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>6</td>
-                                                <td>27 Oct 2019 <span class="d-block text-info">8.00 AM</span></td>
-                                                <td>Prescription</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a [routerLink]="'/patients/doctor-profile'" class="avatar avatar-sm me-2">
-                                                            <img class="avatar-img rounded-circle" src="assets/img/doctors/doctor-thumb-06.jpg" alt="User Image">
-                                                        </a>
-                                                        <a [routerLink]="'/patients/doctor-profile'">Dr. Katharine Berthold <span>Orthopaedics</span></a>
-                                                    </h2>
-                                                </td>
-                                                <td >
-                                                    <div class="table-action">
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-info-light">
-                                                            <i class="far fa-eye"></i> View
-                                                        </a>
-                                                        
-                                                        <a href="javascript:void(0);" class="btn btn-sm bg-success-light">
-                                                            <i class="fas fa-print"></i> Print
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                    <div class="tab-pane fade" id="pat_prescription">
+                        <div class="scroll">
+                            <div class="card card-table mb-0">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-center mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Date</th>
+                                                    <th>Name</th>
+                                                    <th>Doctor</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let values of prescriptionData; let i = index">
+                                                    <td>{{ i + 1 }}</td>
+                                                    <td>
+                                                        {{ values.createdDate | date : "dd/MM/yyyy" }}
+                                                    </td>
+                                                    <td>{{ values.prescriptionName }}</td>
+                                                    <td>
+                                                        <h2 class="table-avatar">
+                                                            <a>
+                                                                <img *ngIf="values.doctorData"
+                                                                    [src]="values.doctorData?.doctorImage"
+                                                                    class="img-fluid rounded-circle"
+                                                                    alt="Doctor Image" />
+                                                                <img *ngIf="!values.doctorData"
+                                                                    class="img-fluid rounded-circle"
+                                                                    src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg" />
+                                                            </a>
+                                                            <a class="m-1">{{ values.doctorName }}
+                                                                <span>{{ values.specializationName }}</span>
+                                                            </a>
+                                                        </h2>
+                                                    </td>
+                                                    <td>
+                                                        <div class="table-action">
+                                                            <a href="javascript:void(0);"
+                                                                class="btn btn-sm bg-info-light" (click)="
+                                  prescriptionDetails(
+                                    values.prescriptionId,
+                                    prescription
+                                  )
+                                ">
+                                                                <i class="far fa-eye"></i> View
+                                                            </a>
+
+                                                            <!-- <button class="btn btn-sm bg-success-light"><i
+                                                                class="fas fa-print"></i> Print</button> -->
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr *ngIf="!prescriptionData.length">
+                                                    <td class="text-center" colspan="5">
+                                                        <i class="fas fa-search"
+                                                            style="font-size: 36px; opacity: 70%"></i>
+                                                        <h5 class="mt-4">No data found</h5>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div> -->
-                    <!-- /Prescription Tab -->
-                        
+                    </div>
                 </div>
-                <!-- Tab Content -->
-                
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade custom-modal custom-medicalrecord-modal" id="add_medical_records_modal" style="display: none;" data-select2-id="add_medical_records_modal" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Add Medical Records</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-			</div>
-			<form id="medical_records_form" enctype="multipart/form-data">          
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-12 col-md-6">
-							<div class="form-group">
-								<label>Title Name</label>
-								<input type="text" name="description" class="form-control" placeholder="Enter Title Name">
-							</div>
-						</div>
-						<div class="col-12 col-md-6">
-							<div class="form-group">
-								<label>Patient</label>
-								<select class="form-select">
-                                    <option>Select</option>
-									<option>Myself</option>
-									<option>Child_1</option>
-									<option>Self</option>
-                                </select>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12">
-							<div class="form-group">
-								<label>Hospital Name</label>
-								<input type="text" name="hospital" class="form-control" placeholder="Enter name here..">
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12">
-							<div class="form-group">
-								<label>Upload</label>
-								<div class="upload-medical-records">
-									<input class="form-control" type="file" name="user_file" id="user_files_mr">
-									<div class="upload-content dropzone">
-										<div class="text-center">
-											<div class="upload-icon mb-2"><img src="assets/img/upload-icon.png" alt=""></div>
-											<h5>Drag &amp; Drop</h5>
-											<h6>or <span class="text-danger">Browse</span></h6>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12">
-							<div class="form-group">
-								<label>Symptoms</label>
-								<input type="text" data-role="tagsinput" class="input-tags form-control" value="Fever, Fatigue" name="services" id="services">
-							</div> 
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-12 col-md-6">
-							<div class="form-group">
-								<label>Date</label>
-								<div class="form-group">
-									<input type="date" class="form-control" name="tratment_date" id="tratment_date">
-								</div> 
-							</div>
-						</div>
-					</div>
-					<div class="text-center mt-4">
-						<div class="submit-section text-center">
-							<button type="submit" id="medical_btn" class="btn btn-primary submit-btn">Submit</button>
-						</div>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+
+<ng-template #shedule let-modal>
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Add Medical Records</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <form [formGroup]="medicalRecordsForm" id="medical_records_form" enctype="multipart/form-data">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label>Title Name <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" placeholder="Enter Title Name"
+                                formControlName="name" [ngClass]="{
+                  'is-invalid':
+                    (validation && f['name'].errors) ||
+                    (f['name'].invalid &&
+                      (f['name'].dirty || f['name'].touched))
+                }" />
+                            <div *ngIf="
+                  (validation && f['name'].errors) ||
+                  (f['name'].invalid && (f['name'].dirty || f['name'].touched))
+                " class="invalid-feedback">
+                                *Requried
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label>Patient <span class="text-danger">*</span></label>
+                            <input type="text" name="recordBy" class="form-control" placeholder="Enter Record By"
+                                formControlName="recordBy" [ngClass]="{
+                  'is-invalid':
+                    (validation && f['recordBy'].errors) ||
+                    (f['recordBy'].invalid &&
+                      (f['recordBy'].dirty || f['recordBy'].touched))
+                }" />
+                            <div *ngIf="
+                  (validation && f['recordBy'].errors) ||
+                  (f['recordBy'].invalid &&
+                    (f['recordBy'].dirty || f['recordBy'].touched))
+                " class="invalid-feedback">
+                                *Requried
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Hospital Name <span class="text-danger">*</span></label>
+                            <input type="text" name="hospital" class="form-control" placeholder="Enter name here.."
+                                formControlName="hospitalName" [ngClass]="{
+                  'is-invalid':
+                    (validation && f['hospitalName'].errors) ||
+                    (f['hospitalName'].invalid &&
+                      (f['hospitalName'].dirty || f['hospitalName'].touched))
+                }" />
+                            <div *ngIf="
+                  (validation && f['hospitalName'].errors) ||
+                  (f['hospitalName'].invalid &&
+                    (f['hospitalName'].dirty || f['hospitalName'].touched))
+                " class="invalid-feedback">
+                                *Requried
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Upload <span class="text-danger">*</span></label>
+                            <div class="upload-medical-records">
+                                <input class="form-control" type="file" name="user_file" id="user_files_mr"
+                                    formControlName="file" #fileInput (change)="onFileSelected($event)" [ngClass]="{
+                    'is-invalid':
+                      (validation && f['file'].errors) ||
+                      (f['file'].invalid &&
+                        (f['file'].dirty || f['file'].touched))
+                  }" />
+                                <div class="upload-content dropzone">
+                                    <div class="text-center">
+                                        <div class="upload-icon mb-2">
+                                            <img src="assets/img/upload-icon.png" alt="" />
+                                        </div>
+                                        <h5>Drag &amp; Drop</h5>
+                                        <h6>
+                                            or
+                                            <span class="text-danger">Browse {{ files?.name }}</span>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div *ngIf="
+                    (validation && f['file'].errors) ||
+                    (f['file'].invalid &&
+                      (f['file'].dirty || f['file'].touched))
+                  " class="invalid-feedback">
+                                    *Requried
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label>Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="5" id="services" name="services"
+                                formControlName="description" placeholder="Enter Description" [ngClass]="{
+                  'is-invalid':
+                    (validation && f['description'].errors) ||
+                    (f['description'].invalid &&
+                      (f['description'].dirty || f['description'].touched))
+                }"></textarea>
+                            <div *ngIf="
+                  (validation && f['description'].errors) ||
+                  (f['description'].invalid &&
+                    (f['description'].dirty || f['description'].touched))
+                " class="invalid-feedback">
+                                *Requried
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-end mt-4">
+                    <button type="submit" id="medical_btn" class="btn btn-primary submit-btn" (click)="submit(modal)">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>
+
+<ng-template #delete let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Delete</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body delmodal">
+        <div class="">Are you sure to delete?</div>
+    </div>
+    <div class="modal-footer delmodal text-end">
+        <button class="btn btn-primary btn-sm" (click)="medicalrecordDelete(modal)">
+            Ok
+        </button>
+        <button class="btn btn-danger btn-sm" (click)="modal.dismiss('Cross click')">
+            Cancel
+        </button>
+    </div>
+</ng-template>
+
+<ng-template #prescription let-modal>
+    <div class="modal-content">
+        <form>
+            <div class="card">
+                <div class="card-header d-flex justify-content-between">
+                    <h4 class="card-title mb-0">Prescription</h4>
+                    <button type="button" class="btn-close" aria-label="Close"
+                        (click)="modal.dismiss('Cross click')"></button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-between">
+                            <div class="biller-info">
+                                <h4 class="d-block">{{ viewPrescription.doctorName }}</h4>
+                                <span *ngFor="let special of viewPrescription.specializationDTO"
+                                    class="d-block text-sm text-muted"><i class="fas fa-stethoscope"></i>&nbsp;&nbsp;{{
+                                    special.specializationName
+                                    }}</span>
+                                <span class="d-block text-sm text-muted"><i
+                                        class="fas fa-map-marker-alt"></i>&nbsp;&nbsp;{{
+                                    viewPrescription.districtName
+                                    }},{{ viewPrescription.stateName }}</span>
+                            </div>
+                            <div class="biller-info">
+                                <h5 class="d-block">
+                                    {{ convertMonth(viewPrescription.createdDate) }}
+                                </h5>
+                                <span class="float-end">{{ viewPrescription.orderNo }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label class="form-floating" style="font-weight: 500">Prescription Name</label>
+                            <input class="form-control" type="text" [readonly]="isprescription"
+                                [value]="viewPrescription.prescriptionName" />
+                        </div>
+                    </div>
+                    <div class="card card-table">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-center">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-weight: 500">Medicine Name</th>
+                                            <th style="font-weight: 500">Quantity</th>
+                                            <th style="font-weight: 500">Days</th>
+                                            <th class="mx-1" style="font-weight: 500">Time</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="Prescription" *ngFor="let data of details; let i = index">
+                                            <td>
+                                                <input class="form-control" type="text" [readonly]="isprescription"
+                                                    [value]="data?.medicineName" />
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="number" [readonly]="isprescription"
+                                                    [value]="data?.quantity" />
+                                            </td>
+                                            <td>
+                                                <input class="form-control" type="number" [readonly]="isprescription"
+                                                    [value]="data?.noOfDays" />
+                                            </td>
+                                            <td>
+                                                <input type="checkbox" value="Morning" formControlName="isMorning"
+                                                    class="gender" [checked]="data.isMorning === true" />
+                                                <label class="Morning mx-2">Morning</label>
+                                                <input type="checkbox" formControlName="isAfternoon" value="female"
+                                                    class="gender" [checked]="data.isAfternoon === true" />
+                                                <label class="Afternoon mx-2">Afternoon</label>
+                                                <input type="checkbox" formControlName="isEvening" value="Evening"
+                                                    class="gender" [checked]="data.isEvening === true" />
+                                                <label class="Evening mx-2">Evening</label>
+                                                <input type="checkbox" formControlName="isNight" value="Night"
+                                                    class="gender" [checked]="data.isNight === true" />
+                                                <label class="Night mx-2">Night</label>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="!details.length">
+                                            <td class="text-center" colspan="4">
+                                                <i class="fas fa-search" style="font-size: 25px; opacity: 70%"></i>
+                                                <h5 class="mt-2">No data found</h5>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</ng-template>

@@ -1,0 +1,28 @@
+.del {
+    margin-left: 20px;
+}
+
+.page {
+    height: 700px;
+    position: inherit;
+    overflow-y: scroll;
+    overflow-x: hidden !important;
+}
+
+.table-responsive {
+    overflow-x: hidden;
+}
+
+.page::-webkit-scrollbar {
+    display: none;
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+.btn-success {
+    background-color: #09e5ab;
+    border: 1px solid #09e5ab;
+    font-size: 12px;
+}
