@@ -209,6 +209,37 @@ export class ScheduleTimingComponent implements OnInit {
     this.addTimeSlotInfo.push(this.createAddTimeSlot());
   }
 
+  deleteSlot(index: number,modal: any) {
+    const group = this.addTimeSlotInfo.at(index) as FormGroup;
+    const id = group.get('id')?.value;
+
+    if (id) {
+      this.docScheduleService.deleteSchedule(id).subscribe(
+        () => {
+          this.toastr.success('Slot deleted');
+          this.addTimeSlotInfo.removeAt(index);
+          this.getDocSchedule();
+           modal.dismiss('cross click');
+          
+        },
+        () => {
+          this.toastr.error('Error deleting slot');
+        }
+      );
+    } else {
+      if (this.addTimeSlotInfo.length > 1) {
+        this.addTimeSlotInfo.removeAt(index);
+      } else {
+        group.reset({
+          id: null,
+          maxPatients: null,
+          startTime: null,
+          endTime: null
+        });
+      }
+    }
+  }
+
   dateGet(date: any, day: any) {
     this.date = date;
     this.dayGet = day;
@@ -313,7 +344,6 @@ export class ScheduleTimingComponent implements OnInit {
   saveChanges(modal: any) {
     this.validation = true;
 
-    const formValue = this.addTimeSlotForm.value;
     const day = this.currentDayForModal || this.dayGet;
     const dateDisplay = this.date;
     const dateForPayload = this.formatDateForPayload(dateDisplay);
@@ -329,8 +359,7 @@ export class ScheduleTimingComponent implements OnInit {
       return;
     }
 
-    const payloadItems: { ctrlId: string | null; item: ScheduleItemPayload }[] =
-      [];
+    const payloadItems: { ctrlId: string | null; item: ScheduleItemPayload }[] = [];
 
     for (let i = 0; i < scheduleArray.length; i++) {
       const group = scheduleArray[i] as FormGroup;
@@ -379,7 +408,7 @@ export class ScheduleTimingComponent implements OnInit {
           modal.dismiss('cross click');
           this.getDocSchedule();
         },
-        (err) => {
+        () => {
           this.toastr.error('Error creating schedule');
         }
       );
@@ -407,7 +436,7 @@ export class ScheduleTimingComponent implements OnInit {
         this.isEditMode = false;
         this.getDocSchedule();
       },
-      (err) => {
+      () => {
         this.toastr.error('Error saving schedule');
       }
     );
@@ -474,7 +503,7 @@ export class ScheduleTimingComponent implements OnInit {
           (d) => d.day === 'SATURDAY'
         );
       },
-      (err) => {
+      () => {
         this.toastr.error('Error loading schedule');
       }
     );

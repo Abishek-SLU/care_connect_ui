@@ -136,9 +136,9 @@ export class AddPrescriptionComponent implements OnInit {
   }
 
   loadDoctorInfo(): void {
-    this.dashboardService.getDoctorid().subscribe(res => {
-      this.doctorInfo = res.data;
-    });
+    // this.dashboardService.getDoctorid().subscribe(res => {
+    //   this.doctorInfo = res.data;
+    // });
   }
 
   loadAppointmentsForPatient(): void {

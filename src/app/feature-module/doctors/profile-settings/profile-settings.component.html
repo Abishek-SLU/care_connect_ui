@@ -1,3 +1,4 @@
+<!-- profile-settings.component.html -->
 <form [formGroup]="doctorForm" (ngSubmit)="onSubmit()">
   <div class="card">
     <div class="card-body">
@@ -25,7 +26,7 @@
           </div>
         </div>
 
-        <div class="col-md-6">
+        <!-- <div class="col-md-6">
           <div class="form-group">
             <label>Username <span class="text-danger">*</span></label>
             <input
@@ -34,7 +35,7 @@
               formControlName="userName"
             />
           </div>
-        </div>
+        </div> -->
 
         <div class="col-md-6">
           <div class="form-group">
@@ -237,52 +238,18 @@
   <div class="card" formGroupName="clinic">
     <div class="card-body">
       <h4 class="card-title">Pricing</h4>
-
-      <div class="form-group mb-0">
-        <div id="pricing_select">
-          <div class="custom-control form-check custom-control-inline">
-            <input
-              type="radio"
-              id="price_free"
-              name="rating_option"
-              class="form-check-input"
-              value="price_free"
-              checked
-              (change)="pricingOption($event)"
-            />
-            <label class="form-check-label" for="price_free">Free</label>
-          </div>
-          <div class="custom-control form-check custom-control-inline">
-            <input
-              type="radio"
-              id="price_custom"
-              name="rating_option"
-              value="custom_price"
-              class="form-check-input"
-              (change)="pricingOption($event)"
-            />
-            <label class="form-check-label" for="price_custom"
-              >Custom Price (per hour)</label
-            >
-          </div>
-        </div>
-      </div>
-
-      <div
-        class="row custom_price_cont"
-        id="custom_price_cont"
-        *ngIf="ishidden"
-      >
+      <div class="row">
         <div class="col-md-4">
+          <label>Consultation Fees (per hour)</label>
           <input
-            type="text"
+            type="number"
             class="form-control"
-            id="custom_rating_input"
             formControlName="consultFees"
-            name="custom_rating_count"
             placeholder="20"
           />
-          <small class="form-text text-muted">Custom price you can add</small>
+          <small class="form-text text-muted"
+            >Fixed consultation price (per hour)</small
+          >
         </div>
       </div>
     </div>
@@ -295,20 +262,22 @@
         <label>Services</label>
         <tag-input
           formControlName="service"
+          [modelAsStrings]="true"
           placeholder="Enter Services"
         ></tag-input>
         <small class="form-text text-muted"
-          >Note : Type & Press enter to add new services</small
+          >Note : Type &amp; Press enter to add new services</small
         >
       </div>
       <div class="form-group mb-0">
-        <label>Specialization </label>
+        <label>Specialization</label>
         <tag-input
           formControlName="specialization"
+          [modelAsStrings]="true"
           placeholder="Enter Specialization"
         ></tag-input>
         <small class="form-text text-muted"
-          >Note : Type & Press enter to add new specialization</small
+          >Note : Type &amp; Press enter to add new specialization</small
         >
       </div>
     </div>

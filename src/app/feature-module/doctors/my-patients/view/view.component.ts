@@ -92,9 +92,9 @@ export class ViewComponent implements OnInit {
   }
 
   loadDoctorInfo(): void {
-    this.dashboardService.getDoctorid().subscribe(res => {
-      this.values = res.data;
-    });
+    // this.dashboardService.getDoctorid().subscribe(res => {
+    //   this.values = res.data;
+    // });
   }
 
   deletePrescription(id: any): void {

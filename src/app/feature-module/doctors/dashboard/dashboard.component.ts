@@ -162,7 +162,7 @@ export class DashboardComponent implements OnInit {
 
       this.counts = res.data.counts;
 
-      
+
       this.todayApp = res.data.todayAppointments;
       // this.today = this.todayApp.filter((res: any) => {
       //   res.status === 'ACCEPT';
@@ -222,14 +222,14 @@ export class DashboardComponent implements OnInit {
       this.getDashboard();
     });
   }
-  appId:any;
+  appId: any;
 
-  modal(modal:any,id:any){
-    this.modalservice.open(modal,{size:"md"})
-    this.appId= id;
-    
+  modal(modal: any, id: any) {
+    this.modalservice.open(modal, { size: "md" })
+    this.appId = id;
+
   }
-  cancel(modal:any) {
+  cancel(modal: any) {
 
     let statusDto = { id: '', status: '' };
     statusDto.id = this.appId;
@@ -247,31 +247,31 @@ export class DashboardComponent implements OnInit {
   patientGet: any
   imageArr: any = []
   getCancelAppointment() {
-    this.spinner.show();
-    this.service.getCancel().subscribe(res => {
-      this.cancelApp = res.data
+    // this.spinner.show();
+    // this.service.getCancel().subscribe(res => {
+    //   this.cancelApp = res.data
 
-      this.spinner.hide();
-      for (let i = 0; i < this.cancelApp?.length; i++) {
-        if (this.cancelApp[i].patientImage != null) {
-          const doctorData = {
-            patientImage: atob(this.cancelApp[i].patientImage)
-          };
-          this.cancelApp[i].doctorData = doctorData;
-        }
-        this.imageArr.push(this.cancelApp[i]);
-      }
-    },
-      // this.spinner.hide();
+    //   this.spinner.hide();
+    //   for (let i = 0; i < this.cancelApp?.length; i++) {
+    //     if (this.cancelApp[i].patientImage != null) {
+    //       const doctorData = {
+    //         patientImage: atob(this.cancelApp[i].patientImage)
+    //       };
+    //       this.cancelApp[i].doctorData = doctorData;
+    //     }
+    //     this.imageArr.push(this.cancelApp[i]);
+    //   }
+    // },
+    //   // this.spinner.hide();
 
-      (err) => {
-        let error = err.error.error.reason;
-        console.log(error);
-        if (error != null) {
-          this.toastr.error(err.error.error.reason);
-        }
-        this.spinner.hide();
-      })
+    //   (err) => {
+    //     let error = err.error.error.reason;
+    //     console.log(error);
+    //     if (error != null) {
+    //       this.toastr.error(err.error.error.reason);
+    //     }
+    //     this.spinner.hide();
+    //   })
   }
 
 
@@ -290,9 +290,9 @@ export class DashboardComponent implements OnInit {
     } else {
       this.rout.navigate(['/doctors/patientsprofile', patientId])
     }
-    
+
   }
- 
+
 
 }
 // this.doctorGet = this.doctorGetAll;

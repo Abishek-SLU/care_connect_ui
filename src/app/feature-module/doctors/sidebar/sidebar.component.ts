@@ -100,41 +100,41 @@ export class SidebarComponent implements OnInit {
   }
   imageArr: any = [];
   getdocImage() {
-    this.spinner.show();
-    this.AppointmentService.getImage().subscribe(res => {
-      this.image = res;
+    // this.spinner.show();
+    // this.AppointmentService.getImage().subscribe(res => {
+    //   this.image = res;
 
-      // if (this.image.data !== null) {
-      //   const patientData = {
-      //     data: atob(this.image.data)
-      //   };
-      if (this.image.data !== null && this.image.data !== undefined) {
-        const patientData = {
-          data: atob(this.image.data)
-        };
-        // rest of your code
-        // }
-        this.image.patientData = patientData;
-      }
-      this.imageArr.push(this.image);
-      this.spinner.hide();
-    },
+    //   // if (this.image.data !== null) {
+    //   //   const patientData = {
+    //   //     data: atob(this.image.data)
+    //   //   };
+    //   if (this.image.data !== null && this.image.data !== undefined) {
+    //     const patientData = {
+    //       data: atob(this.image.data)
+    //     };
+    //     // rest of your code
+    //     // }
+    //     this.image.patientData = patientData;
+    //   }
+    //   this.imageArr.push(this.image);
+    //   this.spinner.hide();
+    // },
 
-      (err) => {
-        let error = err.error.error.reason;
-        console.log(error);
-        if (error != null) {
-          this.toastr.error(err.error.error.reason);
-        }
-        this.spinner.hide();
-      })
+    //   (err) => {
+    //     let error = err.error.error.reason;
+    //     console.log(error);
+    //     if (error != null) {
+    //       this.toastr.error(err.error.error.reason);
+    //     }
+    //     this.spinner.hide();
+    //   })
   }
   getDoctorinfo() {
     this.spinner.show()
-    this.service.getDoctorid().subscribe(res => {
-      this.values = res.data
-      this.spinner.hide()
-    })
+    // this.service.getDoctorid().subscribe(res => {
+    //   this.values = res.data
+    //   this.spinner.hide()
+    // })
   }
 
   myFunctionInHeader() {
