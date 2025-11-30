@@ -55,7 +55,7 @@ export class MedicalRecordsComponent implements OnInit {
 
   }
   // onFileSelected(event: any) {
-  //   const fileInput = event.target;
+  //   const fileInput = event.target; 
   //   this.files = fileInput.files[0];
   // }
   onFileSelected(evt: any) {

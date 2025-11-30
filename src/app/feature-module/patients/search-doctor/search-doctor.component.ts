@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonService } from 'src/app/core/service/service.index';
 import { Router } from '@angular/router';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { CommonService } from 'src/app/core/service/service.index';
+import { SearchDoctorService } from 'src/app/core/service/patients/searchDoctor/search-doctor.service';
 
 @Component({
   selector: 'app-search-doctor',
@@ -8,87 +10,126 @@ import { Router } from '@angular/router';
   styleUrls: ['./search-doctor.component.css']
 })
 export class SearchDoctorComponent implements OnInit {
-  doctors: any = [];
-  specialityList: any = [];
-  type: string | undefined;
-  specialist = "";
-  speciality: string | undefined;
-  selDate: any;
-  constructor(public commonService: CommonService, public router: Router) { }
+  doctors: any[] = [];
+  specialityList: any[] = [];
+
+  selectedGender: string | null = null;
+  selectedSpecializations: string[] = [];
+  selDate: NgbDateStruct | null = null;
+  locationFilter = '';
+  searchKey = '';
+
   images = [
-    {
-      path: 'assets/img/features/feature-01.jpg',
-    },
-    {
-      path: 'assets/img/features/feature-02.jpg',
-    },
-    {
-      path: 'assets/img/features/feature-03.jpg',
-    },
-    {
-      path: 'assets/img/features/feature-04.jpg',
-    },
+    { path: 'assets/img/features/feature-01.jpg' },
+    { path: 'assets/img/features/feature-02.jpg' },
+    { path: 'assets/img/features/feature-03.jpg' },
+    { path: 'assets/img/features/feature-04.jpg' }
   ];
+
+  constructor(
+    private searchDoctorService: SearchDoctorService,
+    private commonService: CommonService,
+    private router: Router
+  ) { }
+
   ngOnInit(): void {
     this.getDoctors();
-    this.getspeciality();
-  }
-  
-  getDoctors() {
-    this.commonService.getSearchDoctors().subscribe(res => {
-      this.doctors = res;
-      console.log(res);
-      
-    })
+    this.getSpeciality();
   }
 
-  getspeciality() {
+  getDoctors(): void {
+    this.searchDoctorService.getAllSearchDoctors().subscribe(res => {
+      const data = res && res.data ? res.data : res;
+      this.doctors = (data || []).map((d: any) => ({
+        ...d,
+        location: this.buildLocation(d)
+      }));
+    });
+  }
+
+  getSpeciality(): void {
     this.commonService.getSpeciality().subscribe(res => {
-      this.specialityList = res;
-    })
+      this.specialityList = res as any[];
+    });
   }
 
-  checkType(event:any) {
-    if (event.target.checked) {
-      this.type = event.target.value;
-    } else {
-      this.type = "";
+  onDateSelect(date: NgbDateStruct): void {
+    this.selDate = date;
+  }
+
+  checkType(event: any): void {
+    const checked = event.target.checked;
+    const value = event.target.value;
+    if (checked) {
+      this.selectedGender = value;
+    } else if (this.selectedGender === value) {
+      this.selectedGender = null;
     }
   }
 
-  search() {
-    if (this.type && this.speciality) {
-      this.doctors = this.doctors.filter((a: { type: string | undefined; speciality: string | undefined; }) => a.type === this.type && a.speciality === this.speciality)
+  checkSpeciality(event: any): void {
+    const checked = event.target.checked;
+    const value = event.target.value;
+
+    if (checked) {
+      this.selectedSpecializations = [value];
     } else {
-      this.getDoctors();
+      this.selectedSpecializations = [];
     }
 
-  }
-
-  checkSpeciality(event:any) {
-    if (event.target.checked) {
-      this.speciality = event.target.value;
-    } else {
-      this.speciality = "";
+    const filter = this.specialityList.filter((a: any) => a.speciality === value);
+    if (filter.length !== 0) {
+      filter[0].checked = checked;
     }
-
-    var filter = this.specialityList.filter((a: { speciality: any; }) => a.speciality === event.target.value);
-    if (filter.length != 0) {
-      filter[0]['checked'] = true;
-    }
-    this.specialityList.forEach((index: { [x: string]: boolean; speciality: any; }) => {
-      if (index.speciality != event.target.value) {
-        index['checked'] = false;
+    this.specialityList.forEach((index: any) => {
+      if (index.speciality !== value) {
+        index.checked = false;
       }
-    })
+    });
   }
 
-  bookAppointment(id: string) {
-    // if((localStorage.getItem('auth') === 'true') && (localStorage.getItem('patient') === 'true')) {
+  search(): void {
+    const payload: any = {
+      date: this.selDate
+        ? this.toIsoDate(this.selDate)
+        : null,
+      gender: this.selectedGender ? [this.selectedGender] : [],
+      specialization: this.selectedSpecializations.length ? this.selectedSpecializations : null,
+      location: this.locationFilter ? this.locationFilter.trim() : '',
+      searchKey: this.searchKey ? this.searchKey.trim() : ''
+    };
+
+    this.searchDoctorService.searchDoctors(payload).subscribe(res => {
+      const data = res && res.data ? res.data : res;
+      this.doctors = (data || []).map((d: any) => ({
+        ...d,
+        location: this.buildLocation(d)
+      }));
+    });
+  }
+
+  bookAppointment(id: string): void {
     this.router.navigateByUrl('/patients/booking?id=' + id);
-    // } else {
-    //   this.router.navigate(['/']);
-    // }
   }
 
+  private toIsoDate(date: NgbDateStruct): string {
+    const y = date.year.toString();
+    const m = date.month.toString().padStart(2, '0');
+    const d = date.day.toString().padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  }
+
+  private buildLocation(d: any): string {
+    const parts: string[] = [];
+    if (d.clinicAddressLine1) {
+      parts.push(d.clinicAddressLine1);
+    }
+    if (d.clinicAddressLine2) {
+      parts.push(d.clinicAddressLine2);
+    }
+    if (d.clinicZipcode) {
+      parts.push(d.clinicZipcode);
+    }
+    return parts.join(', ');
+  }
 }

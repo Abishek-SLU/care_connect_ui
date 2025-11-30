@@ -317,9 +317,9 @@ export class EditPrescriptionComponent implements OnInit {
 
   }
   getDoctorinfo() {
-    this.DashBoardService.getDoctorid().subscribe(res => {
-      this.values = res.data
-    })
+    // this.DashBoardService.getDoctorid().subscribe(res => {
+    //   this.values = res.data
+    // })
   }
   doctorId: any;
   getUpdate() {
