@@ -1,15 +1,20 @@
-<div>
+<!-- <div>
   <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
     <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
   </ngx-spinner>
-</div>
+</div> -->
 
 <div class="row">
   <div class="col-sm-12">
     <div class="card">
       <div class="card-header">
         <h4 class="card-title float-start">Medical details</h4>
-        <a (click)="openmodal(shedule)" class="btn btn-primary float-end" data-bs-toggle="modal">Add Details</a>
+        <a
+          (click)="openmodal(shedule)"
+          class="btn btn-primary float-end"
+          data-bs-toggle="modal"
+          >Add Details</a
+        >
       </div>
 
       <div class="card-body">
@@ -30,14 +35,14 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor=" let values of value; let i = index ">
-                    <td>{{i + 1}}</td>
-                    <td>{{values.fullName}}</td>
-                    <td>{{values.bmi}}</td>
-                    <td class="text-center">{{values.heartrate}}</td>
-                    <td class="text-center">{{values.fbcstatus}}</td>
-                    <td>{{values.weight}}</td>
-                    <td>{{values.orderDate | date : "dd/MM/yyyy"}}</td>
+                  <tr *ngFor="let values of value; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ values.fullName }}</td>
+                    <td>{{ values.bmi }}</td>
+                    <td class="text-center">{{ values.heartrate }}</td>
+                    <td class="text-center">{{ values.fbcstatus }}</td>
+                    <td>{{ values.weight }}</td>
+                    <td>{{ values.orderDate | date : "dd/MM/yyyy" }}</td>
                     <td>
                       <div class="table-action">
                         <!-- <a href="#edit_medical_form" class="btn btn-sm bg-info-light"
@@ -48,16 +53,27 @@
                                                     (click)="deleteModal(values.id,delete)">
                                                     <i class="fas fa-trash-alt"></i> Delete
                                                 </a> -->
-                        <a class="btn btn-sm bg-info-light" data-bs-toggle="modal" (click)="getEdit(values.id,shedule)">
-                          <i class="fas fa-edit"></i></a>
-                        <a class="btn btn-sm bg-danger-light trash" (click)="deleteModal(values.id,delete)"><i
-                            class="far fa-trash-alt"></i></a>
+                        <a
+                          class="btn btn-sm bg-info-light"
+                          data-bs-toggle="modal"
+                          (click)="getEdit(values.id, shedule)"
+                        >
+                          <i class="fas fa-edit"></i
+                        ></a>
+                        <a
+                          class="btn btn-sm bg-danger-light trash"
+                          (click)="deleteModal(values.id, delete)"
+                          ><i class="far fa-trash-alt"></i
+                        ></a>
                       </div>
                     </td>
                   </tr>
                   <tr *ngIf="!value.length">
                     <td class="text-center" colspan="8">
-                      <i class='fas fa-search' style='font-size:36px; opacity: 70%;'></i>
+                      <i
+                        class="fas fa-search"
+                        style="font-size: 36px; opacity: 70%"
+                      ></i>
                       <h5 class="mt-4">No data found</h5>
                     </td>
                   </tr>
@@ -74,50 +90,139 @@
 <ng-template #shedule let-modal>
   <div class="modal-header">
     <h4 class="modal-title">Add new data</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
       <!-- <span aria-hidden="true">&times;</span> -->
     </button>
   </div>
   <div class="modal-content">
-    <form [formGroup]="medicalDetailForm" action="#" enctype="multipart/form-data" autocomplete="off" method="post">
-
+    <form
+      [formGroup]="medicalDetailForm"
+      action="#"
+      enctype="multipart/form-data"
+      autocomplete="off"
+      method="post"
+    >
       <div class="modal-body">
-        <input type="hidden" value="" name="id">
-        <input type="hidden" value="insert" name="method">
+        <input type="hidden" value="" name="id" />
+        <input type="hidden" value="insert" name="method" />
         <div class="form-group">
-          <label class="control-label mb-10"> BMI<span class="text-danger">*</span></label>
-          <input type="number" name="bmi" class="form-control" formControlName="bmi"
-            [ngClass]="{ 'is-invalid': validation && f['bmi'].errors || f['bmi'].invalid && (f['bmi'].dirty || f['bmi'].touched)}"
-            pattern="[0-9]{1,3}" (input)="onInput($event)">
-          <div *ngIf="(validation && f['bmi'].errors  || f['bmi'].invalid && (f['bmi'].dirty || f['bmi'].touched ))"
-            class="invalid-feedback">*Required</div>
+          <label class="control-label mb-10">
+            BMI<span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            name="bmi"
+            class="form-control"
+            formControlName="bmi"
+            [ngClass]="{
+              'is-invalid':
+                (validation && f['bmi'].errors) ||
+                (f['bmi'].invalid && (f['bmi'].dirty || f['bmi'].touched))
+            }"
+            pattern="[0-9]{1,3}"
+            (input)="onInput($event)"
+          />
+          <div
+            *ngIf="
+              (validation && f['bmi'].errors) ||
+              (f['bmi'].invalid && (f['bmi'].dirty || f['bmi'].touched))
+            "
+            class="invalid-feedback"
+          >
+            *Required
+          </div>
         </div>
         <div class="form-group">
-          <label class="control-label mb-10">Heart rate<span class="text-danger">*</span> </label>
-          <input type="number" name="hr" class="form-control" formControlName="heartRate"
-            [ngClass]="{ 'is-invalid': validation && f['heartRate'].errors || f['heartRate'].invalid && (f['heartRate'].dirty || f['heartRate'].touched)}"
-            pattern="[0-9]{1,3}" (input)="onInput1($event)">
+          <label class="control-label mb-10"
+            >Heart rate<span class="text-danger">*</span>
+          </label>
+          <input
+            type="number"
+            name="hr"
+            class="form-control"
+            formControlName="heartRate"
+            [ngClass]="{
+              'is-invalid':
+                (validation && f['heartRate'].errors) ||
+                (f['heartRate'].invalid &&
+                  (f['heartRate'].dirty || f['heartRate'].touched))
+            }"
+            pattern="[0-9]{1,3}"
+            (input)="onInput1($event)"
+          />
           <div
-            *ngIf="(validation && f['heartRate'].errors  || f['heartRate'].invalid && (f['heartRate'].dirty || f['heartRate'].touched ))"
-            class="invalid-feedback">*Required</div>
+            *ngIf="
+              (validation && f['heartRate'].errors) ||
+              (f['heartRate'].invalid &&
+                (f['heartRate'].dirty || f['heartRate'].touched))
+            "
+            class="invalid-feedback"
+          >
+            *Required
+          </div>
         </div>
         <div class="form-group">
-          <label class="control-label mb-10">Weight<span class="text-danger">*</span></label>
-          <input type="number" name="Weight" class="form-control" formControlName="weight"
-            [ngClass]="{ 'is-invalid': validation && f['weight'].errors || f['weight'].invalid && (f['weight'].dirty || f['weight'].touched)}"
-            pattern="[0-9]{1,3}" (input)="onInput2($event)">
+          <label class="control-label mb-10"
+            >Weight<span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            name="Weight"
+            class="form-control"
+            formControlName="weight"
+            [ngClass]="{
+              'is-invalid':
+                (validation && f['weight'].errors) ||
+                (f['weight'].invalid &&
+                  (f['weight'].dirty || f['weight'].touched))
+            }"
+            pattern="[0-9]{1,3}"
+            (input)="onInput2($event)"
+          />
           <div
-            *ngIf="(validation && f['weight'].errors  || f['weight'].invalid && (f['weight'].dirty || f['weight'].touched ))"
-            class="invalid-feedback">*Required</div>
+            *ngIf="
+              (validation && f['weight'].errors) ||
+              (f['weight'].invalid &&
+                (f['weight'].dirty || f['weight'].touched))
+            "
+            class="invalid-feedback"
+          >
+            *Required
+          </div>
         </div>
         <div class="form-group">
-          <label class="control-label mb-10">Fbc<span class="text-danger">*</span></label>
-          <input type="number" name="Fbc" class="form-control" formControlName="fbcStatus"
-            [ngClass]="{ 'is-invalid': validation && f['fbcStatus'].errors || f['fbcStatus'].invalid && (f['fbcStatus'].dirty || f['fbcStatus'].touched)}"
-            pattern="[0-9]{1,3}" (input)="onInput3($event)">
+          <label class="control-label mb-10"
+            >Fbc<span class="text-danger">*</span></label
+          >
+          <input
+            type="number"
+            name="Fbc"
+            class="form-control"
+            formControlName="fbcStatus"
+            [ngClass]="{
+              'is-invalid':
+                (validation && f['fbcStatus'].errors) ||
+                (f['fbcStatus'].invalid &&
+                  (f['fbcStatus'].dirty || f['fbcStatus'].touched))
+            }"
+            pattern="[0-9]{1,3}"
+            (input)="onInput3($event)"
+          />
           <div
-            *ngIf="(validation && f['fbcStatus'].errors  || f['fbcStatus'].invalid && (f['fbcStatus'].dirty || f['fbcStatus'].touched ))"
-            class="invalid-feedback">*Required</div>
+            *ngIf="
+              (validation && f['fbcStatus'].errors) ||
+              (f['fbcStatus'].invalid &&
+                (f['fbcStatus'].dirty || f['fbcStatus'].touched))
+            "
+            class="invalid-feedback"
+          >
+            *Required
+          </div>
         </div>
         <!-- <div class="form-group">
                     <label class="control-label mb-10">Created Date </label>
@@ -130,10 +235,22 @@
                 </div> -->
       </div>
       <div class="modal-footer text-end">
-        <button type="submit" class="btn btn-outline btn-primary " *ngIf="!this.medicalDetailForm.value.id"
-          (click)="submit(modal)">Submit</button>
-        <button type="submit" class="btn btn-outline btn-primary " *ngIf="this.medicalDetailForm.value.id"
-          (click)="getUpdate(modal)">update</button>
+        <button
+          type="submit"
+          class="btn btn-outline btn-primary"
+          *ngIf="!this.medicalDetailForm.value.id"
+          (click)="submit(modal)"
+        >
+          Submit
+        </button>
+        <button
+          type="submit"
+          class="btn btn-outline btn-primary"
+          *ngIf="this.medicalDetailForm.value.id"
+          (click)="getUpdate(modal)"
+        >
+          update
+        </button>
       </div>
     </form>
   </div>
@@ -160,15 +277,32 @@
 <ng-template #delete let-modal>
   <div class="modal-header">
     <h4 class="modal-title pull-left">Delete</h4>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-    </button>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
   </div>
-  <div class="modal-body ">
+  <div class="modal-body">
     Are you sure to delete?
-    <div style="margin-top:25px " class="text-end">
-      <button type="button" class="btn btn-success btn-sm mx-2" id="btn-yes" (click)="getDelete(modal)">Yes</button>
-      <button type="button" class="btn btn-danger btn-sm mx-2" id="btn-no"
-        (click)="modal.dismiss('Cross click')">No</button>
+    <div style="margin-top: 25px" class="text-end">
+      <button
+        type="button"
+        class="btn btn-success btn-sm mx-2"
+        id="btn-yes"
+        (click)="getDelete(modal)"
+      >
+        Yes
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm mx-2"
+        id="btn-no"
+        (click)="modal.dismiss('Cross click')"
+      >
+        No
+      </button>
     </div>
   </div>
 </ng-template>
