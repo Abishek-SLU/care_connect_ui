@@ -34,7 +34,7 @@ export class SearchDoctorComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDoctors();
-    this.getSpeciality();
+
   }
 
   getDoctors(): void {
@@ -131,5 +131,14 @@ export class SearchDoctorComponent implements OnInit {
       parts.push(d.clinicZipcode);
     }
     return parts.join(', ');
+  }
+  onLocationChange(value: string): void {
+    this.locationFilter = value;
+    this.search();
+  }
+
+  onSearchKeyChange(value: string): void {
+    this.searchKey = value;
+    this.search();
   }
 }

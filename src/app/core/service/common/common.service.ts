@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
@@ -11,99 +10,58 @@ import { Router } from '@angular/router';
 export class CommonService {
 
 
-
-  private baseUrl = environment.Api_url;
-  private loginUrl = this.baseUrl + "auth/login";
-  private userDetailsUrl = this.baseUrl + "auth/user-details";
-  private generateOTPUrl = this.baseUrl + "api/register/generate-otp";
-  private verifyOTPUrl = this.baseUrl + "api/register/verify-otp";
-  private userUpdateURL = this.baseUrl + "api/register/update";
-  private getCityURL = this.baseUrl + "api/city/get";
-  private getStateURL = this.baseUrl + "api/state/get";
-  private getCountryURL = this.baseUrl + "api/country/get";
-
-  private createCountryURL = this.baseUrl + "api/country/create";
-  private updateCountryURL = this.baseUrl + "api/country/update";
-  private deleteCountryURL = this.baseUrl + "api/country/delete/";
-
-  private createStateURL = this.baseUrl + "api/state/create";
-  private updateStateURL = this.baseUrl + "api/state/update";
-  private deleteStateURL = this.baseUrl + "api/state/delete/";
-
-  public patients: any = [
-    {
-      patientName: 'Richard Wilson',
-      patient_id: 'P0016',
-      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
-      purpose: 'General',
-      type: 'New patient',
-      email: 'richard@example.com',
-      phone: '+1 923 782 4575',
-      amount: 150,
-      status: 0,
-    },
-    {
-      patientName: 'Richard Wilson',
-      patient_id: 'P0001',
-      email: 'richard@example.com',
-      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
-      purpose: 'General',
-      type: 'Old patient',
-      phone: '+1 828 632 9170',
-      amount: 200,
-      status: 0,
-    },
-    {
-      patientName: 'Richard Wilson',
-      patient_id: 'P0002',
-      email: 'richard@example.com',
-      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
-      purpose: 'General',
-      type: 'New patient',
-      phone: '+1 828 632 9170',
-      amount: 350,
-      status: 0,
-    },
-    {
-      patientName: 'Richard Wilson',
-      email: 'richard@example.com',
-      patient_id: 'P0003',
-      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
-      purpose: 'General',
-      type: 'New patient',
-      amount: 400,
-      status: 0,
-    },
-  ];
-
-private createCityURL = this.baseUrl + "api/city/create";
-private updateCityURL = this.baseUrl + "api/city/update";
-private deleteCityURL = this.baseUrl + "api/city/delete/";
-
-
-
-getCityById(id: any) {
-  return this.http.get(this.getCityURL + `/${id}`);
-}
-
-cityCreate(payload: any) {
-  return this.http.post(this.createCityURL, payload);
-}
-
-cityUpdate(payload: any) {
-  return this.http.put(this.updateCityURL, payload);
-}
-
-cityDelete(id: any) {
-  return this.http.delete(this.deleteCityURL + `${id}`);
-}
-
+  public baseUrl = environment.Api_url;
+  private loginUrl = this.baseUrl + 'auth/login';
+  private userDetailsUrl = this.baseUrl + 'auth/user-details';
+  private generateOTPUrl = this.baseUrl + 'api/register/generate-otp';
+  private verifyOTPUrl = this.baseUrl + 'api/register/verify-otp';
+  private userUpdateURL = this.baseUrl + 'api/register/update';
+  private getCityURL = this.baseUrl + 'api/city/get';
+  private getStateURL = this.baseUrl + 'api/state/get';
+  private getCountryURL = this.baseUrl + 'api/country/get';
+  private createCountryURL = this.baseUrl + 'api/country/create';
+  private updateCountryURL = this.baseUrl + 'api/country/update';
+  private deleteCountryURL = this.baseUrl + 'api/country/delete/';
+  private createStateURL = this.baseUrl + 'api/state/create';
+  private updateStateURL = this.baseUrl + 'api/state/update';
+  private deleteStateURL = this.baseUrl + 'api/state/delete/';
+  private createCityURL = this.baseUrl + 'api/city/create';
+  private updateCityURL = this.baseUrl + 'api/city/update';
+  private deleteCityURL = this.baseUrl + 'api/city/delete/';
+  private appointmentApiUrl = this.baseUrl + 'api/appoinment/create';
+  private getScheduleByIdURL = this.baseUrl + 'api/doctor/schedule/get';
+  private getAppointmentByIdURL = this.baseUrl + 'api/invoice/appointment';
   messages: any = '';
   SERVER_URL: string = 'http://localhost:8080/api/';
-  public message: BehaviorSubject<String> = new BehaviorSubject<String>('');
+  public message: BehaviorSubject<string> = new BehaviorSubject<string>('');
   functionsToCall$: any;
+
   constructor(public http: HttpClient, private router: Router) {
     this.message = new BehaviorSubject(this.messages);
+  }
+  getInvoiceByAppointment(id: string) {
+    return this.http.get(this.getAppointmentByIdURL + `/${id}`);
+  }
+  getScheduleById(id: any) {
+    return this.http.get(this.getScheduleByIdURL + `/${id}`);
+  }
+  createAppointmentApi(payload: any) {
+    return this.http.post<any>(this.appointmentApiUrl, payload);
+  }
+  getCityById(id: any) {
+    return this.http.get(this.getCityURL + `/${id}`);
+  }
+
+  cityCreate(payload: any) {
+    return this.http.post(this.createCityURL, payload);
+  }
+
+  cityUpdate(payload: any) {
+    return this.http.put(this.updateCityURL, payload);
+  }
+
+  cityDelete(id: any) {
+    return this.http.delete(this.deleteCityURL + `${id}`);
   }
 
   getStateById(id: any) {
@@ -121,15 +79,19 @@ cityDelete(id: any) {
   stateDelete(id: any) {
     return this.http.delete(this.deleteStateURL + `${id}`);
   }
+
   getCountryById(id: any) {
     return this.http.get(this.getCountryURL + `/${id}`);
   }
+
   countryDelete(id: any) {
     return this.http.delete(this.deleteCountryURL + `${id}`);
   }
+
   countryUpdate(payload: any) {
     return this.http.put(this.updateCountryURL, payload);
   }
+
   countryCreate(payload: any) {
     return this.http.post(this.createCountryURL, payload);
   }
@@ -137,9 +99,11 @@ cityDelete(id: any) {
   getCity() {
     return this.http.get(this.getCityURL);
   }
+
   getState() {
     return this.http.get(this.getStateURL);
   }
+
   getCountry() {
     return this.http.get(this.getCountryURL);
   }
@@ -147,9 +111,11 @@ cityDelete(id: any) {
   login_Url(data: any) {
     return this.http.post<any>(this.loginUrl, data);
   }
+
   userDetails() {
     return this.http.get<any>(this.userDetailsUrl);
   }
+
   userRegisterUpdate(data: any) {
     return this.http.put<any>(this.userUpdateURL, data);
   }
@@ -161,42 +127,86 @@ cityDelete(id: any) {
   generateOTP(data: any) {
     return this.http.post<any>(this.generateOTPUrl, data);
   }
+
   gettoken() {
     return localStorage.getItem('token');
   }
+
   userRoleId() {
     return localStorage.getItem('userRoleId');
   }
+
   roleName() {
-    return localStorage.getItem("roleName");
+    return localStorage.getItem('roleName');
   }
 
   logout() {
     localStorage.clear();
     this.router.navigate(['/login']);
   }
+
   registerOtp(payload: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/send`, payload);
   }
-
-  /**
-   * Verify the entered OTP
-   * @param payload - { mobileNo: string, otp: string }
-   */
 
   nextmessage(data: any) {
     this.message.next(data);
   }
 
   getJSON(): Observable<any> {
-    // return this.http.get("./assets/data.json");
     return this.patients;
   }
 
+  patients: any = [
+    {
+      patientName: 'Richard Wilson',
+      patient_id: 'P0016',
+      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
+      purpose: 'General',
+      type: 'New patient',
+      email: 'richard@example.com',
+      phone: '+1 923 782 4575',
+      amount: 150,
+      status: 0
+    },
+    {
+      patientName: 'Richard Wilson',
+      patient_id: 'P0001',
+      email: 'richard@example.com',
+      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
+      purpose: 'General',
+      type: 'Old patient',
+      phone: '+1 828 632 9170',
+      amount: 200,
+      status: 0
+    },
+    {
+      patientName: 'Richard Wilson',
+      patient_id: 'P0002',
+      email: 'richard@example.com',
+      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
+      purpose: 'General',
+      type: 'New patient',
+      phone: '+1 828 632 9170',
+      amount: 350,
+      status: 0
+    },
+    {
+      patientName: 'Richard Wilson',
+      email: 'richard@example.com',
+      patient_id: 'P0003',
+      apptDate: 'Sat May 23 2020 13:35:47 GMT+0530 (India Standard Time)',
+      purpose: 'General',
+      type: 'New patient',
+      amount: 400,
+      status: 0
+    }
+  ];
+
   update(id: any, status: any, list: any) {
-    let filter = list.filter((a: any) => a.patient_id === id);
-    if (filter.length != 0) {
-      filter['status'] = status;
+    const filter = list.filter((a: any) => a.patient_id === id);
+    if (filter.length !== 0) {
+      filter[0].status = status;
     }
   }
 
@@ -205,34 +215,33 @@ cityDelete(id: any) {
   }
 
   createSpeciality(data: any) {
-    return this.http.post(`${this.SERVER_URL + 'specialityList'}`, data);
+    return this.http.post(this.SERVER_URL + 'specialityList', data);
   }
 
   updateSpeciality(data: any, id: any) {
-    return this.http.put(`${this.SERVER_URL + 'specialityList'}/${id}`, data);
+    return this.http.put(this.SERVER_URL + 'specialityList' + '/' + id, data);
   }
 
   deleteSpeciality(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'specialityList'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'specialityList' + '/' + id);
   }
 
   getDoctors() {
     return this.http.get(this.SERVER_URL + 'doctors');
   }
+
   getSearchDoctors() {
     return this.http.get(this.SERVER_URL + 'searchDoctor');
   }
 
-  getDoctorDetails(id: any) {
-    return this.http.get(`${this.SERVER_URL + 'doctors'}/${id}`);
-  }
+
 
   getAppointments() {
     return this.http.get(this.SERVER_URL + 'appointments');
   }
 
   updateAppointment(data: any, id: any) {
-    return this.http.put(`${this.SERVER_URL + 'appointments'}/${id}`, data);
+    return this.http.put(this.SERVER_URL + 'appointments' + '/' + id, data);
   }
 
   getpatients() {
@@ -240,7 +249,7 @@ cityDelete(id: any) {
   }
 
   createBlogs(data: any) {
-    return this.http.post(`${this.SERVER_URL + 'blogs'}`, data);
+    return this.http.post(this.SERVER_URL + 'blogs', data);
   }
 
   getBlogs() {
@@ -248,31 +257,29 @@ cityDelete(id: any) {
   }
 
   getBlogsDetails(id: any) {
-    return this.http.get(`${this.SERVER_URL + 'blogs'}/${id}`);
+    return this.http.get(this.SERVER_URL + 'blogs' + '/' + id);
   }
 
   updateBlog(data: any, id: any) {
-    return this.http.put(`${this.SERVER_URL + 'blogs'}/${id}`, data);
+    return this.http.put(this.SERVER_URL + 'blogs' + '/' + id, data);
   }
 
   deleteBlog(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'blogs'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'blogs' + '/' + id);
   }
 
   createDoctor(data: any) {
-    return this.http.post(`${this.SERVER_URL + 'doctors'}`, data);
+    return this.http.post(this.SERVER_URL + 'doctors', data);
   }
 
   createPatient(data: any) {
-    return this.http.post(`${this.SERVER_URL + 'patients'}`, data);
+    return this.http.post(this.SERVER_URL + 'patients', data);
   }
 
-  getPatientDetails(id: any) {
-    return this.http.get(`${this.SERVER_URL + 'patients'}/${id}`);
-  }
+
 
   createAppointment(params: any) {
-    return this.http.post(`${this.SERVER_URL + 'appointments'}`, params);
+    return this.http.post(this.SERVER_URL + 'appointments', params);
   }
 
   getFav() {
@@ -292,7 +299,7 @@ cityDelete(id: any) {
   }
 
   deleteFav(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'favourites'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'favourites' + '/' + id);
   }
 
   getTransactions() {
@@ -300,7 +307,7 @@ cityDelete(id: any) {
   }
 
   deleteTransaction(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'transactions'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'transactions' + '/' + id);
   }
 
   getReviews() {
@@ -308,7 +315,7 @@ cityDelete(id: any) {
   }
 
   deleteReview(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'reviews'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'reviews' + '/' + id);
   }
 
   getProducts() {
@@ -316,7 +323,7 @@ cityDelete(id: any) {
   }
 
   deleteProduct(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'products'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'products' + '/' + id);
   }
 
   getCategories() {
@@ -324,7 +331,7 @@ cityDelete(id: any) {
   }
 
   deleteCategory(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'categories'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'categories' + '/' + id);
   }
 
   getOrders() {
@@ -332,7 +339,7 @@ cityDelete(id: any) {
   }
 
   deleteOrder(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'orders'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'orders' + '/' + id);
   }
 
   getPharmacyReports() {
@@ -340,7 +347,7 @@ cityDelete(id: any) {
   }
 
   deletePharmacyReports(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'pharmacy_reports'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'pharmacy_reports' + '/' + id);
   }
 
   getPurchase() {
@@ -348,7 +355,7 @@ cityDelete(id: any) {
   }
 
   deletePurchase(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'purchase'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'purchase' + '/' + id);
   }
 
   getSales() {
@@ -356,14 +363,15 @@ cityDelete(id: any) {
   }
 
   deleteSale(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'sale'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'sale' + '/' + id);
   }
+
   getPharmacyTransactions() {
     return this.http.get(this.SERVER_URL + 'pharmacy_transactions');
   }
 
   deletePharmacyTransactions(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'pharmacy_transactions'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'pharmacy_transactions' + '/' + id);
   }
 
   getPharmacy() {
@@ -371,6 +379,30 @@ cityDelete(id: any) {
   }
 
   deletePharmacy(id: any) {
-    return this.http.delete(`${this.SERVER_URL + 'pharmacy'}/${id}`);
+    return this.http.delete(this.SERVER_URL + 'pharmacy' + '/' + id);
+  }
+
+  getDoctorSearchList() {
+    return this.http.get(this.baseUrl + 'api/doctor-search/all');
+  }
+
+  getDoctorSchedules(doctorId: string) {
+    const url = this.baseUrl + 'api/doctor/schedule/list';
+    const params = new HttpParams().set('doctorId', doctorId);
+    return this.http.get<any>(url, { params });
+  }
+  getDoctorDetails(id: any) {
+    return this.http.get<any>(this.baseUrl + 'api/doctor/get-doctor/' + id);
+  }
+
+  getPatientDetails(id: any) {
+    return this.http.get<any>(this.baseUrl + 'api/patient/get-patient/' + id);
+  }
+  getDoctorDetailsByUserId(id: any) {
+    return this.http.get<any>(this.baseUrl + 'api/doctor/get/' + id);
+  }
+
+  getPatientDetailsByUserId(id: any) {
+    return this.http.get<any>(this.baseUrl + 'api/patient/get/' + id);
   }
 }

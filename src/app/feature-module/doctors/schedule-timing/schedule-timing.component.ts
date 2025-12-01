@@ -75,7 +75,7 @@ export class ScheduleTimingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.doctorId = localStorage.getItem('userRoleId') || '';
+    this.doctorId = localStorage.getItem('id') || '';
     this.bootstrapDates();
     this.buildForm();
     this.getDocSchedule();
@@ -209,7 +209,7 @@ export class ScheduleTimingComponent implements OnInit {
     this.addTimeSlotInfo.push(this.createAddTimeSlot());
   }
 
-  deleteSlot(index: number,modal: any) {
+  deleteSlot(index: number, modal: any) {
     const group = this.addTimeSlotInfo.at(index) as FormGroup;
     const id = group.get('id')?.value;
 
@@ -219,8 +219,8 @@ export class ScheduleTimingComponent implements OnInit {
           this.toastr.success('Slot deleted');
           this.addTimeSlotInfo.removeAt(index);
           this.getDocSchedule();
-           modal.dismiss('cross click');
-          
+          modal.dismiss('cross click');
+
         },
         () => {
           this.toastr.error('Error deleting slot');
