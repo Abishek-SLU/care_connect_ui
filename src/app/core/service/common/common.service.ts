@@ -10,8 +10,10 @@ import { Router } from '@angular/router';
 export class CommonService {
 
 
+
   public baseUrl = environment.Api_url;
   private loginUrl = this.baseUrl + 'auth/login';
+  private changePasswordUrl = this.baseUrl + 'auth/change/password';
   private userDetailsUrl = this.baseUrl + 'auth/user-details';
   private generateOTPUrl = this.baseUrl + 'api/register/generate-otp';
   private verifyOTPUrl = this.baseUrl + 'api/register/verify-otp';
@@ -38,6 +40,9 @@ export class CommonService {
 
   constructor(public http: HttpClient, private router: Router) {
     this.message = new BehaviorSubject(this.messages);
+  }
+  changePassword(payload: any) {
+    return this.http.put<any>(this.changePasswordUrl, payload);
   }
   getInvoiceByAppointment(id: string) {
     return this.http.get(this.getAppointmentByIdURL + `/${id}`);
@@ -134,6 +139,9 @@ export class CommonService {
 
   userRoleId() {
     return localStorage.getItem('userRoleId');
+  }
+  getId() {
+    return localStorage.getItem('id');
   }
 
   roleName() {

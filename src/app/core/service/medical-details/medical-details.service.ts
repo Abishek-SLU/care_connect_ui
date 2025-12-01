@@ -6,13 +6,12 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class MedicaldetailsService {
-
   private baseUrl = environment.Api_url;
-  private create = this.baseUrl + "api/medicalDetails/create";
-  private getAll = this.baseUrl + "api/medicalDetails/patient/get";
-  private getById = this.baseUrl + "api/medicalDetails/get";
-  private update = this.baseUrl + "api/medicalDetails/update";
-  private delete = this.baseUrl + "api/medicalDetails/delete";
+  private create = this.baseUrl + 'api/medical-detail/create';
+  private getAll = this.baseUrl + 'api/medical-detail/list';
+  private getById = this.baseUrl + 'api/medical-detail/get';
+  private update = this.baseUrl + 'api/medical-detail/update';
+  private deleteUrl = this.baseUrl + 'api/medical-detail/delete';
 
   constructor(private http: HttpClient) { }
 
@@ -23,13 +22,16 @@ export class MedicaldetailsService {
   medicalDetailsGet(id: any) {
     return this.http.get<any>(this.getAll + '/' + id);
   }
+
   medicalDetailsGetById(id: any) {
     return this.http.get<any>(this.getById + '/' + id);
   }
+
   medicalDetailsUpdate(data: any) {
     return this.http.put<any>(this.update, data);
   }
+
   medicalDetailsdelete(id: any) {
-    return this.http.delete<any>(this.delete + '/' + id);
+    return this.http.delete<any>(this.deleteUrl + '/' + id);
   }
 }

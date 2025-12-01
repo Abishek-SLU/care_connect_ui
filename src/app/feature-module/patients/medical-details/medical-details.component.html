@@ -1,8 +1,13 @@
-<!-- <div>
-  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-scale-multiple">
+<div>
+  <ngx-spinner
+    bdColor="rgba(51,51,51,0.8)"
+    size="medium"
+    color="#fff"
+    type="ball-scale-multiple"
+  >
     <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
   </ngx-spinner>
-</div> -->
+</div>
 
 <div class="row">
   <div class="col-sm-12">
@@ -31,7 +36,7 @@
                     <th class="text-center">FBC Status</th>
                     <th>Weight</th>
                     <th>Order date</th>
-                    <!-- <th>Action</th> -->
+                    <th class="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -39,32 +44,25 @@
                     <td>{{ i + 1 }}</td>
                     <td>{{ values.fullName }}</td>
                     <td>{{ values.bmi }}</td>
-                    <td class="text-center">{{ values.heartrate }}</td>
-                    <td class="text-center">{{ values.fbcstatus }}</td>
+                    <td class="text-center">{{ values.heartRate }}</td>
+                    <td class="text-center">{{ values.fbcStatus }}</td>
                     <td>{{ values.weight }}</td>
                     <td>{{ values.orderDate | date : "dd/MM/yyyy" }}</td>
                     <td>
-                      <div class="table-action">
-                        <!-- <a href="#edit_medical_form" class="btn btn-sm bg-info-light"
-                                                    (click)="getEdit(values.id,shedule)" data-bs-toggle="modal">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <a href="javascript:void(0);" class="btn btn-sm bg-danger-light"
-                                                    (click)="deleteModal(values.id,delete)">
-                                                    <i class="fas fa-trash-alt"></i> Delete
-                                                </a> -->
+                      <div class="table-action text-center">
                         <a
                           class="btn btn-sm bg-info-light"
                           data-bs-toggle="modal"
                           (click)="getEdit(values.id, shedule)"
                         >
-                          <i class="fas fa-edit"></i
-                        ></a>
+                          <i class="fas fa-edit"></i>
+                        </a>
                         <a
                           class="btn btn-sm bg-danger-light trash"
                           (click)="deleteModal(values.id, delete)"
-                          ><i class="far fa-trash-alt"></i
-                        ></a>
+                        >
+                          <i class="far fa-trash-alt"></i>
+                        </a>
                       </div>
                     </td>
                   </tr>
@@ -95,9 +93,7 @@
       class="btn-close"
       aria-label="Close"
       (click)="modal.dismiss('Cross click')"
-    >
-      <!-- <span aria-hidden="true">&times;</span> -->
-    </button>
+    ></button>
   </div>
   <div class="modal-content">
     <form
@@ -108,12 +104,10 @@
       method="post"
     >
       <div class="modal-body">
-        <input type="hidden" value="" name="id" />
-        <input type="hidden" value="insert" name="method" />
         <div class="form-group">
           <label class="control-label mb-10">
-            BMI<span class="text-danger">*</span></label
-          >
+            BMI<span class="text-danger">*</span>
+          </label>
           <input
             type="number"
             name="bmi"
@@ -138,8 +132,8 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label mb-10"
-            >Heart rate<span class="text-danger">*</span>
+          <label class="control-label mb-10">
+            Heart rate<span class="text-danger">*</span>
           </label>
           <input
             type="number"
@@ -167,9 +161,9 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label mb-10"
-            >Weight<span class="text-danger">*</span></label
-          >
+          <label class="control-label mb-10">
+            Weight<span class="text-danger">*</span>
+          </label>
           <input
             type="number"
             name="Weight"
@@ -196,9 +190,9 @@
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label mb-10"
-            >Fbc<span class="text-danger">*</span></label
-          >
+          <label class="control-label mb-10">
+            Fbc<span class="text-danger">*</span>
+          </label>
           <input
             type="number"
             name="Fbc"
@@ -224,15 +218,6 @@
             *Required
           </div>
         </div>
-        <!-- <div class="form-group">
-                    <label class="control-label mb-10">Created Date </label>
-                    <input type="date" name="dob" class="form-control" formControlName="orderDate"
-                        [ngClass]="{ 'is-invalid': validation && f['orderDate'].errors || f['orderDate'].invalid && (f['orderDate'].dirty || f['orderDate'].touched)}" max="{{ getMaxDate() }}">
-                    <div *ngIf="(validation && f['orderDate'].errors  || f['orderDate'].invalid && (f['orderDate'].dirty || f['orderDate'].touched ))"
-                        class="invalid-feedback">
-                        *Required
-                    </div>
-                </div> -->
       </div>
       <div class="modal-footer text-end">
         <button
@@ -255,24 +240,6 @@
     </form>
   </div>
 </ng-template>
-
-<!-- <ng-template #delete let-modal>
-    <div class="modal-header del">
-        <h4 class="modal-title">Delete</h4>
-        <button type="button" class="btn-close btn-sm" aria-label="Close" (click)="modal.dismiss('Cross click')">
-        </button>
-    </div>
-    <div class="modal-content del">
-        <div class="">
-            Are you sure to delete?
-        </div>
-    </div>
-    <div class="modal-footer text-end del">
-        <button type="submit" class="btn btn-outline btn-success btn-sm" (click)="getDelete(modal)">Ok</button>
-        <button type="submit" class="btn btn-outline btn-danger btn-sm"
-            (click)="modal.dismiss('Cross click')">Cancel</button>
-    </div>
-</ng-template> -->
 
 <ng-template #delete let-modal>
   <div class="modal-header">

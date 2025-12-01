@@ -1,13 +1,10 @@
-import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { DashboardService } from 'src/app/core/service/doctors/dashboard/dashboard.service';
-import { DoctorService } from 'src/app/core/service/doctors/newDoctor/doctor.service';
 import { CommonService } from 'src/app/core/service/service.index';
-
 
 @Component({
   selector: 'app-dashboard',
@@ -15,294 +12,200 @@ import { CommonService } from 'src/app/core/service/service.index';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  list: any = [];
-  id: any
-  appointmentId: any;
-  appointments: any = [];
-  patients: any = [];
-  patientsLength: any;
-  appointmentsLength: any;
-  TotalPatientsLength: any;
   activeTab = 'today';
-  submitted = false;
-  cancelApp: any = [];
-  // docId:any=[];
-  values: any = [];
-  userId: any;
-  patientId: any;
-  counts: any = [];
-  doctorId: any;
-  roleName: any;
-  doctorGetAll: any;
-  doctorGet: any;
-  patientID: any
-  Appointment: any = [];
-  count: any = [];
-  modalRef: any;
-  decodedString: string = '';
-  //  Accept: boolean = false;
-  myForm: FormGroup;
+  cancelApp: any[] = [];
+  counts: any = {};
+  Appointment: any[] = [];
+  todayApp: any[] = [];
   currentDate: any;
-  acceptHidden: boolean = false;
-  cancelHidden: boolean = false;
-  acceptbtnText: string = 'Accept';
-  cancelbtnText: string = 'Cancel';
-  profilePicture: any = 'assets/doc image/default-avatar-profile-icon-vector-18942381.jpg';
-  script: any = 'as';
-  constructor(private toastr: ToastrService, public commonService: CommonService,
+  roleName: any;
+  doctorId: any;
+  appId: any;
+  imageArr: any[] = [];
 
-    private fb: FormBuilder,
+  constructor(
+    private toastr: ToastrService,
+    public commonService: CommonService,
     private service: DashboardService,
-    private doctorService: DoctorService,
     private rout: Router,
     private modalservice: NgbModal,
-    private spinner: NgxSpinnerService,
-
-  ) {
-    this.myForm = this.fb.group({
-      doctorArray: this.fb.array([
-
-      ]),
-    });
-  }
+    private spinner: NgxSpinnerService
+  ) { }
 
   ngOnInit(): void {
-    this.currentDate = new Date().toISOString().split('T')[0];
-    this.getCancelAppointment();
-
-    this.roleName = localStorage.getItem("roleName");
-    if (this.roleName === "PATIENT") {
+    this.currentDate = new Date();
+    this.roleName = localStorage.getItem('roleName');
+    if (this.roleName === 'PATIENT') {
       this.rout.navigate(['/doctors/patientsprofile']);
+      return;
     }
-    this.list = this.list.filter((a: any) => a.status === 0);
-    this.getDashboard();
-    this.calculatePercentage(this.counts?.totalPatients)
-
-  }
-  calculatePercentage(currentValue: number): number {
-    const totalValue = 40;  // Use appropriate total value
-    if (totalValue && currentValue >= 0) {
-      return (currentValue / totalValue) * 100;
-    } else {
-      return 0; // Default percentage if totalValue is not available or currentValue is negative
+    this.doctorId = localStorage.getItem('id');
+    if (!this.doctorId) {
+      this.toastr.error('Doctor not found in local storage.');
+      return;
     }
+    this.loadSummary();
+    this.loadTodayAppointments();
+    this.loadUpcomingAppointments();
+    this.getCancelAppointment();
   }
-  calculatePercentage2(currentValue: number): number {
-    const totalValue = 40; // Use appropriate total value
-    if (totalValue && currentValue >= 0) {
-      return (currentValue / totalValue) * 100;
-    } else {
-      return 0; // Default percentage if totalValue is not available or currentValue is negative
+
+  calculatePercentage(currentValue: number | null | undefined): number {
+    const totalValue = 40;
+    if (!totalValue || currentValue == null || currentValue < 0) {
+      return 0;
     }
+    return (currentValue / totalValue) * 100;
   }
-  calculatePercentage3(currentValue: number): number {
-    const totalValue = 40 // Use appropriate total value
-    if (totalValue && currentValue >= 0) {
-      return (currentValue / totalValue) * 100;
-    } else {
-      return 0; // Default percentage if totalValue is not available or currentValue is negative
+
+  calculatePercentage2(currentValue: number | null | undefined): number {
+    const totalValue = 40;
+    if (!totalValue || currentValue == null || currentValue < 0) {
+      return 0;
     }
+    return (currentValue / totalValue) * 100;
   }
 
-  addAppointment() {
-    console.log("Total Patients:", this.counts?.totalPatients);
-    console.log("Today Patients:", this.counts?.todayPatients);
-    console.log("Today Appointments:", this.counts?.todayAppointments);
-
-    // Recalculate percentages for all graphs
-    const totalPatientsPercentage = this.calculatePercentage(this.counts?.totalPatients);
-    const todayAppointmentsPercentage = this.calculatePercentage3(this.counts?.todayAppointments);
-    const todayPatientsPercentage = this.calculatePercentage2(this.counts?.todayPatients);
-
-    console.log("totalPatientsPercentage", totalPatientsPercentage);
-    console.log("todayPatientsPercentage", todayPatientsPercentage);
-    console.log("todayAppointmentsPercentage", todayAppointmentsPercentage)
-
-    setTimeout(() => {
-      this.counts.totalPatientsPercentage = totalPatientsPercentage;
-      this.counts.todayPatientsPercentage = todayPatientsPercentage;
-      this.counts.todayAppointmentsPercentage = todayAppointmentsPercentage;
-    }, 200);
+  calculatePercentage3(currentValue: number | null | undefined): number {
+    const totalValue = 40;
+    if (!totalValue || currentValue == null || currentValue < 0) {
+      return 0;
+    }
+    return (currentValue / totalValue) * 100;
   }
-  search(activeTab: any) {
+
+  search(activeTab: string): void {
     this.activeTab = activeTab;
   }
 
-  result(activeTab: any) {
+  result(activeTab: string): void {
     this.activeTab = activeTab;
   }
-  Cancelled(activeTab: any) {
+
+  Cancelled(activeTab: string): void {
     this.getCancelAppointment();
     this.activeTab = activeTab;
   }
-  openmodal(contant: any) {
-    this.modalservice.open(contant, { size: "md" })
-  }
-  upappoint: any;
-  todayApp: any = [];
-  today: any;
-  view: any;
-  doctorData = {}
-  addDoctor(doctorData: any) {
-    const doctorGroup = this.fb.group({
 
-      patientImage: [doctorData.patientImage.patientImage],
-    });
-    this.doctorArray.push(doctorGroup);
+  openmodal(contant: any): void {
+    this.modalservice.open(contant, { size: 'md' });
   }
 
-  get doctorArray(): FormArray {
-    return this.myForm.get('doctorArray') as FormArray;
-  }
-  data: any
-  getDashboard() {
+  loadSummary(): void {
     this.spinner.show();
-    this.service.getForm().subscribe(res => {
-
-      this.counts = res.data.counts;
-
-
-      this.todayApp = res.data.todayAppointments;
-      // this.today = this.todayApp.filter((res: any) => {
-      //   res.status === 'ACCEPT';
-
-      // })
-      this.Appointment = res.data.upcomingAppointments;
-      // this.upappoint = this.Appointment.filter((res: any) => {
-      //  res.status === 'ACCEPT';
-      // })
-      for (let i = 0; i < this.todayApp?.length; i++) {
-        if (this.todayApp[i].patientImage != null) {
-          const doctorData = {
-            patientImage: atob(this.todayApp[i].patientImage)
-          };
-          this.todayApp[i].doctorData = doctorData;
-        }
-        this.imageArr.push(this.todayApp[i]);
+    this.service.getSummary(this.doctorId).subscribe(
+      res => {
+        this.counts = res.data;
+        this.spinner.hide();
+      },
+      err => {
+        const error = err?.error?.error?.reason || 'Failed to load summary';
+        this.toastr.error(error);
+        this.spinner.hide();
       }
-      for (let i = 0; i < this.Appointment?.length; i++) {
-        if (this.Appointment[i].patientImage != null) {
-          const doctorData = {
-            patientImage: atob(this.Appointment[i].patientImage)
-          };
-          this.Appointment[i].doctorData = doctorData;
-        }
-        this.imageArr.push(this.Appointment[i]);
-      }
-      this.spinner.hide();
+    );
+  }
 
-    },
-
-
-      (err) => {
-        let error = err.error.error.reason;
-        console.log(error);
-        if (error != null) {
-          this.toastr.error(err.error.error.reason);
+  loadTodayAppointments(): void {
+    this.spinner.show();
+    this.service.getToday(this.doctorId).subscribe(
+      res => {
+        this.todayApp = res.data || [];
+        this.imageArr = [];
+        for (let i = 0; i < this.todayApp.length; i++) {
+          if (this.todayApp[i].patientImage != null) {
+            const doctorData = {
+              patientImage: atob(this.todayApp[i].patientImage)
+            };
+            this.todayApp[i].doctorData = doctorData;
+          }
+          this.imageArr.push(this.todayApp[i]);
         }
         this.spinner.hide();
-      })
-
+      },
+      err => {
+        const error = err?.error?.error?.reason || 'Failed to load today appointments';
+        this.toastr.error(error);
+        this.spinner.hide();
+      }
+    );
   }
 
-  acceptedAppointmentId: any = null;
-  cancelledAppointmentId: any = null;
-  accept(id: any) {
-    let statusDto = { id: '', status: '' };
+  loadUpcomingAppointments(): void {
+    this.spinner.show();
+    this.service.getUpcoming(this.doctorId).subscribe(
+      res => {
+        this.Appointment = res.data || [];
+        for (let i = 0; i < this.Appointment.length; i++) {
+          if (this.Appointment[i].patientImage != null) {
+            const doctorData = {
+              patientImage: atob(this.Appointment[i].patientImage)
+            };
+            this.Appointment[i].doctorData = doctorData;
+          }
+          this.imageArr.push(this.Appointment[i]);
+        }
+        this.spinner.hide();
+      },
+      err => {
+        const error = err?.error?.error?.reason || 'Failed to load upcoming appointments';
+        this.toastr.error(error);
+        this.spinner.hide();
+      }
+    );
+  }
+
+  getCancelAppointment(): void {
+    this.spinner.show();
+    this.service.getCancel(this.doctorId).subscribe(
+      res => {
+        this.cancelApp = res.data || [];
+        this.imageArr = [];
+        for (let i = 0; i < this.cancelApp.length; i++) {
+          if (this.cancelApp[i].patientImage != null) {
+            const doctorData = {
+              patientImage: atob(this.cancelApp[i].patientImage)
+            };
+            this.cancelApp[i].doctorData = doctorData;
+          }
+          this.imageArr.push(this.cancelApp[i]);
+        }
+        this.spinner.hide();
+      },
+      err => {
+        const error = err?.error?.error?.reason || 'Failed to load cancelled appointments';
+        this.toastr.error(error);
+        this.spinner.hide();
+      }
+    );
+  }
+
+  accept(id: any): void {
+    const statusDto: any = { id: '', status: '' };
     statusDto.id = id;
-    statusDto.status = "ACCEPT";
-
-
-
-    this.acceptbtnText = "Accepted";
-    this.service.getAcceptApp(statusDto).subscribe((res: any) => {
+    statusDto.status = 'ACCEPT';
+    this.service.getAcceptApp(statusDto).subscribe(res => {
       this.toastr.success(res.data);
-
-      this.getDashboard();
+      this.loadTodayAppointments();
+      this.loadUpcomingAppointments();
     });
   }
-  appId: any;
 
-  modal(modal: any, id: any) {
-    this.modalservice.open(modal, { size: "md" })
+  modal(modal: any, id: any): void {
+    this.modalservice.open(modal, { size: 'md' });
     this.appId = id;
-
   }
-  cancel(modal: any) {
 
-    let statusDto = { id: '', status: '' };
+  cancel(modal: any): void {
+    const statusDto: any = { id: '', status: '' };
     statusDto.id = this.appId;
-    statusDto.status = "CANCEL";
-
-    this.cancelbtnText = "Cancelled"
-    this.service.getAcceptApp(statusDto).subscribe((res: any) => {
+    statusDto.status = 'CANCEL';
+    this.service.getAcceptApp(statusDto).subscribe(res => {
       this.toastr.success(res.data);
-      this.getDashboard();
-      modal.dismiss('cross click')
-    }
-    );
-
+      this.loadTodayAppointments();
+      this.loadUpcomingAppointments();
+      this.getCancelAppointment();
+      modal.dismiss('cross click');
+    });
   }
-  patientGet: any
-  imageArr: any = []
-  getCancelAppointment() {
-    // this.spinner.show();
-    // this.service.getCancel().subscribe(res => {
-    //   this.cancelApp = res.data
-
-    //   this.spinner.hide();
-    //   for (let i = 0; i < this.cancelApp?.length; i++) {
-    //     if (this.cancelApp[i].patientImage != null) {
-    //       const doctorData = {
-    //         patientImage: atob(this.cancelApp[i].patientImage)
-    //       };
-    //       this.cancelApp[i].doctorData = doctorData;
-    //     }
-    //     this.imageArr.push(this.cancelApp[i]);
-    //   }
-    // },
-    //   // this.spinner.hide();
-
-    //   (err) => {
-    //     let error = err.error.error.reason;
-    //     console.log(error);
-    //     if (error != null) {
-    //       this.toastr.error(err.error.error.reason);
-    //     }
-    //     this.spinner.hide();
-    //   })
-  }
-
-
-  // viewPatient(patientId: any) {
-  //   this.rout.navigate(['/doctors/patientsprofile', patientId])
-  // }
-
-  viewPatient(patientId: any, index: any) {
-
-    const status = this.today.filter((res: any) => res.patientId == patientId);
-    console.log(status[0]);
-    console.log(status[index]);
-
-    if (status[0].status === 'PENDING' || status[index].status === 'PENDING') {
-      this.toastr.error('Patient status is not accepted. Cannot proceed.');
-    } else {
-      this.rout.navigate(['/doctors/patientsprofile', patientId])
-    }
-
-  }
-
-
 }
-// this.doctorGet = this.doctorGetAll;
-//       for (let i = 0; i < this.doctorGet.length; i++) {
-//         if (this.doctorGet[i].doctorImage != null) {
-//           const doctorData = {
-//             doctorId: this.doctorGet[i]?.doctorImage?.doctorId,
-//             doctorName: this.doctorGet[i]?.doctorImage?.doctorName,
-//             doctorImage: atob(this.doctorGet[i]?.doctorImage?.doctorImage)
-//           };
-//           this.doctorGet[i].doctorData = doctorData;
-//         }
-//         this.imagearr.push(this.doctorGet[i]);

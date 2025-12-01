@@ -1,5 +1,5 @@
-<!-- <div>
-    <ngx-spinner
+<div>
+  <ngx-spinner
     bdColor="rgba(51,51,51,0.8)"
     size="medium"
     color="#fff"
@@ -7,7 +7,8 @@
   >
     <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
   </ngx-spinner>
-</div> -->
+</div>
+
 <div class="row">
   <div class="col-md-12">
     <div class="card dash-card">
@@ -98,7 +99,6 @@
   <div class="col-md-12">
     <h4 class="mb-4">Patient Appointments</h4>
     <div class="appointment-tab">
-      <!-- Appointment Tab -->
       <ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
         <li class="nav-item">
           <a
@@ -131,10 +131,8 @@
           >
         </li>
       </ul>
-      <!-- /Appointment Tab -->
 
       <div class="tab-content">
-        <!-- Upcoming Appointment Tab -->
         <div
           class="tab-pane"
           id="upcoming"
@@ -148,9 +146,9 @@
                     <tr>
                       <th>Patient Name</th>
                       <th>Appointment Date</th>
-                      <th>Purpose</th>
-                      <th>Type</th>
-                      <th class="text-center">Paid Amount</th>
+                      <th>Status</th>
+                      <!-- <th>Type</th> -->
+                      <th class="text-center">Fee Amount</th>
                       <th class="text-center"></th>
                     </tr>
                   </thead>
@@ -158,23 +156,12 @@
                     <tr *ngFor="let value of Appointment; let i = index">
                       <td>
                         <h2 class="table-avatar d-flex">
-                          <!-- <a>
-                                                        <img [src]="value?.patientImage" class="img-fluid" alt="Darren">
-                                                    </a> -->
                           <a>
                             <img
-                              *ngIf="value.doctorData"
-                              [src]="value.doctorData?.patientImage"
-                              class="img-fluid rounded-circle"
-                              alt="Image"
-                            />
-                            <img
-                              *ngIf="!value.doctorData"
                               class="img-fluid"
-                              src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                              src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
                             />
                           </a>
-
                           <p class="patient mx-2 mt-3">
                             {{ value?.patientName
                             }}<span>{{ value?.key }}</span>
@@ -183,24 +170,15 @@
                       </td>
                       <td>
                         {{ value?.appointmentDate
-                        }}<span class="d-block text-info">{{
-                          value?.appointmentTime
-                        }}</span>
+                        }}<span class="d-block text-info">
+                          {{ value?.appointmentTime }}
+                        </span>
                       </td>
-                      <td>{{ value?.purpose }}</td>
-                      <td>{{ value?.type }}</td>
-                      <td class="text-center">{{ value?.paidAmount }}</td>
-
-                      <!-- Accept Button -->
+                      <td>{{ value?.appointmentStatus }}</td>
+                      <!-- <td>{{ value?.type }}</td> -->
+                      <td class="text-center">{{ value?.doctorFee }}</td>
                       <td class="text-end">
                         <div class="table-action">
-                          <!-- <a *ngIf="value.status == 'PENDING'"
-                                                        class="btn btn-sm bg-success-light"
-                                                        (click)="accept(value.appointmentId)">
-                                                        <i class="fas fa-check"></i>Accept</a>
-                                                    <a *ngIf="value.status == 'ACCEPT'"
-                                                        class="btn btn-sm accepted bg-success-light">
-                                                        <i class="fas fa-check"></i>Accepted</a> -->
                           <a
                             *ngIf="value.status == 'ACCEPT'"
                             class="btn btn-sm bg-danger-light"
@@ -210,13 +188,7 @@
                           </a>
                         </div>
                       </td>
-
-                      <!-- </div>
-                                            </td> -->
-
-                      <!-- </tr> -->
                     </tr>
-
                     <tr *ngIf="!Appointment?.length">
                       <td class="text-center" colspan="7">
                         <i
@@ -232,9 +204,7 @@
             </div>
           </div>
         </div>
-        <!-- /Upcoming Appointment Tab -->
 
-        <!-- Today Appointment Tab -->
         <div
           class="tab-pane"
           id="today"
@@ -248,8 +218,8 @@
                     <tr>
                       <th>Patient Name</th>
                       <th>Appointment Date</th>
-                      <th>Purpose</th>
-                      <th>Type</th>
+                      <th>Status</th>
+                      <!-- <th>Type</th> -->
                       <th class="text-center">Paid Amount</th>
                       <th class="text-center"></th>
                     </tr>
@@ -260,18 +230,10 @@
                         <h2 class="table-avatar d-flex">
                           <a>
                             <img
-                              *ngIf="data.doctorData"
-                              [src]="data.doctorData?.patientImage"
-                              class="img-fluid rounded-circle"
-                              alt="Image"
-                            />
-                            <img
-                              *ngIf="!data.doctorData"
                               class="img-fluid"
-                              src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                              src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
                             />
                           </a>
-
                           <p class="patient mx-2 mt-3">
                             {{ data?.patientName }}<span>{{ data?.key }}</span>
                           </p>
@@ -279,22 +241,15 @@
                       </td>
                       <td>
                         {{ data?.appointmentDate
-                        }}<span class="d-block text-info">{{
-                          data?.appointmentTime
-                        }}</span>
+                        }}<span class="d-block text-info">
+                          {{ data?.appointmentTime }}
+                        </span>
                       </td>
-                      <td>{{ data?.purpose }}</td>
-                      <td>{{ data?.type }}</td>
-                      <td class="text-center">{{ data?.paidAmount }}</td>
+                      <td>{{ data?.appointmentStatus }}</td>
+                      <!-- <td>{{ data?.type }}</td> -->
+                      <td class="text-center">{{ data?.doctorFee }}</td>
                       <td class="text-end">
                         <div class="table-action">
-                          <!-- <a *ngIf="data.status == 'PENDING'"
-                                                        class="btn btn-sm bg-success-light"
-                                                        (click)="accept(data.appointmentId)">
-                                                        <i class="fas fa-check"></i>Accept</a>
-                                                    <a *ngIf="data.status == 'ACCEPT'"
-                                                        class="btn btn-sm accepted bg-success-light">
-                                                        <i class="fas fa-check"></i>Accepted</a> -->
                           <a
                             *ngIf="data.status == 'ACCEPT'"
                             class="btn btn-sm bg-danger-light"
@@ -320,7 +275,7 @@
             </div>
           </div>
         </div>
-        <!-- /cancel Appointment Tab -->
+
         <div
           class="tab-pane"
           id="cancel"
@@ -334,8 +289,8 @@
                     <tr>
                       <th>Patient Name</th>
                       <th>Appointment Date</th>
-                      <th>Purpose</th>
-                      <th>Type</th>
+                      <th>Status</th>
+                      <!-- <th>Type</th> -->
                       <th class="text-center">Paid Amount</th>
                     </tr>
                   </thead>
@@ -345,15 +300,8 @@
                         <h2 class="d-flex">
                           <a>
                             <img
-                              *ngIf="value.doctorData"
-                              [src]="value.doctorData?.patientImage"
-                              class="img-fluid rounded-circle"
-                              alt="Image"
-                            />
-                            <img
-                              *ngIf="!value.doctorData"
-                              class="img-fluid rounded-circle"
-                              src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                              class="img-fluid"
+                              src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
                             />
                           </a>
                           <p class="mx-2 mt-3">
@@ -363,13 +311,13 @@
                       </td>
                       <td>
                         {{ value?.appointmentDate
-                        }}<span class="d-block text-info">{{
-                          value?.appointmentTime
-                        }}</span>
+                        }}<span class="d-block text-info">
+                          {{ value?.appointmentTime }}
+                        </span>
                       </td>
-                      <td>{{ value.purpose }}</td>
-                      <td>{{ value.type }}</td>
-                      <td class="text-center">{{ value.paidAmount }}</td>
+                      <td>{{ value?.appointmentStatus }}</td>
+                      <!-- <td>{{ data?.type }}</td> -->
+                      <td class="text-center">{{ value?.doctorFee }}</td>
                     </tr>
                     <tr *ngIf="cancelApp?.length === 0">
                       <td class="text-center" colspan="7">

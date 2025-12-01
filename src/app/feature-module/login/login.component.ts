@@ -3,15 +3,17 @@ import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CommonService } from 'src/app/core/service/service.index';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  isPatient: boolean = false;
-  pass: boolean = true;
-  showPassword: boolean = false;
+  isPatient = false;
+  pass = true;
+  showPassword = false;
   submitted = false;
   Login!: FormGroup;
   doctors: any = [];
@@ -19,14 +21,15 @@ export class LoginComponent implements OnInit {
   userName = '';
   password = '';
   value: any;
+  userRoleId: any;
+  isLoading = false;
 
-  userRoleId: any
   constructor(
     public router: Router,
     public service: CommonService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-
+    private spinner: NgxSpinnerService
   ) {
     this.userName = '';
     this.password = '';
@@ -39,17 +42,17 @@ export class LoginComponent implements OnInit {
     this.Login = this.fb.group({
       userName: [null, [Validators.required]],
       password: [null, Validators.required]
-    })
-
+    });
   }
+
   get f() {
     return this.Login.controls;
   }
 
-
   checkType(event: any) {
     this.isPatient = event.target.checked ? true : false;
   }
+
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
@@ -62,6 +65,9 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
+    this.spinner.show();
+
     this.service.login_Url(this.Login.value).subscribe({
       next: (res: any) => {
         const { jwt, roleName, message } = res.data;
@@ -69,12 +75,13 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', jwt);
         localStorage.setItem('roleName', roleName);
 
-
         this.service.userDetails().subscribe({
           next: (userRes: any) => {
             const loginObj = userRes?.data?.loginObj;
 
             if (!loginObj) {
+              this.spinner.hide();
+              this.isLoading = false;
               this.toastr.error('Unable to fetch user details.');
               return;
             }
@@ -92,6 +99,8 @@ export class LoginComponent implements OnInit {
                   : '/patients/profile-settings';
 
               this.router.navigate([route]);
+              this.spinner.hide();
+              this.isLoading = false;
               this.toastr.info('Please complete your registration.');
               return;
             }
@@ -102,20 +111,27 @@ export class LoginComponent implements OnInit {
                 : '/patients/dashboard';
 
             this.router.navigate([dashboard]);
+            this.spinner.hide();
+            this.isLoading = false;
             this.toastr.success(message);
           },
           error: () => {
+            this.spinner.hide();
+            this.isLoading = false;
             this.toastr.error('Unable to fetch user details.');
           }
         });
       },
       error: err => {
+        this.spinner.hide();
+        this.isLoading = false;
         this.toastr.error(
           err?.error?.error?.message || 'Login failed! Please try again.'
         );
       }
     });
   }
+
   mobileNumberValidator(control: FormControl) {
     const value = control.value;
     if (value && value.toString().length !== 10) {
@@ -123,16 +139,6 @@ export class LoginComponent implements OnInit {
     }
     return null;
   }
-  onInput(event: any) {
-    // // Get the input value and remove any non-numeric characters
-    // const inputValue = event.target.value;
-    // const numericValue = inputValue.replace(/[^0-9]/g, '');
 
-    // // Update the input field with the numeric value
-    // event.target.value = numericValue;
-
-    // // Update the form control value
-    // this.Login.controls['userName'].setValue(numericValue);
-  }
-
+  onInput(event: any) { }
 }

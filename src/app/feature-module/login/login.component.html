@@ -1,9 +1,18 @@
 <app-home-one-header></app-home-one-header>
+
+<ngx-spinner
+  bdColor="rgba(51,51,51,0.8)"
+  size="medium"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
+</ngx-spinner>
+
 <div class="content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 offset-md-2">
-        <!-- Login Tab Content -->
         <div class="account-content">
           <div class="row align-items-center justify-content-center">
             <div class="col-md-7 col-lg-6 login-left">
@@ -20,7 +29,6 @@
               <form [formGroup]="Login">
                 <div class="form-group form-focus">
                   <label class="focus-label">Username</label>
-
                   <input
                     type="text"
                     name="userName"
@@ -50,7 +58,6 @@
                 <div class="form-group form-focus">
                   <label class="focus-label">Password</label>
                   <input
-                    type="password"
                     name="password"
                     id="password"
                     [type]="showPassword ? 'text' : 'password'"
@@ -75,13 +82,6 @@
                   </div>
                 </div>
 
-                <!-- <div>
-									<label class="custom_check">
-										<input type="checkbox" name="gender_type" [(ngModel)]="isPatient" (click)="checkType($event)"  >
-										<span class="checkmark"></span> Patients
-									</label>
-								</div> -->
-
                 <div class="text-end">
                   <a class="forgot-link" [routerLink]="'/forgot-password'"
                     >Forgot Password ?</a
@@ -91,21 +91,14 @@
                   class="btn btn-primary w-100 btn-lg login-btn"
                   type="submit"
                   (click)="login()"
+                  [disabled]="isLoading"
                 >
-                  Login
+                  {{ isLoading ? "Logging in..." : "Login" }}
                 </button>
                 <div class="login-or">
                   <span class="or-line"></span>
                   <span class="span-or">or</span>
                 </div>
-                <!-- <div class="row form-row social-login">
-									<div class="col-6">
-										<a href="javascript:void(0)" class="btn btn-facebook w-100"><i class="fab fa-facebook-f me-1"></i> Login</a>
-									</div>
-									<div class="col-6">
-										<a class="btn btn-google w-100" href="javascript:void(0)"><i class="fab fa-google me-1"></i> Login</a>
-									</div>
-								</div> -->
                 <div class="text-center dont-have">
                   Don’t have an account?
                   <a [routerLink]="'/register'">Register</a>
