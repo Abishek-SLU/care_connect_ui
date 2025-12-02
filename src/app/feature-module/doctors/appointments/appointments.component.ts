@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { CommonService } from 'src/app/core/service/service.index';
 
 @Component({
   selector: 'app-appointments',
@@ -7,92 +8,134 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./appointments.component.css']
 })
 export class AppointmentsComponent implements OnInit {
-  patients: any[] = [];
   appointments: any[] = [];
   filteredAppointments: any[] = [];
+  defaultImage = 'assets/img/patients/patient.jpg';
+  doctorId: string | null = null;
+  loading = false;
 
-  constructor(private toastr: ToastrService) { }
+  constructor(
+    private toastr: ToastrService,
+    private appointmentsService: CommonService
+  ) { }
 
   ngOnInit(): void {
-    this.loadData();
-  }
-
-  // Load data from localStorage (if empty, create dummy data)
-  loadData() {
-    const savedPatients = localStorage.getItem('patientsData');
-    const savedAppointments = localStorage.getItem('appointmentsData');
-
-    if (savedPatients) {
-      this.patients = JSON.parse(savedPatients);
-    } else {
-      this.patients = [
-        {
-          id: 1,
-          name: 'Richard Wilson',
-          img: 'assets/img/patients/patient.jpg',
-          email: 'richard@example.com',
-          phone: '+1 202-555-0125',
-          address: '806 Twin Willow Lane',
-        },
-        {
-          id: 2,
-          name: 'Champagne',
-          img: 'assets/img/patients/patient2.jpg',
-          email: 'champagne@example.com',
-          phone: '+1 202-555-0177',
-          address: '21 Broadway, NY',
-        }
-      ];
-      localStorage.setItem('patientsData', JSON.stringify(this.patients));
+    this.doctorId = localStorage.getItem('id');
+    if (!this.doctorId) {
+      this.toastr.error('Doctor not found in session');
+      return;
     }
+    this.loadAppointments();
+  }
 
-    if (savedAppointments) {
-      this.appointments = JSON.parse(savedAppointments);
-    } else {
-      this.appointments = [
-        { id: 1, patientId: 1, date: '14 Nov 2019', time: '10:00 AM', status: 'active' },
-        { id: 2, patientId: 2, date: '15 Nov 2019', time: '11:30 AM', status: 'active' }
-      ];
-      localStorage.setItem('appointmentsData', JSON.stringify(this.appointments));
+  loadAppointments(): void {
+    this.loading = true;
+    this.appointmentsService.getAppointmentsByDoctor(this.doctorId as string).subscribe(
+      res => {
+        const list = res?.data || [];
+        this.appointments = list.map((a: any) => ({
+          raw: a,
+          id: a.id,
+          patientId: a.patientId,
+          date: a.appointmentDate,
+          bookingDate: a.bookingDate,
+          status: a.appointmentStatus,
+          paidAmount: a.doctorFee,
+          patient: null
+        }));
+        this.filteredAppointments = this.appointments.filter(
+          a => a.status !== 'CANCELED' && a.status !== 'DECLINED'
+        );
+        this.loadPatientsForAppointments();
+        this.loading = false;
+      },
+      err => {
+        const error = err?.error?.error?.reason || 'Failed to load appointments';
+        this.toastr.error(error);
+        this.loading = false;
+      }
+    );
+  }
+
+  loadPatientsForAppointments(): void {
+    const handledIds = new Set<string>();
+    this.appointments.forEach(appt => {
+      if (appt.patientId && !handledIds.has(appt.patientId)) {
+        handledIds.add(appt.patientId);
+        this.appointmentsService.getPatientDetails(appt.patientId).subscribe(
+          patientRes => {
+            const p = patientRes?.data;
+            if (!p) {
+              return;
+            }
+            const fullAddressParts = [
+              p.addressLine1 || '',
+              p.addressLine2 || '',
+              p.zipcode || ''
+            ].filter((x: string) => x && x.trim().length > 0);
+            const patientData = {
+              name: ((p.firstname || '') + ' ' + (p.lastname || '')).trim(),
+              img: p.patientImage
+                ? 'data:image/jpeg;base64,' + p.patientImage
+                : this.defaultImage,
+              email: p.email || '',
+              phone: p.phoneNo || '',
+              address: fullAddressParts.join(', ')
+            };
+            this.appointments
+              .filter(a => a.patientId === appt.patientId)
+              .forEach(a => (a.patient = patientData));
+            this.filteredAppointments = this.appointments.filter(
+              a => a.status !== 'CANCELED' && a.status !== 'DECLINED'
+            );
+          },
+          () => { }
+        );
+      }
+    });
+  }
+
+  accept(appt: any): void {
+    if (!appt || !appt.id) {
+      return;
     }
-
-    this.syncPatients();
+    const updated = { ...appt.raw, appointmentStatus: 'ACCEPTED' };
+    this.appointmentsService.updateAppointmentStatus(updated).subscribe(
+      (res: any) => {
+        const message = res?.data || 'Appointment accepted';
+        this.toastr.success(message);
+        appt.status = 'ACCEPTED';
+        appt.raw = updated;
+        this.filteredAppointments = this.appointments.filter(
+          a => a.status !== 'CANCELED' && a.status !== 'DECLINED'
+        );
+      },
+      err => {
+        const error = err?.error?.error?.reason || 'Failed to accept appointment';
+        this.toastr.error(error);
+      }
+    );
   }
 
-  // Merge patient info into appointment for display
-  syncPatients() {
-    this.filteredAppointments = this.appointments
-      .filter(a => a.status === 'active')
-      .map(a => ({
-        ...a,
-        patient: this.patients.find(p => p.id === a.patientId)
-      }));
-  }
-
-  // Accept Appointment
-  accept(appointment: any) {
-    const index = this.appointments.findIndex(a => a.id === appointment.id);
-    if (index !== -1) {
-      this.appointments[index].status = 'accepted';
-      this.saveAppointments();
-      this.toastr.success(`Appointment with ${appointment.patient.name} accepted`);
+  decline(appt: any): void {
+    if (!appt || !appt.id) {
+      return;
     }
-    this.syncPatients();
-  }
-
-  // Decline Appointment
-  decline(appointment: any) {
-    const index = this.appointments.findIndex(a => a.id === appointment.id);
-    if (index !== -1) {
-      this.appointments[index].status = 'declined';
-      this.saveAppointments();
-      this.toastr.error(`Appointment with ${appointment.patient.name} declined`);
-    }
-    this.syncPatients();
-  }
-
-  // Save appointments to localStorage
-  saveAppointments() {
-    localStorage.setItem('appointmentsData', JSON.stringify(this.appointments));
+    const updated = { ...appt.raw, appointmentStatus: 'CANCELED' };
+    this.appointmentsService.updateAppointmentStatus(updated).subscribe(
+      (res: any) => {
+        const message = res?.data || 'Appointment cancelled';
+        this.toastr.success(message);
+        appt.status = 'CANCELED';
+        appt.raw = updated;
+        this.filteredAppointments = this.appointments.filter(
+          a => a.status !== 'CANCELED' && a.status !== 'DECLINED'
+        );
+      },
+      err => {
+        const error = err?.error?.error?.reason || 'Failed to cancel appointment';
+        this.toastr.error(error);
+      }
+    );
   }
 }

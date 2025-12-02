@@ -13,20 +13,18 @@
               <a ngbNavLink class="nav-link" data-bs-toggle="tab">Accepted</a>
               <ng-template ngbNavContent>
                 <div class="row row-grid tab-pane show active" id="Accepted">
-                  <div
+                  <div  style="cursor: pointer" 
                     class="col-md-6 col-lg-4 col-xl-3"
-                    *ngFor="let patient of patients; let i = index"
+                    *ngFor="let patient of patients; let i = index" 
                   >
                     <div class="card widget-profile pat-widget-profile">
                       <div class="card-body">
                         <div class="pro-widget-content">
                           <div class="profile-info-widget">
-                            <div class="profile-det-info">
-                              <!-- <img src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
-                                                            class="img-fluid" alt="Darren"> -->
-                              <!-- <a href="javascript:void(0)" class="img-fluid" *ngIf="patient">
-                                                                <img *ngIf="patient.doctorData"[src]="patient?.patientImage"
-                                                                src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"></a> -->
+                            <div
+                             
+                              class="profile-det-info"
+                            >
                               <a>
                                 <img
                                   *ngIf="patient.doctorData"
@@ -37,18 +35,17 @@
                                 <img
                                   *ngIf="!patient.doctorData"
                                   class="img-fluid rounded-circle"
-                                  src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                                  src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
                                 />
                               </a>
 
                               <h3 class="name mt-2">
-                                <a (click)="viewPatient(patient.patientId)">{{
-                                  patient.patientName
-                                }}</a>
+                                <a (click)="viewPatient(patient.patientId)">
+                                  {{ patient.patientName }}
+                                </a>
                               </h3>
 
                               <div class="patient-details">
-                                <!-- <h5><b>Patient ID :</b> {{patient.patientId}}</h5> -->
                                 <h5
                                   class="mb-0"
                                   *ngIf="patient?.city || patient.state"
@@ -68,10 +65,10 @@
                             </li>
                             <li>
                               Gender
-                              <span
-                                >{{ patient.gender || "-" }}
-                                {{ patient.patients?.type }}</span
-                              >
+                              <span>
+                                {{ patient.gender || "-" }}
+                                {{ patient.patients?.type }}
+                              </span>
                             </li>
                             <li>
                               Blood Group
@@ -82,8 +79,8 @@
                       </div>
                     </div>
                   </div>
-                  <!--  <h4 *ngIf="appointments.length === 0" style="text-align:center;margin-top:1em;">No patients</h4 -->
                 </div>
+
                 <div *ngIf="patients?.length === 0">
                   <div class="text-center">
                     <i
@@ -95,10 +92,11 @@
                 </div>
               </ng-template>
             </li>
+
             <li [ngbNavItem]="2" class="nav-item">
-              <a ngbNavLink class="nav-link" data-bs-toggle="tab"
-                ><span>Completed</span></a
-              >
+              <a ngbNavLink class="nav-link" data-bs-toggle="tab">
+                <span>Completed</span>
+              </a>
               <ng-template ngbNavContent>
                 <div class="row row-grid tab-pane" id="Completed">
                   <div
@@ -109,9 +107,6 @@
                       <div class="card-body">
                         <div class="pro-widget-content">
                           <div class="profile-info-widget">
-                            <!-- <a [routerLink]="'/doctors/patients-profile'" class="booking-doc-img">
-                                                            <img [src]="patient.img" alt="User Image">
-                                                        </a> -->
                             <div class="profile-det-info">
                               <a>
                                 <img
@@ -128,13 +123,12 @@
                               </a>
 
                               <h3 class="name mt-2">
-                                <a (click)="viewPatient(patient.patientId)">{{
-                                  patient.patientName
-                                }}</a>
+                                <a (click)="viewPatient(patient.patientId)">
+                                  {{ patient.patientName }}
+                                </a>
                               </h3>
 
                               <div class="patient-details">
-                                <!-- <h5><b>Patient ID :</b> {{patient.patientId}}</h5> -->
                                 <h5
                                   class="mb-0"
                                   *ngIf="patient?.city || patient.state"
@@ -154,10 +148,10 @@
                             </li>
                             <li>
                               Gender
-                              <span
-                                >{{ patient.gender || "-" }}
-                                {{ patient.patients?.type }}</span
-                              >
+                              <span>
+                                {{ patient.gender || "-" }}
+                                {{ patient.patients?.type }}
+                              </span>
                             </li>
                             <li>
                               Blood Group
@@ -168,8 +162,8 @@
                       </div>
                     </div>
                   </div>
-                  <!--  <h4 *ngIf="appointments.length === 0" style="text-align:center;margin-top:1em;">No patients</h4 -->
                 </div>
+
                 <div *ngIf="completed?.length === 0">
                   <div class="text-center">
                     <i
@@ -182,6 +176,7 @@
               </ng-template>
             </li>
           </ul>
+
           <div [ngbNavOutlet]="navCont"></div>
         </div>
       </div>

@@ -1,19 +1,19 @@
 <header class="header">
-    <nav class="navbar  header-nav no-border">
-        <div class="navbar-header">
-            <!-- <a id="mobile_btn" href="javascript:void(0);">
+  <nav class="navbar header-nav no-border">
+    <div class="navbar-header">
+      <!-- <a id="mobile_btn" href="javascript:void(0);">
                 <span class="bar-icon">
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
             </a> -->
-            <a class="navbar-brand logo">
-                <img src="assets/img/logo.png" class="img-fluid" alt="Logo">
-            </a>
-        </div>
-        <div class="main-menu-wrapper">
-            <!-- <div class="menu-header">
+      <a class="navbar-brand logo">
+        <img src="assets/img/logo.png" class="img-fluid" alt="Logo" />
+      </a>
+    </div>
+    <div class="main-menu-wrapper">
+      <!-- <div class="menu-header">
                 <a class="menu-logo">
                     <img src="assets/img/logo.png" class="img-fluid" alt="Logo">
                 </a>
@@ -21,7 +21,7 @@
                     <i class="fas fa-times"></i>
                 </a>
             </div> -->
-          <!-- <ul class="main-nav">
+      <!-- <ul class="main-nav">
                 <li [class.active]="base === 'home' || base === 'home-two' || base === 'home-three'  || base === 'home-one' || base === 'home-five' || base === 'home-four' || base === 'home-six' || base === 'home-seven' || base === 'home-eight' " class="has-submenu" style="cursor: pointer;">
                     <a href="javascript:void(0);">Home <i class="fas fa-chevron-down"></i></a>
                     <ul class="submenu" id="home">
@@ -145,9 +145,9 @@
                     <a [routerLink]="'/login'">Login / Signup</a>
                 </li>
             </ul>  -->
-        </div>
-        <ul class="nav header-navbar-rht">
-            <!-- <li class="nav-item contact-item">
+    </div>
+    <ul class="nav header-navbar-rht">
+      <!-- <li class="nav-item contact-item">
                 <div class="header-contact-img">
                     <i class="far fa-hospital"></i>
                 </div>
@@ -156,37 +156,70 @@
                     <p class="contact-info-header"> +1 315 369 5943</p>
                 </div>
             </li> -->
-            <li [class.active]="base === 'login-page'" class="nav-item" *ngIf="!authmenu">
-                <a class="nav-link header-login"  [routerLink]="'/login'">login / Signup </a>
-            </li>
-            <!-- User Menu -->
-            <li class="nav-item dropdown has-arrow logged-item" *ngIf="authmenu">
-                <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-                    <span class="user-img">
-                        <img class="rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg" width="31" alt="Darren Elder">
-                        <!-- <img *ngIf="isPatient" class="rounded-circle" src="assets/img/patients/patient.jpg" width="31" alt="Richard Wilson"> -->
-                    </span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end" style="right:0;left:auto;">
-                    <div class="user-header">
-                        <div class="avatar avatar-sm">
-                            <img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image" class="avatar-img rounded-circle">
-                            <!-- <img *ngIf="isPatient" src="assets/img/patients/patient.jpg" alt="User Image" class="avatar-img rounded-circle"> -->
-                        </div>
-                        <div class="user-text">
-                            <h6>Darren Elder</h6>
-                            <p class="text-muted mb-0">Doctor</p>
-                            <!-- <p class="text-muted mb-0" *ngIf="isPatient">Patient</p> -->
-                        </div>
-                    </div>
-                    <a class="dropdown-item" [routerLink]="'/doctors/dashboard'"  style="cursor: pointer;">Dashboard</a>
-                    <a class="dropdown-item" [routerLink]="'/doctors/profile-settings'"  style="cursor: pointer;">Profile Settings</a>
-                    <!-- <a class="dropdown-item" *ngIf="isPatient"  [routerLink]="'/patients/dashboard'"  style="cursor: pointer;">Dashboard</a>
+      <li
+        [class.active]="base === 'login-page'"
+        class="nav-item"
+        *ngIf="!authmenu"
+      >
+        <a class="nav-link header-login" [routerLink]="'/login'"
+          >login / Signup
+        </a>
+      </li>
+      <!-- User Menu -->
+      <li class="nav-item dropdown has-arrow logged-item" *ngIf="authmenu">
+        <a
+          href="javascript:void(0)"
+          class="dropdown-toggle nav-link"
+          data-bs-toggle="dropdown"
+        >
+          <span class="user-img">
+            <img
+              class="rounded-circle"
+              [src]="userImage"
+              width="31"
+              [alt]="displayName"
+            />
+            <!-- <img *ngIf="isPatient" class="rounded-circle" src="assets/img/patients/patient.jpg" width="31" alt="Richard Wilson"> -->
+          </span>
+        </a>
+        <div
+          class="dropdown-menu dropdown-menu-end"
+          style="right: 0; left: auto"
+        >
+          <div class="user-header">
+            <div class="avatar avatar-sm">
+              <img
+                [src]="userImage"
+                [alt]="displayName"
+                class="avatar-img rounded-circle"
+              />
+              <!-- <img *ngIf="isPatient" src="assets/img/patients/patient.jpg" alt="User Image" class="avatar-img rounded-circle"> -->
+            </div>
+            <div class="user-text">
+              <h6>{{ displayName }}</h6>
+              <p class="text-muted mb-0">{{ displayRole }}</p>
+              <!-- <p class="text-muted mb-0" *ngIf="isPatient">Patient</p> -->
+            </div>
+          </div>
+          <a
+            class="dropdown-item"
+            [routerLink]="'/doctors/dashboard'"
+            style="cursor: pointer"
+            >Dashboard</a
+          >
+          <a
+            class="dropdown-item"
+            [routerLink]="'/doctors/profile-settings'"
+            style="cursor: pointer"
+            >Profile Settings</a
+          >
+          <!-- <a class="dropdown-item" *ngIf="isPatient"  [routerLink]="'/patients/dashboard'"  style="cursor: pointer;">Dashboard</a>
                     <a class="dropdown-item" *ngIf="isPatient" [routerLink]="'/patients/profile-settings'"  style="cursor: pointer;">Profile Settings</a> -->
-                    <a class="dropdown-item" [routerLink]="'/login'" style="cursor: pointer;">Logout</a>
-                </div>
-            </li>
-        </ul>
-        
-    </nav>
+          <a class="dropdown-item" (click)="logout()" style="cursor: pointer"
+            >Logout</a
+          >
+        </div>
+      </li>
+    </ul>
+  </nav>
 </header>

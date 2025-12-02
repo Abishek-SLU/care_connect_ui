@@ -1,41 +1,36 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AddprescriptionService {
-  constructor(
-    private Http: HttpClient,
-    private router: Router
-  ) { }
-  private create = environment.Api_url + 'api/prescription/create'
-  private update = environment.Api_url + 'api/prescription/update'
-  private getbyId = environment.Api_url + 'api/prescription/getprescription'
-  private get = environment.Api_url + 'api/doctor/patient-profile/prescription'
-  private delete=environment.Api_url+ 'api/prescription/delete'
-  private deleteID=environment.Api_url+ 'api/prescription/delprescription'
-  
-  createForm(data: any) {
-    return this.Http.post<any>(this.create, data)
-  }
-  getForm(id:any) {
-    return this.Http.get<any>(this.get+'/'+id)
-  }
-  updateForm(data: any) {
-    return this.Http.put<any>(this.update,data)
-  }
- GetFormid(id: string): Observable<any> {
-  return this.Http.get<any>(this.getbyId + '/' + id)
- }
- deleteId(id:any){
-  return this.Http.delete<any>(this.delete + '/' + id)
- }
- deleteGet(id :any){
-  return this.Http.delete<any>(this.deleteID+ '/' + id)
- }
+  private baseUrl = environment.Api_url;
+  private createUrl = this.baseUrl + 'api/prescription/create';
+  private updateUrl = this.baseUrl + 'api/prescription/update';
+  private deleteUrl = this.baseUrl + 'api/prescription/delete/';
+  private getByPatientUrl = this.baseUrl + 'api/prescription/get-patient/';
+  private getByIdUrl = this.baseUrl + 'api/prescription/get-prescription/';
 
+  constructor(private http: HttpClient) { }
+
+  create(data: any) {
+    return this.http.post<any>(this.createUrl, data);
+  }
+
+  update(data: any) {
+    return this.http.put<any>(this.updateUrl, data);
+  }
+
+  deleteId(id: any) {
+    return this.http.delete<any>(this.deleteUrl + id);
+  }
+
+  getByPatient(patientId: any) {
+    return this.http.get<any>(this.getByPatientUrl + patientId);
+  }
+  getById(prescriptionId: any) {
+    return this.http.get<any>(this.getByIdUrl + prescriptionId);
+  }
 }

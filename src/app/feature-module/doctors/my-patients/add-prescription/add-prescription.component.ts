@@ -14,8 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AddprescriptionService } from 'src/app/core/service/addprescription/addprescription.service';
 import { DashboardService } from 'src/app/core/service/doctors/dashboard/dashboard.service';
 import { DocAppointmentService } from 'src/app/core/service/doctors/doctor-appointment/doc-appointment.service';
-import { DocAppointmentsService } from 'src/app/core/service/doctors/doctor-appointments/doc-appointments.service';
-
+import { CommonService } from 'src/app/core/service/service.index';
 @Component({
   selector: 'app-add-prescription',
   templateUrl: './add-prescription.component.html',
@@ -24,13 +23,14 @@ import { DocAppointmentsService } from 'src/app/core/service/doctors/doctor-appo
 export class AddPrescriptionComponent implements OnInit {
   addPrescription!: FormGroup;
   submitted = false;
+
   doctorInfo: any;
-  doctorId: any;
-  patientId: any;
-  appointmentId: any;
+  doctorId: string | null = null;
+  patientId: string | null = null;
+  appointmentId: string | null = null;
+
   patientInfo: any;
   profileImageSrc: string | null = null;
-  appointmentsForPatient: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -40,18 +40,20 @@ export class AddPrescriptionComponent implements OnInit {
     private route: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private appointmentService: DocAppointmentService,
-    private appointmentsService: DocAppointmentsService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private commonService: CommonService
   ) { }
 
   ngOnInit(): void {
-    this.doctorId = localStorage.getItem('userRoleId');
+    this.doctorId = localStorage.getItem('id');
     this.patientId = this.route.snapshot.paramMap.get('id');
+    this.appointmentId = this.route.snapshot.paramMap.get('appointmentId');
     this.buildForm();
+
     if (this.patientId) {
       this.loadPatientInfo();
-      this.loadAppointmentsForPatient();
     }
+
     this.loadDoctorInfo();
   }
 
@@ -119,8 +121,10 @@ export class AddPrescriptionComponent implements OnInit {
   }
 
   loadPatientInfo(): void {
+    if (!this.patientId) return;
+
     this.spinner.show();
-    this.appointmentService.getPatient(this.patientId).subscribe(
+    this.commonService.getPatientDetails(this.patientId).subscribe(
       res => {
         this.patientInfo = res.data;
         if (this.patientInfo?.patientImage) {
@@ -136,22 +140,12 @@ export class AddPrescriptionComponent implements OnInit {
   }
 
   loadDoctorInfo(): void {
-    // this.dashboardService.getDoctorid().subscribe(res => {
-    //   this.doctorInfo = res.data;
-    // });
-  }
+    if (!this.doctorId) return;
 
-  loadAppointmentsForPatient(): void {
     this.spinner.show();
-    this.appointmentsService.appGet().subscribe(
+    this.commonService.getDoctorDetails(this.doctorId).subscribe(
       res => {
-        const data = res.data || [];
-        this.appointmentsForPatient = data.filter(
-          (a: any) => a.patientId === this.patientId
-        );
-        if (this.appointmentsForPatient.length > 0) {
-          this.appointmentId = this.appointmentsForPatient[0].appointmentId;
-        }
+        this.doctorInfo = res.data;
         this.spinner.hide();
       },
       () => {
@@ -162,8 +156,14 @@ export class AddPrescriptionComponent implements OnInit {
 
   save(): void {
     this.submitted = true;
+
     if (this.addPrescription.invalid) {
       this.toastr.error('Please fill all required fields');
+      return;
+    }
+
+    if (!this.doctorId || !this.patientId) {
+      this.toastr.error('Missing doctor, patient or appointment information');
       return;
     }
 
@@ -175,7 +175,7 @@ export class AddPrescriptionComponent implements OnInit {
     };
 
     this.spinner.show();
-    this.service.createForm(payload).subscribe(
+    this.service.create(payload).subscribe(
       () => {
         this.spinner.hide();
         this.toastr.success('Prescription saved successfully');
@@ -184,7 +184,7 @@ export class AddPrescriptionComponent implements OnInit {
       err => {
         this.spinner.hide();
         const msg =
-          err?.error?.error?.message || 'Failed to save prescription';
+          err?.error?.error?.reason || 'Failed to save prescription';
         this.toastr.error(msg);
       }
     );
