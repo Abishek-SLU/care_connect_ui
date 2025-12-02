@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 
 import { LoginInterceptorInterceptor } from 'src/environments/interceptor/login-interceptor.interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ChatModule } from './chat/chat.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,7 +26,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SharedModule, NgbModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ChatModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: LoginInterceptorInterceptor, multi: true }],
   bootstrap: [AppComponent],
