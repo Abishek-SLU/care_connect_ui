@@ -1,21 +1,8 @@
-<!-- <!-- <div>
-    <ngx-spinner
-    bdColor="rgba(51,51,51,0.8)"
-    size="medium"
-    color="#fff"
-    type="ball-scale-multiple"
-  >
-    <p style="font-size: 20px; color: rgb(249, 244, 244)">Loading...</p>
-  </ngx-spinner>
-</div> -->
--->
-<!-- Page Content -->
 <div class="content">
   <div class="container-fluid">
     <div class="row view">
       <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
         <div class="sticky-grid">
-          <!-- Profile Widget -->
           <div class="card widget-profile pat-widget-profile">
             <div class="card-body">
               <div class="pro-widget-content">
@@ -30,18 +17,26 @@
                     <img
                       *ngIf="!patientInfo?.doctorData"
                       class="img-fluid rounded-circle"
-                      src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                      src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
                     />
                   </a>
                   <div class="profile-det-info mt-3">
                     <h3>
-                      <a>{{ patientInfo?.name }}</a>
+                      <a>
+                        {{ patientInfo?.firstname }}
+                        {{ patientInfo?.lastname }}
+                      </a>
                     </h3>
                     <div class="patient-details">
-                      <!-- <h5><b>Patient ID :</b> PT0016</h5> -->
                       <h5 class="mb-0">
-                        <i class="fas fa-map-marker-alt"></i
-                        >{{ patientInfo?.state }}, {{ patientInfo?.city }}
+                        <i class="fas fa-map-marker-alt"></i>
+                        {{ patientInfo?.addressLine1 }}
+                        <span *ngIf="patientInfo?.addressLine2">
+                          , {{ patientInfo?.addressLine2 }}
+                        </span>
+                        <span *ngIf="patientInfo?.zipcode">
+                          , {{ patientInfo?.zipcode }}
+                        </span>
                       </h5>
                     </div>
                   </div>
@@ -50,19 +45,21 @@
               <div class="patient-info">
                 <ul>
                   <li>
-                    Phone <span>{{ patientInfo?.mobileno }}</span>
+                    Phone
+                    <span>{{ patientInfo?.phoneNo }}</span>
                   </li>
                   <li>
-                    Gender <span>{{ patientInfo?.gender }}</span>
+                    Gender
+                    <span>{{ patientInfo?.gender }}</span>
                   </li>
                   <li>
-                    Blood Group <span>{{ patientInfo?.bloodGroup }}</span>
+                    Blood Group
+                    <span>{{ patientInfo?.bloodGroup }}</span>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
-          <!-- /Profile Widget -->
         </div>
       </div>
 
@@ -73,21 +70,6 @@
               <h4 class="card-title mb-0">Prescription</h4>
             </div>
 
-            <!-- <div class="col-6  mb-3">
-                                <label ><b>Prescription</b></label>
-                                <input class="form-control" type="text">
-                               
-                            </div> -->
-            <!-- Add Item -->
-            <!-- /Add Item -->
-
-            <!-- Prescription Item -->
-
-            <!-- <div class="card"> -->
-            <!-- <div class="card-header">
-                                    <h4 class="card-title mb-0">Prescription</h4>
-        
-                                </div> -->
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-6">
@@ -95,20 +77,11 @@
                     <h4 class="d-block">
                       {{ values?.doctorName | uppercase }}
                     </h4>
-                    <span class="d-block text-sm text-muted"
-                      >{{ values?.education }},{{
-                        values?.specializationName
-                      }}</span
-                    >
-                    <span class="d-block text-sm text-muted"></span>
+                    <span class="d-block text-sm text-muted">
+                      {{ values?.education }}, {{ values?.specializationName }}
+                    </span>
                   </div>
                 </div>
-                <!-- <div class="col-sm-6 text-sm-end">
-                                            <div class="billing-info">
-                                                <h4 class="d-block">1 November 2019</h4>
-                                                <span class="d-block text-muted">#INV0001</span>
-                                            </div>
-                                          </div> -->
               </div>
 
               <div class="row">
@@ -120,202 +93,92 @@
                     formControlName="prescriptionName"
                     [readonly]="ischeckout"
                   />
-                  <!-- [ngClass]="{ 'is-invalid': submitted && b['prescriptionName'].errors || b['prescriptionName'].invalid && (b['prescriptionName'].dirty || b['prescriptionName'].touched)}">
-                                        <div *ngIf="submitted && b['prescriptionName'].errors || b['prescriptionName'].invalid && (b['prescriptionName'].dirty || b['prescriptionName'].touched)"
-                                            class="invalid-feedback">
-                                            *Requried
-                                        </div> -->
                 </div>
-                <!-- Add Item -->
-                <!-- <div
-                                        class=" col-6 add-more-item  text-end d-flex align-items-end justify-content-end">
-                                        <a href="javascript:void(0);"><i class="fas fa-plus-circle"
-                                                (click)="editAddprescription()"></i>
-                                            Add Item</a>
-                                    </div>
-                                </div> -->
-                <!-- /Add Item -->
+              </div>
 
-                <!-- Prescription Item -->
-                <div class="card card-table">
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-hover table-center">
-                        <thead>
-                          <tr>
-                            <th>Medicine Name</th>
-                            <th>Quantity</th>
-                            <th>Days</th>
-                            <th class="mx-1">Time</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody formArrayName="prescription">
-                          <tr
-                            *ngFor="
-                              let pres of prescription?.controls;
-                              let i = index
-                            "
-                            [formGroupName]="i"
-                            class="Prescription"
-                          >
-                            <td>
+              <div class="card card-table">
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-hover table-center">
+                      <thead>
+                        <tr>
+                          <th>Medicine Name</th>
+                          <th>Quantity</th>
+                          <th style="width: 15%">Days</th>
+                          <th class="mx-1">Time</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody formArrayName="prescription">
+                        <tr
+                          *ngFor="
+                            let pres of prescription?.controls;
+                            let i = index
+                          "
+                          [formGroupName]="i"
+                          class="Prescription"
+                        >
+                          <td>
+                            <input
+                              class="form-control"
+                              type="text"
+                              formControlName="medicineName"
+                              [readonly]="ischeckout"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              class="form-control"
+                              type="number"
+                              formControlName="quantity"
+                              [readonly]="ischeckout"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              class="form-control"
+                              type="number"
+                              formControlName="noOfDays"
+                              [readonly]="ischeckout"
+                            />
+                          </td>
+                          <td>
+                            <div class="form-check form-check-inline">
                               <input
-                                class="form-control"
-                                type="text"
-                                formControlName="medicineName"
-                                value=""
+                                type="checkbox"
+                                class="time"
+                                formControlName="isMorning"
                                 [readonly]="ischeckout"
                               />
-                              <!-- [ngClass]="{ 'is-invalid': submitted && prescription.controls[i].get('medicineName')?.errors || prescription.controls[i].get('medicineName')?.invalid && (prescription.controls[i].get('medicineName')?.dirty ||prescription.controls[i].get('medicineName')?.touched)}">
-                                                            <div *ngIf="submitted && prescription.controls[i]?.get('medicineName')?.errors || prescription.controls[i].get('medicineName')?.invalid && (prescription.controls[i].get('medicineName')?.touched)"
-                                                                class="invalid-feedback req">
-                                                                *Required
-                                                            </div> -->
-                            </td>
-                            <td>
+                              <label class="Morning mx-2">Morning</label>
                               <input
-                                class="form-control"
-                                type="number"
-                                formControlName="quantity"
+                                type="checkbox"
+                                class="time"
+                                formControlName="isAfternoon"
                                 [readonly]="ischeckout"
                               />
-                              <!-- [ngClass]="{ 'is-invalid': submitted && prescription.controls[i].get('quantity')?.errors || prescription.controls[i].get('quantity')?.invalid && (prescription.controls[i].get('quantity')?.dirty ||prescription.controls[i].get('quantity')?.touched)}">
-                                                            <div *ngIf="submitted && prescription.controls[i].get('quantity')?.errors || prescription.controls[i].get('quantity')?.invalid && (prescription.controls[i].get('quantity')?.touched)"
-                                                                class="invalid-feedback req">
-                                                                *Required
-                                                            </div> -->
-                            </td>
-                            <td>
+                              <label class="Afternoon mx-2">Afternoon</label>
                               <input
-                                class="form-control"
-                                type="number"
-                                formControlName="noOfDays"
+                                type="checkbox"
+                                class="time"
+                                formControlName="isEvening"
                                 [readonly]="ischeckout"
                               />
-
-                              <!-- [ngClass]="{ 'is-invalid': submitted && prescription.controls[i].get('noOfDays')?.errors || prescription.controls[i].get('noOfDays')?.invalid && (prescription.controls[i].get('noOfDays')?.dirty ||prescription.controls[i].get('noOfDays')?.touched)}">
-                                                            <div *ngIf="submitted && prescription.controls[i].get('noOfDays')?.errors || prescription.controls[i].get('noOfDays')?.invalid && (prescription.controls[i].get('noOfDays')?.touched)"
-                                                                class="invalid-feedback req">
-                                                                *Required
-                                                            </div> -->
-                            </td>
-                            <td>
-                              <div class="form-check form-check-inline">
-                                <!-- <label class="mx-1"
-                                                                    *ngFor="let choice of timing; let j=index">
-                                                                    <input type="checkbox" [value]="choice.time"
-                                                                        formArrayName="timeObj"
-                                                                        (change)="onCheckChange($event, i, j)">
-                                                                    {{choice.time}}
-                                                                </label> -->
-                                <input
-                                  type="checkbox"
-                                  class="time"
-                                  formControlName="isMorning"
-                                  [readonly]="ischeckout"
-                                  [checked]="
-                                    pres.get('isMorning')?.value === true
-                                  "
-                                />
-                                <label class="Morning mx-2">Morning</label>
-                                <input
-                                  type="checkbox"
-                                  class="time"
-                                  formControlName="isAfternoon"
-                                  [readonly]="ischeckout"
-                                  [checked]="
-                                    pres.get('isAfternoon')?.value === true
-                                  "
-                                />
-                                <label class="Afternoon mx-2">Afternoon</label>
-                                <input
-                                  type="checkbox"
-                                  class="time"
-                                  formControlName="isEvening"
-                                  [readonly]="ischeckout"
-                                  [checked]="
-                                    pres.get('isEvening')?.value === true
-                                  "
-                                />
-                                <label class="Evening mx-2">Evening</label>
-                                <input
-                                  type="checkbox"
-                                  class="time"
-                                  formControlName="isNight"
-                                  [readonly]="ischeckout"
-                                  [checked]="
-                                    pres.get('isNight')?.value === true
-                                  "
-                                />
-                                <label class="Night mx-2">Night</label>
-                                <!-- <div *ngIf="submit && time.controls[i].get('time')?.errors || time.controls[i].get('time')?.invalid && (time.controls[i].get('time')?.touched)"
-                                                                        class="invalid-feedback req">
-                                                                     required
-                                                                    </div> -->
-                              </div>
-                            </td>
-                            <!-- <td>
-                                                            <a class="btn bg-danger-light"
-                                                                (click)="deletePrescription(i)"><i
-                                                                    class="fas fa-trash"></i></a>
-                                                        </td> -->
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                              <label class="Evening mx-2">Evening</label>
+                              <input
+                                type="checkbox"
+                                class="time"
+                                formControlName="isNight"
+                                [readonly]="ischeckout"
+                              />
+                              <label class="Night mx-2">Night</label>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-                <!-- /Prescription Item -->
-
-                <!-- Signature -->
-                <!-- <div class="row">
-                                        <div class="col-md-12 text-end">
-                                            <div class="signature-wrap">
-                                                <div class="signature">
-                                                    Click here to sign
-                                                </div>
-                                                <div class="sign-name">
-                                                    <p class="mb-0">( Dr. Darren Elder )</p>
-                                                    <span class="text-muted">Signature</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div> -->
-                <!-- /Signature -->
-
-                <!-- Submit Section -->
-                <!-- <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="submit-section">
-                                            <button type="submit" class="btn btn-primary submit-btn"
-                                                (click)="getUpdate()">Save</button>
-                                            <button type="reset" class="btn btn-secondary submit-btn">Clear</button>
-                                        </div>
-                                    </div>
-                                </div> -->
-                <!-- /Submit Section -->
-
-                <!-- </div>
-                                </div>
-                            </form> -->
-                <!-- /Prescription Item -->
-
-                <!-- Signature -->
-                <!-- <div class="row">
-                            <div class="col-md-12 text-end">
-                                <div class="signature-wrap">
-                                    <div class="signature">
-                                        Click here to sign
-                                    </div>
-                                    <div class="sign-name">
-                                        <p class="mb-0">( Dr. Darren Elder )</p>
-                                        <span class="text-muted">Signature</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                <!-- /Signature -->
               </div>
             </div>
           </div>
@@ -323,6 +186,4 @@
       </div>
     </div>
   </div>
-
-  <!-- /Page Content -->
 </div>

@@ -18,14 +18,21 @@ const routes: Routes = [
           import('./view/view.module').then((m) => m.ViewModule),
       },
       {
-        path: 'add-prescription',
+        path: 'add-prescription/:id/:appointmentId',
         loadChildren: () =>
           import('./add-prescription/add-prescription.module').then(
             (m) => m.AddPrescriptionModule
           ),
       },
       {
-        path: 'edit-prescription',
+        path: 'add-prescription/:id',
+        loadChildren: () =>
+          import('./add-prescription/add-prescription.module').then(
+            (m) => m.AddPrescriptionModule
+          ),
+      },
+      {
+        path: 'edit-prescription/:id',
         loadChildren: () =>
           import('./edit-prescription/edit-prescription.module').then(
             (m) => m.EditPrescriptionModule
@@ -53,4 +60,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class MyPatientsRoutingModule {}
+export class MyPatientsRoutingModule { }

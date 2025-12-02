@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
 import {
-  ChartComponent,
   ApexAxisChartSeries,
   ApexChart,
   ApexXAxis,
@@ -10,13 +11,14 @@ import {
   ApexYAxis,
   ApexGrid,
   ApexTitleSubtitle,
-  ApexLegend,
   ApexFill,
-  ApexTooltip,
-  ApexTheme,
   ApexPlotOptions
-} from "ng-apexcharts";
+} from 'ng-apexcharts';
 import * as ApexCharts from 'apexcharts';
+
+import { CommonService } from 'src/app/core/service/service.index';
+import { MedicaldetailsService } from 'src/app/core/service/medical-details/medical-details.service';
+
 export type ChartOptions = {
   series: ApexAxisChartSeries | any;
   chart: ApexChart | any;
@@ -27,6 +29,7 @@ export type ChartOptions = {
   grid: ApexGrid | any;
   title: ApexTitleSubtitle | any;
 };
+
 export type chartOptionsheartrate = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -36,7 +39,8 @@ export type chartOptionsheartrate = {
   yaxis: ApexYAxis;
   fill: ApexFill;
   title: ApexTitleSubtitle;
-}
+};
+
 export type chartOptionsfbc = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -45,7 +49,8 @@ export type chartOptionsfbc = {
   yaxis: ApexYAxis;
   xaxis: ApexXAxis;
   title: ApexTitleSubtitle;
-}
+};
+
 export type chartOptionsweight = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -53,8 +58,7 @@ export type chartOptionsweight = {
   markers: ApexMarkers;
   stroke: ApexStroke;
   title: ApexTitleSubtitle;
-}
-
+};
 
 @Component({
   selector: 'app-dashboard',
@@ -62,16 +66,22 @@ export type chartOptionsweight = {
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+  patientId: string | null = null;
+  appointments: any[] = [];
+  latestMedicalDetails: any = null;
+  doctorDetailsMap: { [id: string]: any } = {};
+
   public bmichartOptions: ChartOptions = {
     series: [
       {
-        name: "Desktops",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148]
+        name: 'BMI',
+        data: [10, 20, 24, 23, 22, 24, 25, 24, 23]
       }
     ],
     chart: {
       height: 350,
-      type: "line",
+      type: 'line',
       zoom: {
         enabled: false
       }
@@ -80,53 +90,44 @@ export class DashboardComponent implements OnInit {
       enabled: false
     },
     stroke: {
-      curve: "straight"
+      curve: 'straight'
     },
     title: {
-      text: "Product Trends by Month",
-      align: "left"
+      text: 'BMI Trend',
+      align: 'left'
     },
     grid: {
       row: {
-        colors: ["#f3f3f3", "transparent"],
+        colors: ['#f3f3f3', 'transparent'],
         opacity: 0.5
       }
     },
     xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep"
-      ]
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep']
     },
     colors: ['#03a4fb']
   };
+
   public chartOptionsheartrate: chartOptionsheartrate = {
     series: [{
       name: 'HeartRate',
-      data: [4, 3, 10, 9, 29, 19, 22, 9, 12, 7, 19, 5, 13, 9, 17, 2, 7, 5]
+      data: [72, 76, 80, 90, 98, 85, 88, 92, 95]
     }],
     chart: {
       height: 350,
-      type: 'line',
+      type: 'line'
     },
     stroke: {
       width: 7,
       curve: 'smooth'
     },
     xaxis: {
-      type: 'datetime',
-      categories: ['1/11/2000', '2/11/2000', '3/11/2000', '4/11/2000', '5/11/2000', '6/11/2000', '7/11/2000', '8/11/2000', '9/11/2000', '10/11/2000', '11/11/2000', '12/11/2000', '1/11/2001', '2/11/2001', '3/11/2001', '4/11/2001', '5/11/2001', '6/11/2001'],
-      tickAmount: 10,
+      type: 'category',
+      categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', 'Mon', 'Tue'],
+      tickAmount: 7
     },
     title: {
-      align: 'left',
+      align: 'left'
     },
     fill: {
       type: 'gradient',
@@ -138,55 +139,54 @@ export class DashboardComponent implements OnInit {
         opacityFrom: 1,
         opacityTo: 1,
         stops: [0, 100, 100, 100]
-      },
+      }
     },
     markers: {
       size: 4,
-      colors: ["#15558d"],
-      strokeColors: "#fff",
+      colors: ['#15558d'],
+      strokeColors: '#fff',
       strokeWidth: 2,
       hover: {
-        size: 7,
+        size: 7
       }
     },
     yaxis: {
-      min: -10,
-      max: 40,
-      title: {},
-    },
-
+      min: 50,
+      max: 120,
+      title: {}
+    }
   };
+
   public chartOptionsfbc: chartOptionsfbc = {
     series: [{
       name: 'FBC',
-      data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2]
+      data: [220, 250, 280, 300, 334, 320, 310, 305, 298, 290, 280, 270]
     }],
     chart: {
       height: 350,
-      type: 'bar',
+      type: 'bar'
     },
     plotOptions: {
       bar: {
         borderRadius: 10,
         dataLabels: {
-          position: 'top', // top, center, bottom
-        },
+          position: 'top'
+        }
       }
     },
     dataLabels: {
       enabled: true,
-      formatter: function (val) {
-        return val + "%";
+      formatter: function (val: any) {
+        return val;
       },
       offsetY: -20,
       style: {
         fontSize: '12px',
-        colors: ["#304758"]
+        colors: ['#304758']
       }
     },
-
     xaxis: {
-      categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
       position: 'top',
       axisBorder: {
         show: false
@@ -202,12 +202,12 @@ export class DashboardComponent implements OnInit {
             colorTo: '#0de0fe',
             stops: [0, 100],
             opacityFrom: 0.4,
-            opacityTo: 0.5,
+            opacityTo: 0.5
           }
         }
       },
       tooltip: {
-        enabled: true,
+        enabled: true
       }
     },
     yaxis: {
@@ -215,12 +215,12 @@ export class DashboardComponent implements OnInit {
         show: false
       },
       axisTicks: {
-        show: false,
+        show: false
       },
       labels: {
         show: false,
-        formatter: function (val) {
-          return val + "%";
+        formatter: function (val: any) {
+          return val;
         }
       }
     },
@@ -231,19 +231,20 @@ export class DashboardComponent implements OnInit {
       style: {
         color: '#444'
       }
-    },
+    }
   };
+
   public chartOptionsweight: chartOptionsweight = {
     series: [{
       name: 'Weight',
-      data: [34, 44, 54, 21, 12, 43, 33, 23, 66, 66, 58]
+      data: [74, 75, 76, 76, 77, 76, 76, 75, 76, 77, 76]
     }],
     chart: {
       type: 'line',
       height: 350
     },
     stroke: {
-      curve: 'stepline',
+      curve: 'stepline'
     },
     dataLabels: {
       enabled: false
@@ -257,25 +258,153 @@ export class DashboardComponent implements OnInit {
       }
     }
   };
-  constructor() { }
+
+  constructor(
+    private router: Router,
+    public commonService: CommonService,
+    public medicaldetailsService: MedicaldetailsService
+  ) { }
 
   ngOnInit(): void {
-    var chart = new ApexCharts(document.querySelector('#bmi-status'),
+    this.patientId = localStorage.getItem('id');
+
+    this.loadMedicalDetails();
+    this.loadAppointments();
+
+    const chart = new ApexCharts(
+      document.querySelector('#bmi-status'),
       this.bmichartOptions
-      );
+    );
     chart.render();
-    var heartratechart = new ApexCharts(document.querySelector('#heartrate-status'),
+
+    const heartratechart = new ApexCharts(
+      document.querySelector('#heartrate-status'),
       this.chartOptionsheartrate
     );
     heartratechart.render();
-    var fbcchart = new ApexCharts(document.querySelector('#fbc-status'),
+
+    const fbcchart = new ApexCharts(
+      document.querySelector('#fbc-status'),
       this.chartOptionsfbc
     );
     fbcchart.render();
-    var weightchart = new ApexCharts(document.querySelector('#weight-status'),
+
+    const weightchart = new ApexCharts(
+      document.querySelector('#weight-status'),
       this.chartOptionsweight
     );
     weightchart.render();
   }
 
+  loadAppointments(): void {
+    if (!this.patientId) {
+      this.appointments = [];
+      return;
+    }
+
+    this.commonService.getAppointmentsByPatient(this.patientId)
+      .subscribe({
+        next: (res: any) => {
+          const data = res?.data || [];
+          this.appointments = data.map((a: any) => ({
+            ...a,
+            doctorName: '',
+            specialization: '',
+            doctorImage: ''
+          }));
+
+          const uniqueDoctorIds = Array.from(
+            new Set(data.map((a: any) => a.doctorId).filter((id: any) => !!id))
+          );
+          uniqueDoctorIds.forEach(id => this.loadDoctorDetails(id as string));
+        },
+        error: (err: any) => {
+          console.error('Error loading appointments', err);
+          this.appointments = [];
+        }
+      });
+  }
+
+  loadDoctorDetails(doctorId: string): void {
+    if (!doctorId || this.doctorDetailsMap[doctorId]) {
+      return;
+    }
+
+    this.commonService.getDoctorDetails(doctorId)
+      .subscribe({
+        next: (res: any) => {
+          const doctor = res?.data || res || {};
+          this.doctorDetailsMap[doctorId] = doctor;
+
+          const name =
+            `${doctor.firstname || ''} ${doctor.lastname || ''}`.trim() ||
+            doctor.fullName ||
+            doctor.userName ||
+            'Doctor';
+
+          const specialization =
+            doctor.specialization ||
+            doctor.specializationName ||
+            (doctor.specializationDto && doctor.specializationDto.name) ||
+            '';
+
+          const image =
+            doctor.profileImage ||
+            doctor.imageUrl ||
+            doctor.photoUrl ||
+            '';
+
+          this.appointments = this.appointments.map(appt =>
+            appt.doctorId === doctorId
+              ? {
+                ...appt,
+                doctorName: name,
+                specialization: specialization,
+                doctorImage: image || appt.doctorImage
+              }
+              : appt
+          );
+        },
+        error: (err: any) => {
+          console.error('Error loading doctor details for', doctorId, err);
+        }
+      });
+  }
+  loadMedicalDetails(): void {
+    if (!this.patientId) {
+      this.latestMedicalDetails = null;
+      return;
+    }
+
+    this.medicaldetailsService.medicalDetailsGet(this.patientId)
+      .subscribe({
+        next: (res: any) => {
+
+          const list = res?.data || res || [];
+
+          if (Array.isArray(list) && list.length > 0) {
+
+            this.latestMedicalDetails = list[0];
+          }
+          else if (!Array.isArray(list) && list) {
+            this.latestMedicalDetails = list;
+          }
+          else {
+            this.latestMedicalDetails = null;
+          }
+        },
+        error: (err: any) => {
+          console.error('Error loading medical details', err);
+          this.latestMedicalDetails = null;
+        }
+      });
+  }
+
+  viewPrescription(appt: any): void {
+    window.open(
+      this.commonService.baseUrl + 'api/prescription/download/appointment/' + appt.id,
+      '_blank'
+    );
+
+  }
 }

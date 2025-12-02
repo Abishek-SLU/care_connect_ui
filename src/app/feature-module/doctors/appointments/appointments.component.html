@@ -1,47 +1,76 @@
 <div class="appointments">
-  <!-- Appointment List -->
   <div class="appointment-list" *ngFor="let appt of filteredAppointments">
     <div class="profile-info-widget">
       <a class="booking-doc-img">
-        <img [src]="appt.patient?.img" alt="User Image" />
+        <img [src]="appt.patient?.img || defaultImage" alt="User Image" />
       </a>
       <div class="profile-det-info">
-        <h3>{{ appt.patient?.name }}</h3>
+        <h3>{{ appt.patient?.name || "Unknown Patient" }}</h3>
         <div class="patient-details">
-          <h5><i class="far fa-clock"></i> {{ appt.date }}, {{ appt.time }}</h5>
           <h5>
-            <i class="fas fa-map-marker-alt"></i> {{ appt.patient?.address }}
+            <i class="far fa-clock"></i>
+            {{ appt.date | date : "dd MMM yyyy" }}
+            <span *ngIf="appt.bookingDate">
+              (Booked: {{ appt.bookingDate | date : "dd MMM yyyy" }})
+            </span>
           </h5>
-          <h5><i class="fas fa-envelope"></i> {{ appt.patient?.email }}</h5>
+          <h5>
+            <i class="fas fa-map-marker-alt"></i>
+            {{ appt.patient?.address || "N/A" }}
+          </h5>
+          <h5>
+            <i class="fas fa-envelope"></i>
+            {{ appt.patient?.email || "N/A" }}
+          </h5>
           <h5 class="mb-0">
-            <i class="fas fa-phone"></i> {{ appt.patient?.phone }}
+            <i class="fas fa-phone"></i>
+            {{ appt.patient?.phone || "N/A" }}
           </h5>
         </div>
       </div>
     </div>
     <div class="appointment-action">
-      <a
-        href="javascript:void(0)"
-        class="btn btn-sm bg-info-light"
-        data-bs-toggle="modal"
-        data-bs-target="#appt_details"
+      <button
+        style="margin-right: 7px"
+        class="btn btn-sm bg-success-light"
+        type="button"
+        (click)="accept(appt)"
+        [disabled]="
+          appt.status === 'ACCEPTED' ||
+          appt.status === 'CANCELED' ||
+          appt.status === 'DECLINED'
+        "
       >
-        <i class="far fa-eye"></i> View
-      </a>
-      <button class="btn btn-sm bg-success-light" (click)="accept(appt)">
-        <i class="fas fa-check"></i> Accept
+        <i class="fas fa-check"></i>
+        <span *ngIf="appt.status === 'ACCEPTED'">Accepted</span>
+        <span *ngIf="appt.status !== 'ACCEPTED'">Accept</span>
       </button>
-      <button class="btn btn-sm bg-danger-light" (click)="decline(appt)">
-        <i class="fas fa-times"></i> Cancel
+
+      <button
+        class="btn btn-sm bg-danger-light"
+        type="button"
+        (click)="decline(appt)"
+        [disabled]="appt.status === 'CANCELED' || appt.status === 'DECLINED'"
+      >
+        <i class="fas fa-times"></i>
+        <span *ngIf="appt.status === 'CANCELED' || appt.status === 'DECLINED'"
+          >Cancelled</span
+        >
+        <span *ngIf="appt.status !== 'CANCELED' && appt.status !== 'DECLINED'"
+          >Cancel</span
+        >
       </button>
     </div>
   </div>
 
-  <!-- Empty State -->
   <div
-    *ngIf="filteredAppointments.length === 0"
+    *ngIf="filteredAppointments.length === 0 && !loading"
     class="text-center text-muted mt-3"
   >
     No active appointments found
+  </div>
+
+  <div *ngIf="loading" class="text-center text-muted mt-3">
+    Loading appointments...
   </div>
 </div>

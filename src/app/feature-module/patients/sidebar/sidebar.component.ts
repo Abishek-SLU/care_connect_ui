@@ -9,12 +9,27 @@ import { Router } from '@angular/router';
 })
 export class SidebarComponent implements OnInit {
   name: any;
+  patientInfo: any;
+  id: any;
+
   constructor(
     private router: Router,
     public commonService: CommonService
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.id = localStorage.getItem('id');
+    this.loadPatientDetails();
+  }
+
+  loadPatientDetails() {
+    this.commonService.getPatientDetails(this.id).subscribe((res: any) => {
+      this.patientInfo = res.data;
+      if (this.patientInfo?.patientImage) {
+        this.patientInfo.image = 'data:image/jpeg;base64,' + this.patientInfo.patientImage;
+      }
+    });
+  }
 
   logout() {
     localStorage.clear();

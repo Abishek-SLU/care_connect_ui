@@ -245,11 +245,11 @@ export class CommonService {
 
 
   getAppointments() {
-    return this.http.get(this.SERVER_URL + 'appointments');
+    return this.http.get(this.SERVER_URL + 'appointment');
   }
 
-  updateAppointment(data: any, id: any) {
-    return this.http.put(this.SERVER_URL + 'appointments' + '/' + id, data);
+  updateAppointment(id: any, data: any) {
+    return this.http.put(this.SERVER_URL + 'appointment/update' + '/' + id, data);
   }
 
   getpatients() {
@@ -413,4 +413,17 @@ export class CommonService {
   getPatientDetailsByUserId(id: any) {
     return this.http.get<any>(this.baseUrl + 'api/patient/get/' + id);
   }
+
+  getAppointmentsByDoctor(doctorId: any) {
+    return this.http.get<any>(this.baseUrl + 'api/appoinment/doctor/' + doctorId);
+  }
+  getAppointmentsByPatient(patientId: any) {
+    return this.http.get<any>(this.baseUrl + 'api/appoinment/patient/' + patientId);
+  }
+
+  updateAppointmentStatus(data: any) {
+
+    return this.http.put<any>(this.baseUrl + 'api/appoinment/update/' + data.id, data);
+  }
+
 }

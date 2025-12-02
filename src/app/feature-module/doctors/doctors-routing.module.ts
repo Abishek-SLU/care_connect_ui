@@ -41,7 +41,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'patients-profile',
+        path: 'patients-profile/:id',
         loadChildren: () =>
           import('./view-patients-profile/view-patients-profile.module').then(
             (m) => m.ViewPatientsProfileModule

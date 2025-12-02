@@ -3,8 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {
   Event,
   NavigationStart,
-  Router,
-  ActivatedRoute,
+  Router
 } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -24,16 +23,19 @@ export class SidebarComponent implements OnInit {
   splitVal: any;
   base: any;
   page: any;
+
   values: any;
   image: any;
-  profilePicture: any = 'assets/doc image/default-avatar-profile-icon-vector-18942381.jpg';
-  view: any = [];
+  profilePicture: string = 'https://cdn-icons-png.flaticon.com/512/9187/9187604.png';
+
   myForm!: FormGroup;
   doctorId: any;
-  doctorGet: any = [];
-  constructor(private router: Router, public commonService: CommonService,
+
+  constructor(
+    private router: Router,
+    public commonService: CommonService,
     private service: DashboardService,
-    private AppointmentService: DocAppointmentService,
+    private appointmentService: DocAppointmentService,
     private modalservice: NgbModal,
     private docProfilesettService: DocProfileSettingService,
     private spinner: NgxSpinnerService,
@@ -42,36 +44,32 @@ export class SidebarComponent implements OnInit {
   ) {
     router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
-        if (event instanceof NavigationStart) {
-          this.splitVal = event.url.split('/');
-          this.base = this.splitVal[1];
-          this.page = this.splitVal[2];
-        }
+        this.splitVal = event.url.split('/');
+        this.base = this.splitVal[1];
+        this.page = this.splitVal[2];
       }
     });
-    this.myForm = this.fb.group({
-      doctorArray: this.fb.array([
 
-      ]),
+    this.myForm = this.fb.group({
+      doctorArray: this.fb.array([])
     });
   }
 
   ngOnInit(): void {
-
     setTimeout(() => {
-      this.doctorId = localStorage.getItem('userRoleId');
+      this.doctorId = localStorage.getItem('id');
       this.myFunctionInHeader();
     }, 1000);
+
     this.commonService.functionsToCall$.subscribe(() => {
-      this.myFunctionInHeader()
+      this.myFunctionInHeader();
     });
   }
 
-
   logout(data: any) {
-    this.modalservice.open(data, { size: "md" });
-
+    this.modalservice.open(data, { size: 'md' });
   }
+
   clear() {
     localStorage.clear();
     this.router.navigate(['/']);
@@ -79,62 +77,13 @@ export class SidebarComponent implements OnInit {
   }
 
   navigate(name: any) {
-
     setTimeout(() => {
       this.name = name;
     }, 1000);
   }
-  patientData = {}
-  addDoctor(patientData: any) {
-    this.spinner.show()
-    const doctorGroup = this.fb.group({
-
-      data: [patientData.data.data],
-    });
-    this.doctorArray.push(doctorGroup);
-    this.spinner.hide()
-  }
 
   get doctorArray(): FormArray {
     return this.myForm.get('doctorArray') as FormArray;
-  }
-  imageArr: any = [];
-  getdocImage() {
-    // this.spinner.show();
-    // this.AppointmentService.getImage().subscribe(res => {
-    //   this.image = res;
-
-    //   // if (this.image.data !== null) {
-    //   //   const patientData = {
-    //   //     data: atob(this.image.data)
-    //   //   };
-    //   if (this.image.data !== null && this.image.data !== undefined) {
-    //     const patientData = {
-    //       data: atob(this.image.data)
-    //     };
-    //     // rest of your code
-    //     // }
-    //     this.image.patientData = patientData;
-    //   }
-    //   this.imageArr.push(this.image);
-    //   this.spinner.hide();
-    // },
-
-    //   (err) => {
-    //     let error = err.error.error.reason;
-    //     console.log(error);
-    //     if (error != null) {
-    //       this.toastr.error(err.error.error.reason);
-    //     }
-    //     this.spinner.hide();
-    //   })
-  }
-  getDoctorinfo() {
-    this.spinner.show()
-    // this.service.getDoctorid().subscribe(res => {
-    //   this.values = res.data
-    //   this.spinner.hide()
-    // })
   }
 
   myFunctionInHeader() {
@@ -142,7 +91,36 @@ export class SidebarComponent implements OnInit {
     this.getdocImage();
   }
 
+  getDoctorinfo() {
+    if (!this.doctorId) {
+      return;
+    }
+
+    this.spinner.show();
+    this.service.getDoctorDetails(this.doctorId).subscribe({
+      next: (res) => {
+        this.values = res.data;
 
 
+        if (this.values?.doctorImage) {
+          const patientData = {
+            data: 'data:image/jpeg;base64,' + this.values.doctorImage
+          };
+          this.image = { patientData };
+        }
 
+        this.spinner.hide();
+      },
+      error: (err) => {
+        this.spinner.hide();
+        if (err?.error?.error?.reason) {
+          this.toastr.error(err.error.error.reason);
+        }
+      }
+    });
+  }
+
+  getdocImage() {
+
+  }
 }

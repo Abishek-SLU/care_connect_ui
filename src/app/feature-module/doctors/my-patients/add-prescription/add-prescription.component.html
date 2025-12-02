@@ -27,13 +27,13 @@
                   <img
                     *ngIf="!profileImageSrc"
                     class="img-fluid rounded-circle"
-                    src="assets/doc image/default-avatar-profile-icon-vector-18942381.jpg"
+                    src="https://icons.veryicon.com/png/o/miscellaneous/two-color-webpage-small-icon/user-244.png"
                   />
                 </a>
                 <div class="profile-det-info mt-3">
                   <h3>
-                    <a (click)="viewPatient(patientInfo.patientId)">
-                      {{ patientInfo?.name }}
+                    <a (click)="viewPatient(patientInfo?.id)">
+                      {{ patientInfo?.firstname }} {{ patientInfo?.lastname }}
                     </a>
                   </h3>
                   <div class="patient-details">
@@ -50,10 +50,14 @@
             </div>
             <div class="patient-info">
               <ul>
-                <li>Phone <span>{{ patientInfo?.mobileno || '-' }}</span></li>
-                <li>Gender <span>{{ patientInfo?.gender || '-' }}</span></li>
                 <li>
-                  Blood Group <span>{{ patientInfo?.bloodGroup || '-' }}</span>
+                  Phone <span>{{ patientInfo?.phoneNo || "-" }}</span>
+                </li>
+                <li>
+                  Gender <span>{{ patientInfo?.gender || "-" }}</span>
+                </li>
+                <li>
+                  Blood Group <span>{{ patientInfo?.bloodGroup || "-" }}</span>
                 </li>
               </ul>
             </div>
@@ -137,8 +141,7 @@
                         formControlName="medicineName"
                         [ngClass]="{
                           'is-invalid':
-                            (submitted &&
-                              pres.get('medicineName')?.errors) ||
+                            (submitted && pres.get('medicineName')?.errors) ||
                             (pres.get('medicineName')?.invalid &&
                               (pres.get('medicineName')?.dirty ||
                                 pres.get('medicineName')?.touched))
