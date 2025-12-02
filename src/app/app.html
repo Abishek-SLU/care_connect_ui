@@ -1,0 +1,17 @@
+<header class="container header">
+  <div class="brand">
+    <img src="logo.svg" alt="CareConnect logo" />
+    <strong>CareConnect</strong>
+  </div>
+  <nav class="nav" style="display:flex;align-items:center;gap:12px;">
+    <app-api-status></app-api-status>
+    <a routerLink="/login">Login</a>
+    <a routerLink="/register">Register</a>
+    <a routerLink="/dashboard">Dashboard</a>
+  </nav>
+</header>
+<main class="container auth-wrap">
+  <router-outlet />
+</main>
+<app-toast-container></app-toast-container>
+<app-chat-widget></app-chat-widget>
