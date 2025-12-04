@@ -212,14 +212,28 @@ export class ProfileSettingsComponent implements OnInit {
       cityId: raw.cityId,
       zipcode: raw.zipcode
     };
+    if (payload.id === null) {
+      this.patientService.patientCreate(payload).subscribe({
 
-    this.patientService.patientCreate(payload).subscribe({
-      next: (res: any) => {
-        this.toastr.success(res.data?.message || 'Profile updated successfully');
-      },
-      error: () => {
-        this.toastr.error('Failed to save profile');
-      }
-    });
+        next: (res: any) => {
+          localStorage.setItem('id', res.data?.id || '');
+          this.toastr.success(res.data?.message || 'Profile updated successfully');
+          window.location.reload();
+        },
+        error: () => {
+          this.toastr.error('Failed to save profile');
+        }
+      });
+    } else {
+      this.patientService.patientUpdate(payload).subscribe({
+        next: (res: any) => {
+          this.toastr.success(res.data?.message || 'Profile updated successfully');
+        },
+        error: () => {
+          this.toastr.error('Failed to save profile');
+        }
+      });
+
+    }
   }
 }
