@@ -402,7 +402,7 @@ export class DashboardComponent implements OnInit {
 
   viewPrescription(appt: any): void {
     window.open(
-      this.commonService.baseUrl + 'api/prescription/download/appointment/' + appt.id,
+      this.commonService.baseUrl + 'api/prescription/pdf/download/appointment/' + appt.id,
       '_blank'
     );
 
