@@ -411,8 +411,10 @@ export class ProfileSettingsComponent implements OnInit {
     if (payload.id == null || payload.id == '') {
       this.doctorService.doctorCreate(payload).subscribe({
         next: (res: any) => {
+          localStorage.setItem("id", res.data.id);
           this.toastr.success(res.data?.message || 'Profile updated successfully');
           this.router.navigate(['/doctors/dashboard']);
+          window.location.reload();
         },
         error: () => {
           this.toastr.error('Failed to save profile');
