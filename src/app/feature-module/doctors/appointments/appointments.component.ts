@@ -103,7 +103,7 @@ export class AppointmentsComponent implements OnInit {
     this.appointmentsService.updateAppointmentStatus(updated).subscribe(
       (res: any) => {
         const message = res?.data || 'Appointment accepted';
-        this.toastr.success(message);
+        this.toastr.success("Accepted appointment successfully");
         appt.status = 'ACCEPTED';
         appt.raw = updated;
         this.filteredAppointments = this.appointments.filter(

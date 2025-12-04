@@ -9,7 +9,7 @@ export interface ChatResponse { text: string; quickReplies?: QuickReply[]; }
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   send(message: string, starter = false): Observable<ChatResponse> {
     const body: ChatRequest = { message, starter };
